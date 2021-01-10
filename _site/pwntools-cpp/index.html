@@ -295,7 +295,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          8 minute read
         
       </span>
     
@@ -348,9 +348,6 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 </span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>setuptools <span class="se">\
-</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>capstone <span class="se">\
-</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
-</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>ropgadget <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> curl https://bootstrap.pypa.io/get-pip.py <span class="nt">--output</span> get-pip.py <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python2 get-pip.py <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python2 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
@@ -385,14 +382,14 @@ docker run <span class="nt">--cap-add</span><span class="o">=</span>SYS_PTRACE <
 <h3 id="문제-확인"><strong>문제 확인</strong></h3>
 
 <p>HITCON LAB3 문제를 확인해보자.
-해당 파일은 /tmp/hitcon 디렉토리 안에 위치해 있다.</p>
+해당 파일은 /tmp/hitcon 디렉토리 안에 위치해 있다.
+ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 수 있다.</p>
 
-<p>ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 수 있다.
-<img src="/assets/images/ret2sc.c.png" alt="full" /></p>
+<p><img src="/assets/images/ret2sc.c.png" alt="full" /></p>
 
-<p>해당 문제를 검색해 보면 다음과 같은 풀이집이 있다. (<a href="https://ii4gsp.tistory.com/97">https://ii4gsp.tistory.com/97</a>)</p>
-
-<p>아래는 해당 풀이집에서 발췌한 pwntools를 이용한 exploit code이다.</p>
+<p><br /><br />
+해당 문제를 검색해 보면 다음과 같은 풀이집이 있다. (<a href="https://ii4gsp.tistory.com/97">https://ii4gsp.tistory.com/97</a>). 
+아래는 해당 풀이집에서 발췌한 pwntools를 이용한 exploit code이다.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s">'/home/ii4gsp/HITCON-Training/LAB/lab3/ret2sc'</span><span class="p">)</span>
@@ -418,9 +415,372 @@ docker run <span class="nt">--cap-add</span><span class="o">=</span>SYS_PTRACE <
 <img src="/assets/images/ret2sc.png" alt="full" /></p>
 
 <p>지금까지 cpp를 이용한 pwntools를 제작하기 위한 개발환경 구축 및 pwntools를 이용한 exploit 코드의 기본적인 동작을 분석하였다.
-다음 시간에는 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
+다음으로 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
 우리가 만들어야 할 기본 기능은 process라는 클래스와 recvuntil(), sendline(), p32(), interactive() 멤버 함수이다.</p>
 
+<h2 id="process-클래스"><strong>PROCESS 클래스</strong></h2>
+
+<p>먼저 process 클래스를 만들어보자. process 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.</p>
+
+<p>일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스(<a href="https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html">https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html</a>)로 쉽고 편하게 사용할 수 있다.</p>
+
+<p>boost::process::child는 실행할 프로그램의 path를 전달하여 간단히 사용할 수도 있으며, 입출력을 redirect 하려면 아래와 같이 pipe 생성 후 매개변수로 전달하기만 하면 된다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>    <span class="c1">// 실행할 파일의 경로</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">io_context</span> <span class="n">io</span><span class="p">;</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="nf">input</span><span class="p">(</span><span class="n">io</span><span class="p">);</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="nf">output</span><span class="p">(</span><span class="n">io</span><span class="p">);</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="nf">error</span><span class="p">(</span><span class="n">io</span><span class="p">);</span>
+
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">child</span> <span class="nf">process</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+                              <span class="n">io</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><br /><br />
+만약 실행해야 할 프로그램이 입력 값을 받는다면 아래와 같이 입력 값을 string vector로 전달하기만 하면 된다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>    <span class="c1">// 실행할 파일의 경로</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">io_context</span> <span class="n">io</span><span class="p">;</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="nf">input</span><span class="p">(</span><span class="n">io</span><span class="p">);</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="nf">output</span><span class="p">(</span><span class="n">io</span><span class="p">);</span>
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="nf">error</span><span class="p">(</span><span class="n">io</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">args</span><span class="p">;</span>    <span class="c1">// 입력 값 vector</span>
+
+<span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">child</span> <span class="nf">process</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+                              <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+                              <span class="n">io</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><br /><br /></p>
+
+<p>제대로 동작하는지 ret2sc 바이너리를 대상으로 아래와 같이 테스트 코드를 작성하고 실행해보자.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;boost/process.hpp&gt;
+#include &lt;boost/asio.hpp&gt;
+#include &lt;boost/thread.hpp&gt;
+#include &lt;boost/chrono.hpp&gt;
+#include &lt;mutex&gt;
+</span>
+<span class="k">class</span> <span class="nc">PROCESS</span>
+<span class="p">{</span>
+
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">io_context</span> <span class="n">io</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">input</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">output</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">error</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">child</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">error_code</span> <span class="n">ec</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+
+    <span class="n">PROCESS</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_path</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">_path</span><span class="p">),</span>
+      <span class="n">input</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">output</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">error</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">c</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+        <span class="n">io</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">init</span><span class="p">();</span>
+        <span class="p">}</span>
+
+    <span class="n">PROCESS</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_path</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">args</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">_path</span><span class="p">),</span>
+      <span class="n">input</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">output</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">error</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">c</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+        <span class="n">io</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">init</span><span class="p">();</span>
+        <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">PROCESS</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] Stopping process... pid is "</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">c</span><span class="p">.</span><span class="n">terminate</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] Starting process... pid is "</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">io</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">PROCESS</span> <span class="n">process3</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab3/ret2sc"</span><span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br /><br />
+컴파일을 위한 Makefile은 아래와 같다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">GCC</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">g</span><span class="o">++</span>
+<span class="n">CFLAGS</span><span class="o">=</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">pipe</span> <span class="o">-</span><span class="n">O2</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">gnu</span><span class="o">++</span><span class="mi">1</span><span class="n">z</span> <span class="o">-</span><span class="n">Wall</span> <span class="o">-</span><span class="n">Wextra</span> <span class="o">-</span><span class="n">fPIC</span>
+<span class="n">OBJS</span><span class="o">=</span> <span class="n">main</span><span class="p">.</span><span class="n">o</span>
+<span class="n">TARGET</span><span class="o">=</span><span class="n">pwntools_test</span>
+
+<span class="n">all</span><span class="o">:</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGET</span><span class="p">)</span>
+
+<span class="err">$</span><span class="p">(</span><span class="n">TARGET</span><span class="p">)</span><span class="o">:</span> <span class="err">$</span><span class="p">(</span><span class="n">OBJS</span><span class="p">)</span>
+	<span class="err">$</span><span class="p">(</span><span class="n">GCC</span><span class="p">)</span> <span class="o">-</span><span class="n">Wl</span><span class="p">,</span><span class="o">-</span><span class="n">O1</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGET</span><span class="p">)</span> <span class="n">main</span><span class="p">.</span><span class="n">o</span>  <span class="o">-</span><span class="n">L</span><span class="p">.</span> <span class="o">-</span><span class="n">lpthread</span> <span class="o">-</span><span class="n">lboost_thread</span> <span class="o">-</span><span class="n">lboost_chrono</span>
+
+<span class="n">main</span><span class="p">.</span><span class="n">o</span> <span class="o">:</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span>
+	<span class="err">$</span><span class="p">(</span><span class="n">GCC</span><span class="p">)</span> <span class="err">$</span><span class="p">(</span><span class="n">CFLAGS</span><span class="p">)</span> <span class="o">-</span><span class="n">o</span> <span class="n">main</span><span class="p">.</span><span class="n">o</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span> <span class="o">-</span><span class="n">I</span><span class="p">.</span>
+
+<span class="n">clean</span><span class="o">:</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span> <span class="o">*</span><span class="p">.</span><span class="n">core</span> <span class="o">*~</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGET</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><br /><br />
+아래와 같이 ptcpp 디렉토리 밑에 위의 소스를 생성한 후 make 명령어로 컴파일을 한다.
+<img src="/assets/images/make.png" alt="full" /></p>
+
+<p><br /><br />
+컴파일에 성공하면 아래와 같이 pwntools_test 파일이 생성된다.
+<img src="/assets/images/test.png" alt="full" /></p>
+
+<p><br /><br />
+아래는 생성된 pwntools_test 파일을 실행한 결과이며, ret2sc 바이너리가 child process로 생성되었다가 정상적으로 종료되었다.
+<img src="/assets/images/test.png" alt="full" /></p>
+
+<p>다음으로 추가할 기능은 프로세스를 처음 실행했을 때 출력되는 문자열을 읽어서 화면에 출력하는 기능이다. “/tmp/hitcon/LAB/lab3/ret2sc”를 실행시키면 아래와 같이 “Name:” 문자열이 출력한 후 사용자로부터의 입력을 기다리는 상태가 된다.</p>
+
+<p><img src="/assets/images/cons.png" alt="full" /></p>
+
+<p><br /><br />
+우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.</p>
+
+<p>boost에서 pipe를 읽는 여러 방법들 중 boost::asio::read()를 사용하면 가장 간단하게 구현할 수 있다.
+(<a href="https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html">https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html</a>)</p>
+
+<p><br /><br />
+아래는 boost::asio::read()를 사용하는 예제이다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>    <span class="c1">// pipe에서 읽은 data를 저장하는 buffer</span>
+<span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>             <span class="c1">// buffer의 크기 설정</span>
+
+<span class="k">auto</span> <span class="n">size</span> <span class="o">=</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">ec</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">buffers_begin</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span> <span class="n">buffers_begin</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">())</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>먼저 pipe에서 읽은 data를 저장할 stream buffer를 선언하고, 충분한 크기로 설정한다.
+(<a href="https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/streambuf.html">https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/streambuf.html</a>)</p>
+
+<p>boost의 stream buffer는 이름 그대로 stream data를 저장하는 buffer이고, 일반적으로 사용되는 buffer와는 사용방법이 조금 틀리다.
+간단히 설명하면 streabuf는 읽기와 쓰기를 위한 2개의 인덱스를 가지고 있는데 읽기/쓰기 후에는 반드시 이 인덱스들의 위치를 변경해야 한다.
+<br />위의 예제 코드 가장 마지막 라인에서는 읽기 작업 후, read()에서 반환된 size만큼 consume()을 호출해서 인덱스를 변경하였다. 만약 streambuf에 쓰기 작업을 하였다면, commit() 함수를 반드시 호출해 주어야한다.</p>
+
+<p>또한 read() 함수는 전통적인 c에서의 read() 함수와 달리 리턴되기 전에 스트림에서 일정한 양의 데이터를 읽어서 buffer에 저장하는 역할을 한다. 따라서 원래 읽기를 원했던 전체 길이 중 일부분이 먼저 buffer에 저장된 채로 반환될 수 있기 때문에, stream buffer의 consume()을 반드시 호출해야만 순차적으로 data를 저장할 수 있다.
+<br />앞에서 이야기한 일정한 양은 read() 함수에 전달되는 세번째 변수에 의해 정해지는데, 위의 예제에서는 boost::asio::transfer_at_least(1) 값이 전달되어, 최소 1개 이상의 data를 읽으면 반환하도록 되어 있다.</p>
+
+<p><br /><br />여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
+<br />위의 코드에서 read() 함수가 반환되었을 때 buffer에 저장된 data의 정확한 크기는 알 수 없다. 이는 boost 매뉴얼에도 정의되어 있지 않은데, stream buffer의 크기가 클수록 한번에 읽어들이는 크기가 크다는 것은 실험을 통해서 알 수 있었다. <br />따라서 boost::process::child로 실행시킬 프로그램이 출력하는 data가 많을수록 stream buffer의 크기 또는 boost::asio::transfer_at_least()의 값을 크게 설정해야만 전체 data를 한번에 읽을 수 있다.</p>
+
+<p>위의 코드에서는 대상 프로그램이 출력하는 데이터의 크기를 알 수 없기 때문에(만약 10으로 설정했는데, 출력되는 값이 10 미만이라면 read()가 반환되지 않아 프로그램이 멈출 것이다), boost::asio::transfer_at_least()의 값을 1로 설정하여, 1개 이상의 data를 읽으면 반환하도록 하였다. 그리고 stream buffer의 크기를 크게 잡음으로써, 만약 큰 크기의 출력값이 발생하더라도 한번에 읽을 수 있도록, 최대한 안정적으로 동작하게끔 하였다.
+<br />만약 정확히 1개의 data만을 읽고 싶다면, boost::asio::transfer_exactly(1)을 전달해야 한다. 만약 모든 데이터를 읽은 후 반환되게 하고 싶다면(sync처럼 동작하게끔 하고 싶다면), 세번째 변수에 boost::asio::transfer_all()을 전달해야만 한다.</p>
+
+<p><br /><br />
+한가지 더 고려해야 하는 사항은 바로 read() 호출이 반환이 되지 않는 상황이다. 예를 들어 10개의 data가 들어올 것으로 예상해서 read()를 호출하였는데, 실제 8개의 data만을 읽을 수 있었다면, read()는 이후의 data가 들어올 때까지 계속 대기상태에 머무른다. 또한 대상 프로그램에서 읽어야 할 data가 있는지 없는지 모르는 상황에서의 read() 호출은 예상치 못한 대기상태를 야기하게 되므로, 적당한 시간 이후에 read() 호출을 강제로 끝내야만 프로그램이 안정적으로 동작할 것이다. 따라서 read() 호출은 비동기 함수 또는 스레드로 이루어져야 한다.</p>
+
+<p>아래는 스레드 내에서 read()를 호출하도록 구현한 코드 예제이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="kr">thread</span> <span class="nf">out_thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span>
+<span class="p">{</span>
+		<span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+	  <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+	  <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+	  <span class="p">{</span>
+	      <span class="n">locked_output</span><span class="p">(</span><span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+	      <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+	  <span class="p">}</span>
+<span class="p">});</span>
+<span class="n">out_thread</span><span class="p">.</span><span class="n">try_join_for</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">200</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>thread 내에서 1개 이상의 data를 읽어오면 반환되도록 read()를 호출하며, out_buffer에 저장된 data를 출력한다. 읽어온 data의 수만큼 consume()을 호출하여 index를 조절한다. 이 스레드는 만약 read() 함수가 응답이 없을 경우 200ms 후에 종료된다.</p>
+
+<p><br /><br />
+마지막으로 고려해야 하는 상황은 바로 error이다.
+<br />특정 프로그램을 실행했을 때 어떠한 이유로 인해 error가 발생할 수도 있다. unix 기반 프로그램에서 error는 일반적으로 stderr로 전달되므로, 우리는 child process에서 발생하는 error 메세지 확인을 위해 stderr을 redirect한 후 이를 읽어보아야 한다.</p>
+
+<p>아래는 역시 스레드 내에서 error code를 읽는 read()를 호출하도록 구현된 코드 예제이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="kr">thread</span> <span class="nf">error_thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span>
+<span class="p">{</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+    <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">locked_output</span><span class="p">(</span><span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+        <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+<span class="n">error_thread</span><span class="p">.</span><span class="n">try_join_for</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">200</span><span class="p">));</span>
+</code></pre></div></div>
+<p><br />
+스레드에서 출력하기 때문에, 예쁜 출력을 위해 locked_output() 이라는 함수를 아래와 같이 추가하였다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">locked_output</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">recursive_mutex</span><span class="o">&gt;</span> <span class="n">guard</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br /><br />
+아래는 지금까지 확인한 사항들이 모두 반영된 테스트 코드 및 실행결과이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;boost/process.hpp&gt;
+#include &lt;boost/asio.hpp&gt;
+#include &lt;boost/thread.hpp&gt;
+#include &lt;boost/chrono.hpp&gt;
+#include &lt;mutex&gt;
+</span>
+<span class="k">class</span> <span class="nc">PROCESS</span>
+<span class="p">{</span>
+
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">io_context</span> <span class="n">io</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">input</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">output</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">error</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">child</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">error_code</span> <span class="n">ec</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">recursive_mutex</span> <span class="n">lock</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">buffer_length</span><span class="p">{</span><span class="mi">4096</span><span class="p">};</span>
+
+<span class="nl">public:</span>
+
+    <span class="n">PROCESS</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_path</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">_path</span><span class="p">),</span>
+      <span class="n">input</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">output</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">error</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">c</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+        <span class="n">io</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">init</span><span class="p">();</span>
+        <span class="p">}</span>
+
+    <span class="n">PROCESS</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_path</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">args</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">_path</span><span class="p">),</span>
+      <span class="n">input</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">output</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">error</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">c</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+        <span class="n">io</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">init</span><span class="p">();</span>
+        <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">PROCESS</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] Stopping process... pid is "</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">c</span><span class="p">.</span><span class="n">terminate</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] Starting process... pid is "</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">read_at_once</span><span class="p">();</span>
+        <span class="n">io</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">buffer_to_string</span><span class="p">(</span><span class="k">const</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="o">&amp;</span><span class="n">buffer</span><span class="p">,</span> <span class="k">const</span> <span class="kt">size_t</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">buffers_begin</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span> <span class="n">buffers_begin</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">())</span> <span class="o">+</span> <span class="n">size</span><span class="p">};</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">read_at_once</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">boost</span><span class="o">::</span><span class="kr">thread</span> <span class="n">out_thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span>
+        <span class="p">{</span>
+            <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">locked_output</span><span class="p">(</span><span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+                <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="n">out_thread</span><span class="p">.</span><span class="n">try_join_for</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">200</span><span class="p">));</span>
+        
+        <span class="n">boost</span><span class="o">::</span><span class="kr">thread</span> <span class="n">error_thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span>
+        <span class="p">{</span>
+            <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">locked_output</span><span class="p">(</span><span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+                <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="n">error_thread</span><span class="p">.</span><span class="n">try_join_for</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">200</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">locked_output</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">recursive_mutex</span><span class="o">&gt;</span> <span class="n">guard</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">PROCESS</span> <span class="n">p</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab3/ret2sc"</span><span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/process.png" alt="full" /></p>
+
+<p>여기까지 Process 클래스의 가장 기본적인 기능이 구현되었다. 이제 다음은 recvuntil()을 구현해 볼 차례이다.</p>
 
         
       </section>
