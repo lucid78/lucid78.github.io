@@ -319,9 +319,9 @@ boost의 stream buffer는 이름 그대로 stream data를 저장하는 buffer이
 ```cpp
 boost::thread out_thread([&]()
 {
-		boost::asio::streambuf buf;
-	  buf.prepare(buffer_length);
-	  if(const auto size{boost::asio::read(output, buf, boost::asio::transfer_at_least(1), ec)}; size != 0)
+    boost::asio::streambuf buf;
+    buf.prepare(buffer_length);
+    if(const auto size{boost::asio::read(output, buf, boost::asio::transfer_at_least(1), ec)}; size != 0)
 	  {
 	      locked_output(buffer_to_string(buf, size));
 	      buf.consume(size);
