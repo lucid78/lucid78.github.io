@@ -10,6 +10,12 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 가급적 노가다를 줄이기 위해 boost([https://www.boost.org/](https://www.boost.org/))를 이용해 개발하기로 하였다.(사실 왜 boost로 시작했는지 잘 기억은 안나는데, 매뉴얼 및 사용층이 부족한 boost를 선택한 것이 과연 노가다를 줄이기는 한 건지 좀 의심되기는 한다;;;).
 그리고 프로그램의 테스트는 Hitcon-Trainning([https://github.com/scwuaptx/HITCON-Training](https://github.com/scwuaptx/HITCON-Training)) 문제를 사용하기로 했다.
 
+
+라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
+[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
+{: .notice--info}
+
+
 ## **환경 구축**
 
 pwntoolcpp의 최종 형태는 라이브러리가 될  예정이지만 쉽고 빠르고 간단한 테스트를 위해 일단 하나의 프로그램에서 동작하도록 작성하기로 한다.
@@ -490,4 +496,4 @@ int main()
 ![full](/assets/images/process.png)
 
 
-여기까지 Process 클래스의 가장 기본적인 기능이 구현되었다. 이제 다음은 recvuntil()을 구현해 볼 차례이다.
+여기까지 Process 클래스의 가장 기본적인 기능이 구현되었다. 나머지 기능은 다음 포스트에서 구현해 보도록 한다.
