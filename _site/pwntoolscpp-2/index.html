@@ -1,0 +1,647 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Pwntoolscpp 2 - Security Warehouse</title>
+<meta name="description" content="recvuntil">
+
+
+  <meta name="author" content="lucid7">
+  
+  <meta property="article:author" content="lucid7">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Security Warehouse">
+<meta property="og:title" content="Pwntoolscpp 2">
+<meta property="og:url" content="https://lucid78.github.io/pwntoolscpp-2/">
+
+
+  <meta property="og:description" content="recvuntil">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-01-12T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://lucid78.github.io/pwntoolscpp-2/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "lucid7",
+      "url": "https://lucid78.github.io/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Security Warehouse Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Security Warehouse
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">lucid7</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Well, I still have music.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Pwntoolscpp 2">
+    <meta itemprop="description" content="recvuntil">
+    <meta itemprop="datePublished" content="2021-01-12T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Pwntoolscpp 2
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        
+<h2 id="recvuntil"><strong>recvuntil</strong></h2>
+
+<p>recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
+<br />
+C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
+(<a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html</a>)</p>
+
+<p>boost::asio::read_until()의 사용법은 아래와 같다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>   <span class="c1">// pipe에서 읽은 data를 저장하는 buffer</span>
+<span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>            <span class="c1">// buffer의 크기 설정</span>
+    
+<span class="k">auto</span> <span class="n">size</span> <span class="o">=</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read_until</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">delim</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">buffers_begin</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span> <span class="n">buffers_begin</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">())</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</code></pre></div></div>
+<p><br />
+세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.
+<br />
+위의 코드는 구분자 delim 문자열을 파라미터로 입력받아 read_until()을 호출하여 해당 문자열이 발견되었을 때까지의 출력을 반환한다.</p>
+
+<p>아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다.
+<br />
+ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;boost/process.hpp&gt;
+#include &lt;boost/asio.hpp&gt;
+#include &lt;boost/thread.hpp&gt;
+#include &lt;boost/chrono.hpp&gt;
+#include &lt;mutex&gt;
+</span>
+<span class="k">class</span> <span class="nc">PROCESS</span>
+<span class="p">{</span>
+
+<span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">io_context</span> <span class="n">io</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">input</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">output</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">async_pipe</span> <span class="n">error</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">child</span> <span class="n">c</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">error_code</span> <span class="n">ec</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">recursive_mutex</span> <span class="n">lock</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">buffer_length</span><span class="p">{</span><span class="mi">4096</span><span class="p">};</span>
+
+<span class="nl">public:</span>
+
+    <span class="n">PROCESS</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_path</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">_path</span><span class="p">),</span>
+      <span class="n">input</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">output</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">error</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">c</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+        <span class="n">io</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">init</span><span class="p">();</span>
+        <span class="p">}</span>
+
+    <span class="n">PROCESS</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_path</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">args</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">_path</span><span class="p">),</span>
+      <span class="n">input</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">output</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">error</span><span class="p">(</span><span class="n">io</span><span class="p">),</span>
+      <span class="n">c</span><span class="p">(</span><span class="n">m_path</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">args</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_out</span> <span class="o">&gt;</span> <span class="n">output</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_in</span> <span class="o">&lt;</span> <span class="n">input</span><span class="p">,</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
+        <span class="n">io</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">init</span><span class="p">();</span>
+        <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">PROCESS</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] Stopping process... pid is "</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">c</span><span class="p">.</span><span class="n">terminate</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">recv_until</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">delim</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+        <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+        <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read_until</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">delim</span><span class="p">,</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">ec</span> <span class="o">&amp;&amp;</span> <span class="n">ec</span> <span class="o">!=</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">error</span><span class="o">::</span><span class="n">eof</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">throw</span> <span class="n">boost</span><span class="o">::</span><span class="n">system</span><span class="o">::</span><span class="n">system_error</span><span class="p">(</span><span class="n">ec</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">str</span> <span class="o">+=</span> <span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+            <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">init</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] Starting process... pid is "</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">id</span><span class="p">())</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="c1">// read_at_once();</span>
+        <span class="n">io</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">buffer_to_string</span><span class="p">(</span><span class="k">const</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="o">&amp;</span><span class="n">buffer</span><span class="p">,</span> <span class="k">const</span> <span class="kt">size_t</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">buffers_begin</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span> <span class="n">buffers_begin</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">data</span><span class="p">())</span> <span class="o">+</span> <span class="n">size</span><span class="p">};</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">read_at_once</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">boost</span><span class="o">::</span><span class="kr">thread</span> <span class="n">out_thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span>
+        <span class="p">{</span>
+            <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">locked_output</span><span class="p">(</span><span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+                <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="n">out_thread</span><span class="p">.</span><span class="n">try_join_for</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">200</span><span class="p">));</span>
+        
+        <span class="n">boost</span><span class="o">::</span><span class="kr">thread</span> <span class="n">error_thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">]()</span>
+        <span class="p">{</span>
+            <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>
+            <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">buffer_length</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="n">size</span><span class="p">{</span><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">transfer_at_least</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">ec</span><span class="p">)};</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">locked_output</span><span class="p">(</span><span class="n">buffer_to_string</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">size</span><span class="p">));</span>
+                <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="n">error_thread</span><span class="p">.</span><span class="n">try_join_for</span><span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">200</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">locked_output</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">recursive_mutex</span><span class="o">&gt;</span> <span class="n">guard</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">s</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">PROCESS</span> <span class="n">p</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab3/ret2sc"</span><span class="p">};</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">recv_until</span><span class="p">(</span><span class="s">":"</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><img src="/assets/images/recvuntil_1.png" alt="full" /></p>
+
+<p><br />
+제대로 동작하는지 추가로 확인하기 위해 recv_until(“m”)을 한 결과는 아래와 같으며 정상적으로 동작하는 것을 알 수 있다.
+<img src="/assets/images/recvuntil_2.png" alt="full" /></p>
+
+<p>다음에는 sendline() 함수를 추가해보도록 하자.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-01-12T00:00:00+09:00">January 12, 2021</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Pwntoolscpp+2%20https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-2%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-2%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-2%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/pwntoolscpp-1/" class="pagination--pager" title="Pwntoolscpp 1
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/pwntoolscpp-1/" rel="permalink">Pwntoolscpp 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 lucid7. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
