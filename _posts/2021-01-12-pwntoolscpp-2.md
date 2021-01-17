@@ -213,7 +213,7 @@ interactive()는 마치 shell이 실행된 것 같은 인터페이스를 보여�
 child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.
 
 ```cpp
-void PROCESS::interactive()
+void interactive()
 {
     locked_output("[*] Switching to interactive mode");
     while(true)
