@@ -1,9 +1,11 @@
 
+## **recvuntil**
+
+
 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
 [https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
 {: .notice--info}
 
-## **recvuntil**
 
 recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
 <br>
