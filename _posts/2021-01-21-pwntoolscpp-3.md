@@ -11,7 +11,7 @@
 <br>
 아래는 [https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library](https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library) 에서 발췌한 lab4를 공략하는 exploit이다.
 
-```python
+```cpp
 from pwn import *
  
 p = process('./ret2lib')
