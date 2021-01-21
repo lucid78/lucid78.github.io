@@ -10,4 +10,10 @@ var store = [{
         "tags": [],
         "url": "https://lucid78.github.io/pwntoolscpp-2/",
         "teaser": null
+      },{
+        "title": "Pwntoolscpp 3",
+        "excerpt":"LAB4 이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자. 아래는 https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library 에서 발췌한 lab4를 공략하는 exploit이다. from pwn import * p = process('./ret2lib') e = ELF('./ret2lib') #found address of puts got log.info(\"found address of puts got : %s\" % hex(e.got[\"puts\"])) puts_got = e.got[\"puts\"] p.recvuntil(\":\") p.send(str(puts_got))...","categories": [],
+        "tags": [],
+        "url": "https://lucid78.github.io/pwntoolscpp-3/",
+        "teaser": null
       }]
