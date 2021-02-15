@@ -51,8 +51,37 @@ p.interactive()
 출처: https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library [Bach`s Blog]
 ```
 
-위의 exploit을 보면 ELF라는 class가 추가되었다.
+<br>
+위의 exploit을 보면 PROCESS 클래스에 recvline()이라는 함수와 ELF라는 class가 추가된 것이 보인다. 또한 hex()와 str()이라는 함수가 추가된 것도 보인다.
+hex()와 str() 함수는 아래와 같이 구현할 수 있다. str()의 경우 c++ 라이브러리에서 제공하는 std::to_string()을 사용하면 되지만, 최대한 pwntools와 비슷하게 만들어 보기 위해서 추가로 구현하였다.<br>
+아래는 추가된 hex()와 str() 함수이다.
+```cpp
+std::string hex(const int& addr)
+{
+    std::stringstream stream;
+    stream << "0x" << std::setw(8) << std::setfill('0') << std::hex << addr;
+    return stream.str();
+}
 
+std::string str(const int& num)
+{
+    return std::to_string(num);
+}
+
+```
+
+<br>
+## **RECV_LINE**
+recv_line()은 이전에 구현했던 recv_until()을 이용하면 굉장히 쉽게 구할 수 있다. 바로 '\n'을 만날때까지 읽으면 되기 때문에 아래와 같이 간단히 구현할 수 있다.
+```cpp
+const std::string recv_line()
+{
+    return recv_until("\n");
+}
+```
+
+
+## **ELF**
 ELF는 got()라는 함수를 호출하고 있는데, elf 포맷에서 got에 위치한 function의 address를 가지고 오는 기능을 가지고 있다. 이 기능을 완성하기 위해서는 ELF를 Parsing 해야 하지만 이미 구현된 훌륭한 라이브러리들이 많으므로 기존의 것을 이용하기로 결정했다.
 <br>
 나는 github에서 배포되고 있는 c++로 제작된 많은 ELF Parser들 중에서 elfio를 선택했다.<br>

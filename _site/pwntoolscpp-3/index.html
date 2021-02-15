@@ -295,7 +295,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          17 minute read
+          18 minute read
         
       </span>
     
@@ -355,8 +355,34 @@
 <span class="err">출처</span><span class="o">:</span> <span class="n">https</span><span class="o">:</span><span class="c1">//bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library [Bach`s Blog]</span>
 </code></pre></div></div>
 
-<p>위의 exploit을 보면 ELF라는 class가 추가되었다.</p>
+<p><br />
+위의 exploit을 보면 PROCESS 클래스에 recvline()이라는 함수와 ELF라는 class가 추가된 것이 보인다. 또한 hex()와 str()이라는 함수가 추가된 것도 보인다.
+hex()와 str() 함수는 아래와 같이 구현할 수 있다. str()의 경우 c++ 라이브러리에서 제공하는 std::to_string()을 사용하면 되지만, 최대한 pwntools와 비슷하게 만들어 보기 위해서 추가로 구현하였다.<br />
+아래는 추가된 hex()와 str() 함수이다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">hex</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">stream</span><span class="p">;</span>
+    <span class="n">stream</span> <span class="o">&lt;&lt;</span> <span class="s">"0x"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">setw</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">setfill</span><span class="p">(</span><span class="sc">'0'</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">hex</span> <span class="o">&lt;&lt;</span> <span class="n">addr</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">stream</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+<span class="p">}</span>
 
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">str</span><span class="p">(</span><span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="n">num</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><br /></p>
+<h2 id="recv_line"><strong>RECV_LINE</strong></h2>
+<p>recv_line()은 이전에 구현했던 recv_until()을 이용하면 굉장히 쉽게 구할 수 있다. 바로 ‘\n’을 만날때까지 읽으면 되기 때문에 아래와 같이 간단히 구현할 수 있다.</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">recv_line</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">recv_until</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="elf"><strong>ELF</strong></h2>
 <p>ELF는 got()라는 함수를 호출하고 있는데, elf 포맷에서 got에 위치한 function의 address를 가지고 오는 기능을 가지고 있다. 이 기능을 완성하기 위해서는 ELF를 Parsing 해야 하지만 이미 구현된 훌륭한 라이브러리들이 많으므로 기존의 것을 이용하기로 결정했다.
 <br />
 나는 github에서 배포되고 있는 c++로 제작된 많은 ELF Parser들 중에서 elfio를 선택했다.<br />
