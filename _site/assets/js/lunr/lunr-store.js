@@ -16,4 +16,10 @@ var store = [{
         "tags": [],
         "url": "https://lucid78.github.io/pwntoolscpp-3/",
         "teaser": null
+      },{
+        "title": "Pwntoolscpp 4",
+        "excerpt":"마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다. PLT와 GOT 자세히 알기 1 앞서 binary에 설정된 stack canary check를 위해 해당 파일의 모든 symbol 정보를 가져오는 get_symbol() 함수를 작성했었다. ELF 클래스의 가장 마지막에 아래와 같이 수집한 symbol의 정보를 출력하는 print_symbols() 함수를 추가하고...","categories": [],
+        "tags": [],
+        "url": "https://lucid78.github.io/pwntoolscpp-4/",
+        "teaser": null
       }]
