@@ -1,15 +1,15 @@
 
 ## **LAB4**
 
+이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자.
+<br>
+아래는 [https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library](https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library) 에서 발췌한 lab4를 공략하는 exploit이다.
+
+
 
 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
 [https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
 {: .notice--info}
-
-
-이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자.
-<br>
-아래는 [https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library](https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library) 에서 발췌한 lab4를 공략하는 exploit이다.
 
 
 ```cpp

@@ -1,18 +1,16 @@
 
 ## **recvuntil**
 
-
-라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
-[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
-{: .notice--info}
-
-
 recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
 <br>
 C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
 ([https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html](https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html))
 
 boost::asio::read_until()의 사용법은 아래와 같다.
+
+라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
+[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
+{: .notice--info}
 
 ```cpp
 boost::asio::streambuf buf;   // pipe에서 읽은 data를 저장하는 buffer

@@ -310,15 +310,15 @@
         
 <h2 id="recvuntil"><strong>recvuntil</strong></h2>
 
-<p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
-<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
-
 <p>recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
 <br />
 C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
 (<a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html</a>)</p>
 
 <p>boost::asio::read_until()의 사용법은 아래와 같다.</p>
+
+<p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
+<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>   <span class="c1">// pipe에서 읽은 data를 저장하는 buffer</span>
 <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>            <span class="c1">// buffer의 크기 설정</span>
@@ -883,7 +883,7 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
+    <p class="archive__item-excerpt" itemprop="description">got
 </p>
   </article>
 </div>

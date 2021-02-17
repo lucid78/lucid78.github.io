@@ -6,19 +6,19 @@ var store = [{
         "teaser": null
       },{
         "title": "Pwntoolscpp 2",
-        "excerpt":"recvuntil 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다. https://github.com/lucid78/pwntoolscpp recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다. C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다. (https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html) boost::asio::read_until()의 사용법은 아래와 같다. boost::asio::streambuf buf;...","categories": [],
+        "excerpt":"recvuntil recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다. C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다. (https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html) boost::asio::read_until()의 사용법은 아래와 같다. 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다. https://github.com/lucid78/pwntoolscpp boost::asio::streambuf buf;...","categories": [],
         "tags": [],
         "url": "https://lucid78.github.io/pwntoolscpp-2/",
         "teaser": null
       },{
         "title": "Pwntoolscpp 3",
-        "excerpt":"LAB4 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다. https://github.com/lucid78/pwntoolscpp 이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자. 아래는 https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library 에서 발췌한 lab4를 공략하는 exploit이다. from pwn import * p = process('./ret2lib') e = ELF('./ret2lib') #found address of puts got log.info(\"found address of puts got :...","categories": [],
+        "excerpt":"LAB4 이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자. 아래는 https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library 에서 발췌한 lab4를 공략하는 exploit이다. 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다. https://github.com/lucid78/pwntoolscpp from pwn import * p = process('./ret2lib') e = ELF('./ret2lib') #found address of puts got log.info(\"found address of puts got :...","categories": [],
         "tags": [],
         "url": "https://lucid78.github.io/pwntoolscpp-3/",
         "teaser": null
       },{
         "title": "Pwntoolscpp 4",
-        "excerpt":"마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다. PLT와 GOT 자세히 알기 1 앞서 binary에 설정된 stack canary check를 위해 해당 파일의 모든 symbol 정보를 가져오는 get_symbol() 함수를 작성했었다. ELF 클래스의 가장 마지막에 아래와 같이 수집한 symbol의 정보를 출력하는 print_symbols() 함수를 추가하고...","categories": [],
+        "excerpt":"got 마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다. PLT와 GOT 자세히 알기 1 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다. https://github.com/lucid78/pwntoolscpp 앞서 binary에 설정된 stack canary check를 위해 해당 파일의 모든 symbol 정보를 가져오는 get_symbol() 함수를 작성했었다. ELF 클래스의 가장 마지막에...","categories": [],
         "tags": [],
         "url": "https://lucid78.github.io/pwntoolscpp-4/",
         "teaser": null

@@ -1,5 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://lucid78.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lucid78.github.io/" rel="alternate" type="text/html" /><updated>2021-02-16T22:13:55+09:00</updated><id>https://lucid78.github.io/feed.xml</id><title type="html">Security Warehouse</title><subtitle>security researcher.</subtitle><author><name>lucid7</name></author><entry><title type="html">Pwntoolscpp 4</title><link href="https://lucid78.github.io/pwntoolscpp-4/" rel="alternate" type="text/html" title="Pwntoolscpp 4" /><published>2021-02-16T00:00:00+09:00</published><updated>2021-02-16T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-4</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-4/">&lt;p&gt;마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다.&lt;br /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://lucid78.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lucid78.github.io/" rel="alternate" type="text/html" /><updated>2021-02-17T19:41:54+09:00</updated><id>https://lucid78.github.io/feed.xml</id><title type="html">Security Warehouse</title><subtitle>security researcher.</subtitle><author><name>lucid7</name></author><entry><title type="html">Pwntoolscpp 4</title><link href="https://lucid78.github.io/pwntoolscpp-4/" rel="alternate" type="text/html" title="Pwntoolscpp 4" /><published>2021-02-16T00:00:00+09:00</published><updated>2021-02-16T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-4</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-4/">&lt;h2 id=&quot;got&quot;&gt;&lt;strong&gt;got&lt;/strong&gt;&lt;/h2&gt;
+
+&lt;p&gt;마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다.&lt;br /&gt;
 &lt;a href=&quot;https://bpsecblog.wordpress.com/2016/03/07/about_got_plt_1/&quot;&gt;PLT와 GOT 자세히 알기 1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;
 앞서 binary에 설정된 stack canary check를 위해 해당 파일의 모든 symbol 정보를 가져오는 get_symbol() 함수를 작성했었다. ELF 클래스의 가장 마지막에 아래와 같이 수집한 symbol의 정보를 출력하는 print_symbols() 함수를 추가하고 실행해보자.&lt;/p&gt;
@@ -1746,14 +1751,14 @@
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/last_complete.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html"></summary></entry><entry><title type="html">Pwntoolscpp 3</title><link href="https://lucid78.github.io/pwntoolscpp-3/" rel="alternate" type="text/html" title="Pwntoolscpp 3" /><published>2021-01-21T00:00:00+09:00</published><updated>2021-01-21T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-3</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-3/">&lt;h2 id=&quot;lab4&quot;&gt;&lt;strong&gt;LAB4&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/last_complete.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">got</summary></entry><entry><title type="html">Pwntoolscpp 3</title><link href="https://lucid78.github.io/pwntoolscpp-3/" rel="alternate" type="text/html" title="Pwntoolscpp 3" /><published>2021-01-21T00:00:00+09:00</published><updated>2021-01-21T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-3</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-3/">&lt;h2 id=&quot;lab4&quot;&gt;&lt;strong&gt;LAB4&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자.
 &lt;br /&gt;
 아래는 &lt;a href=&quot;https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library&quot;&gt;https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library&lt;/a&gt; 에서 발췌한 lab4를 공략하는 exploit이다.&lt;/p&gt;
+
+&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
  
@@ -2703,15 +2708,15 @@ Dynamic Section을 탐색하는 것은 이전 Relro에서 사용한 방법과 �
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/pie.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">LAB4</summary></entry><entry><title type="html">Pwntoolscpp 2</title><link href="https://lucid78.github.io/pwntoolscpp-2/" rel="alternate" type="text/html" title="Pwntoolscpp 2" /><published>2021-01-12T00:00:00+09:00</published><updated>2021-01-12T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-2</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-2/">&lt;h2 id=&quot;recvuntil&quot;&gt;&lt;strong&gt;recvuntil&lt;/strong&gt;&lt;/h2&gt;
 
-&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
 &lt;br /&gt;
 C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
 (&lt;a href=&quot;https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html&quot;&gt;https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html&lt;/a&gt;)&lt;/p&gt;
 
 &lt;p&gt;boost::asio::read_until()의 사용법은 아래와 같다.&lt;/p&gt;
+
+&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streambuf&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// pipe에서 읽은 data를 저장하는 buffer&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prepare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4096&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// buffer의 크기 설정&lt;/span&gt;
