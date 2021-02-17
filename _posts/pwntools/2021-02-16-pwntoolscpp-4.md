@@ -1,13 +1,20 @@
-## **got**
-
-마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다.<br>
-[PLT와 GOT 자세히 알기 1](https://bpsecblog.wordpress.com/2016/03/07/about_got_plt_1/)
-
-
+---
+title:  pwntools 개발기 (4)
+excerpt: "got()를 추가하고 LAB4 공략"
+search: true
+categories: pwntools
+tags: dev
+toc: true
+---
 
 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
 [https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
 {: .notice--info}
+
+## **got**
+
+마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다.<br>
+[PLT와 GOT 자세히 알기 1](https://bpsecblog.wordpress.com/2016/03/07/about_got_plt_1/)
 
 
 <br>
@@ -33,8 +40,7 @@ void print_symbols()
 
 위 화면을 잘 살펴보면 몇몇 symbol은 address가 제대로 출력되지 않은 것을 확인할 수 있는데, 주로 printf()나 strcpy() 같이 라이브러리에서 호출되는 symbol들인 것을 알 수 있다. 이들은 모두 프로그램 로딩 시에 재배치(relocation) 과정을 거치기 때문인데, 이들의 올바른 address를 수집하기 위해서는 재배치된 후의 address를 수집해야 한다. 따라서 우리는 이런 재배치 정보를 같이 읽어올 수 있도록 get_symbol() 함수를 업데이트 해야한다.
 
-재배치 정보는 SHT_RELA과 SHT_REL 타입의 섹션을 읽음으로써 수집이 가능하다. 아쉽게도 ELFIO는 재배치된 symbol의 정보를 완벽하게 수집하는 함수가 없다. 따라서 기존 함수를 수정하여 재배치된 symbol 정보를 수집해야 한다.
-
+재배치 정보는 SHT_RELA과 SHT_REL 타입의 섹션을 읽음으로써 수집이 가능하다. 아쉽게도 ELFIO는 재배치된 symbol의 정보를 완벽하게 수집하는 함수가 없다. 따라서 기존 함수를 수정하여 재배치된 symbol 정보를 수집해야 한다.<br>
 먼저 relocation 정보를 저장할 구조체를 아래와 같이 선언하자.
 ```cpp
 std::unordered_map<std::string, ELFIO::Elf64_Addr> relocations;
@@ -682,7 +688,7 @@ int main()
 ![full](/assets/images/pwntools_symbols.png)
 
 <br>
-실수한 부분이 있는데 pwntools의 ELF.got() 함수는 address를 int형으로 반환한다. 따라서 우리도 got() 함수가 int형을 반환하도록 수정해야 한다.
+위에서 실수한 부분이 있는데 pwntools의 got() 함수는 address를 int형으로 반환한다. 따라서 우리도 got() 함수가 int형을 반환하도록 수정해야 한다.
 <br>
 아래는 수정된 got() 함수이다.
 ```cpp

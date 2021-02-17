@@ -1,3 +1,17 @@
+---
+title:  pwntools 개발기 (1)
+excerpt: "c++로 pwntools를 만들어보자"
+search: true
+categories: pwntools
+tags: dev
+toc: true
+---
+
+라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
+[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
+{: .notice--info}
+
+## **pwntools?**
 
 pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. ([https://github.com/Gallopsled/pwntools](https://github.com/Gallopsled/pwntools))
 
@@ -11,9 +25,7 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 그리고 프로그램의 테스트는 Hitcon-Trainning([https://github.com/scwuaptx/HITCON-Training](https://github.com/scwuaptx/HITCON-Training)) 문제를 사용하기로 했다.
 
 
-라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
-[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
-{: .notice--info}
+
 
 
 ## **환경 구축**
@@ -22,6 +34,7 @@ pwntoolcpp의 최종 형태는 라이브러리가 될  예정이지만 쉽고 �
 ~/workspaces 아래에 ptcpp라는 디렉토리를 생성하여 docker 실행 시 연결되도록 하고, 소스 에디팅은 Host에서, compile만 docker에서 하도록 하였다.
 
 아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.
+(python2용 pip를 설치하기 위한 get-pip.py는 실행이 실패한다면, )
 
 ```docker
 FROM ubuntu:latest
@@ -46,7 +59,7 @@ RUN apt-get update --fix-missing \
   && python3 -m pip install --upgrade pip \
   && python3 -m pip install pwntools \
   && python3 -m pip install setuptools \
-  && curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py \
+  && curl https://bootstrap.pypa.io/2.7/get-pip.py --output get-pip.py \
   && python2 get-pip.py \
   && python2 -m pip install pwntools \
   && echo "%sudo ALL=(ALL:ALL) ALL" | cat >> /etc/sudoers \
@@ -110,7 +123,7 @@ p.sendline(payload)
 
 p.interactive()
 ```
-
+<br>
 위의 python 코드를 보면 ":" 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.
 
 위의 exploit code에서 ret2sc 패스만 수정하여 실행해보면 아래와 같이 정상적으로 shell을 획득하는 것을 볼 수 있다.
@@ -119,15 +132,16 @@ p.interactive()
 
 지금까지 cpp를 이용한 pwntools를 제작하기 위한 개발환경 구축 및 pwntools를 이용한 exploit 코드의 기본적인 동작을 분석하였다.
 다음으로 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
-우리가 만들어야 할 기본 기능은 process라는 클래스와 recvuntil(), sendline(), p32(), interactive() 멤버 함수이다.
+우리가 만들어야 할 기본 기능은 PROCESS 클래스와 recv_until(), send_line(), p32(), interactive() 멤버 함수이다.
 
 
 
 ## **PROCESS 클래스**
 
-먼저 process 클래스를 만들어보자. process 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.
+먼저 PROCESS 클래스를 만들어보자. PROCESS 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.
 
-일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스([https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html](https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html))로 쉽고 편하게 사용할 수 있다.
+일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스로 쉽고 편하게 사용할 수 있다.
+([https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html](https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html))
 
 boost::process::child는 실행할 프로그램의 path를 전달하여 간단히 사용할 수도 있으며, 입출력을 redirect 하려면 아래와 같이 pipe 생성 후 매개변수로 전달하기만 하면 된다.
 ```cpp
@@ -144,7 +158,7 @@ boost::process::child process(m_path,
                               io);
 ```
 
-<br><br>
+<br>
 만약 실행해야 할 프로그램이 입력 값을 받는다면 아래와 같이 입력 값을 string vector로 전달하기만 하면 된다.
 ```cpp
 std::string m_path;    // 실행할 파일의 경로
@@ -161,9 +175,7 @@ boost::process::child process(m_path,
                               boost::process::std_err > error,
                               io);
 ```
-
-<br><br>
-  
+<br>  
 제대로 동작하는지 ret2sc 바이너리를 대상으로 아래와 같이 테스트 코드를 작성하고 실행해보자.
 ```cpp
 #include <iostream>
@@ -267,30 +279,29 @@ clean:
 	rm -f $(TARGET)
 ```
 
-<br><br>
+<br>
 아래와 같이 ptcpp 디렉토리 밑에 위의 소스를 생성한 후 make 명령어로 컴파일을 한다.
 ![full](/assets/images/make.png)
 
-<br><br>
+<br>
 컴파일에 성공하면 아래와 같이 pwntools_test 파일이 생성된다.
 ![full](/assets/images/test.png)
 
-<br><br>
+<br>
 아래는 생성된 pwntools_test 파일을 실행한 결과이며, ret2sc 바이너리가 child process로 생성되었다가 정상적으로 종료되었다.
 ![full](/assets/images/test.png)
 
-
+<br>
 다음으로 추가할 기능은 프로세스를 처음 실행했을 때 출력되는 문자열을 읽어서 화면에 출력하는 기능이다. "/tmp/hitcon/LAB/lab3/ret2sc"를 실행시키면 아래와 같이 "Name:" 문자열이 출력한 후 사용자로부터의 입력을 기다리는 상태가 된다.
 
 ![full](/assets/images/cons.png)
 
 <br><br>
-우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.
-
+우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.<br>
 boost에서 pipe를 읽는 여러 방법들 중 boost::asio::read()를 사용하면 가장 간단하게 구현할 수 있다.
 ([https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html](https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html))
 
-<br><br>
+<br>
 아래는 boost::asio::read()를 사용하는 예제이다.
 ```cpp
 boost::asio::streambuf buf;    // pipe에서 읽은 data를 저장하는 buffer
@@ -311,13 +322,13 @@ boost의 stream buffer는 이름 그대로 stream data를 저장하는 buffer이
 또한 read() 함수는 전통적인 c에서의 read() 함수와 달리 리턴되기 전에 스트림에서 일정한 양의 데이터를 읽어서 buffer에 저장하는 역할을 한다. 따라서 원래 읽기를 원했던 전체 길이 중 일부분이 먼저 buffer에 저장된 채로 반환될 수 있기 때문에, stream buffer의 consume()을 반드시 호출해야만 순차적으로 data를 저장할 수 있다.
 <br>앞에서 이야기한 일정한 양은 read() 함수에 전달되는 세번째 변수에 의해 정해지는데, 위의 예제에서는 boost::asio::transfer_at_least(1) 값이 전달되어, 최소 1개 이상의 data를 읽으면 반환하도록 되어 있다.
 
-<br><br>여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
+<br>여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
 <br>위의 코드에서 read() 함수가 반환되었을 때 buffer에 저장된 data의 정확한 크기는 알 수 없다. 이는 boost 매뉴얼에도 정의되어 있지 않은데, stream buffer의 크기가 클수록 한번에 읽어들이는 크기가 크다는 것은 실험을 통해서 알 수 있었다. <br>따라서 boost::process::child로 실행시킬 프로그램이 출력하는 data가 많을수록 stream buffer의 크기 또는 boost::asio::transfer_at_least()의 값을 크게 설정해야만 전체 data를 한번에 읽을 수 있다.
 
 위의 코드에서는 대상 프로그램이 출력하는 데이터의 크기를 알 수 없기 때문에(만약 10으로 설정했는데, 출력되는 값이 10 미만이라면 read()가 반환되지 않아 프로그램이 멈출 것이다), boost::asio::transfer_at_least()의 값을 1로 설정하여, 1개 이상의 data를 읽으면 반환하도록 하였다. 그리고 stream buffer의 크기를 크게 잡음으로써, 만약 큰 크기의 출력값이 발생하더라도 한번에 읽을 수 있도록, 최대한 안정적으로 동작하게끔 하였다.
 <br>만약 정확히 1개의 data만을 읽고 싶다면, boost::asio::transfer_exactly(1)을 전달해야 한다. 만약 모든 데이터를 읽은 후 반환되게 하고 싶다면(sync처럼 동작하게끔 하고 싶다면), 세번째 변수에 boost::asio::transfer_all()을 전달해야만 한다.
 
-<br><br>
+<br>
 한가지 더 고려해야 하는 사항은 바로 read() 호출이 반환이 되지 않는 상황이다. 예를 들어 10개의 data가 들어올 것으로 예상해서 read()를 호출하였는데, 실제 8개의 data만을 읽을 수 있었다면, read()는 이후의 data가 들어올 때까지 계속 대기상태에 머무른다. 또한 대상 프로그램에서 읽어야 할 data가 있는지 없는지 모르는 상황에서의 read() 호출은 예상치 못한 대기상태를 야기하게 되므로, 적당한 시간 이후에 read() 호출을 강제로 끝내야만 프로그램이 안정적으로 동작할 것이다. 따라서 read() 호출은 비동기 함수 또는 스레드로 이루어져야 한다.
 
 아래는 스레드 내에서 read()를 호출하도록 구현한 코드 예제이다.
@@ -338,7 +349,7 @@ out_thread.try_join_for(boost::chrono::milliseconds(200));
 
 thread 내에서 1개 이상의 data를 읽어오면 반환되도록 read()를 호출하며, out_buffer에 저장된 data를 출력한다. 읽어온 data의 수만큼 consume()을 호출하여 index를 조절한다. 이 스레드는 만약 read() 함수가 응답이 없을 경우 200ms 후에 종료된다.
 
-<br><br>
+<br>
 마지막으로 고려해야 하는 상황은 바로 error이다.
 <br>특정 프로그램을 실행했을 때 어떠한 이유로 인해 error가 발생할 수도 있다. unix 기반 프로그램에서 error는 일반적으로 stderr로 전달되므로, 우리는 child process에서 발생하는 error 메세지 확인을 위해 stderr을 redirect한 후 이를 읽어보아야 한다.
 

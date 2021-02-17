@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Pwntoolscpp 4 - Security Warehouse</title>
-<meta name="description" content="got">
+<!-- begin _includes/seo.html --><title>pwntools 개발기 (4) - Security Warehouse</title>
+<meta name="description" content="got()를 추가하고 LAB4 공략">
 
 
   <meta name="author" content="lucid7">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Security Warehouse">
-<meta property="og:title" content="Pwntoolscpp 4">
-<meta property="og:url" content="https://lucid78.github.io/pwntoolscpp-4/">
+<meta property="og:title" content="pwntools 개발기 (4)">
+<meta property="og:url" content="https://lucid78.github.io/pwntools/pwntoolscpp-4/">
 
 
-  <meta property="og:description" content="got">
+  <meta property="og:description" content="got()를 추가하고 LAB4 공략">
 
 
 
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="https://lucid78.github.io/pwntoolscpp-4/">
+<link rel="canonical" href="https://lucid78.github.io/pwntools/pwntoolscpp-4/">
 
 
 
@@ -134,6 +134,8 @@
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
             </li></ul>
         
         <button class="search__toggle" type="button">
@@ -193,13 +195,19 @@
       
         
           
+            <li><a href="mailto:lucid78@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
         
+          
+            <li><a href="https://lucid78.github.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
           
         
           
         
           
         
+          
+            <li><a href="https://github.com/lucid78" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
           
@@ -208,6 +216,13 @@
 
       
 
+      
+        <li>
+          <a href="mailto:lucid78@gmail.com">
+            <meta itemprop="email" content="lucid78@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
       
 
       
@@ -271,15 +286,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Pwntoolscpp 4">
-    <meta itemprop="description" content="got">
+    <meta itemprop="headline" content="pwntools 개발기 (4)">
+    <meta itemprop="description" content="got()를 추가하고 LAB4 공략">
     <meta itemprop="datePublished" content="2021-02-16T00:00:00+09:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Pwntoolscpp 4
+          <h1 id="page-title" class="page__title" itemprop="headline">pwntools 개발기 (4)
 </h1>
           
 
@@ -307,13 +322,21 @@
 
       <section class="page__content" itemprop="text">
         
-        <h2 id="got"><strong>got</strong></h2>
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#got">got</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
+<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
+
+<h2 id="got"><strong>got</strong></h2>
 
 <p>마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다.<br />
 <a href="https://bpsecblog.wordpress.com/2016/03/07/about_got_plt_1/">PLT와 GOT 자세히 알기 1</a></p>
-
-<p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
-<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
 
 <p><br />
 앞서 binary에 설정된 stack canary check를 위해 해당 파일의 모든 symbol 정보를 가져오는 get_symbol() 함수를 작성했었다. ELF 클래스의 가장 마지막에 아래와 같이 수집한 symbol의 정보를 출력하는 print_symbols() 함수를 추가하고 실행해보자.</p>
@@ -337,9 +360,8 @@
 
 <p>위 화면을 잘 살펴보면 몇몇 symbol은 address가 제대로 출력되지 않은 것을 확인할 수 있는데, 주로 printf()나 strcpy() 같이 라이브러리에서 호출되는 symbol들인 것을 알 수 있다. 이들은 모두 프로그램 로딩 시에 재배치(relocation) 과정을 거치기 때문인데, 이들의 올바른 address를 수집하기 위해서는 재배치된 후의 address를 수집해야 한다. 따라서 우리는 이런 재배치 정보를 같이 읽어올 수 있도록 get_symbol() 함수를 업데이트 해야한다.</p>
 
-<p>재배치 정보는 SHT_RELA과 SHT_REL 타입의 섹션을 읽음으로써 수집이 가능하다. 아쉽게도 ELFIO는 재배치된 symbol의 정보를 완벽하게 수집하는 함수가 없다. 따라서 기존 함수를 수정하여 재배치된 symbol 정보를 수집해야 한다.</p>
-
-<p>먼저 relocation 정보를 저장할 구조체를 아래와 같이 선언하자.</p>
+<p>재배치 정보는 SHT_RELA과 SHT_REL 타입의 섹션을 읽음으로써 수집이 가능하다. 아쉽게도 ELFIO는 재배치된 symbol의 정보를 완벽하게 수집하는 함수가 없다. 따라서 기존 함수를 수정하여 재배치된 symbol 정보를 수집해야 한다.<br />
+먼저 relocation 정보를 저장할 구조체를 아래와 같이 선언하자.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">ELFIO</span><span class="o">::</span><span class="n">Elf64_Addr</span><span class="o">&gt;</span> <span class="n">relocations</span><span class="p">;</span>
 </code></pre></div></div>
 
@@ -979,7 +1001,7 @@
 <p><img src="/assets/images/pwntools_symbols.png" alt="full" /></p>
 
 <p><br />
-실수한 부분이 있는데 pwntools의 ELF.got() 함수는 address를 int형으로 반환한다. 따라서 우리도 got() 함수가 int형을 반환하도록 수정해야 한다.
+위에서 실수한 부분이 있는데 pwntools의 got() 함수는 address를 int형으로 반환한다. 따라서 우리도 got() 함수가 int형을 반환하도록 수정해야 한다.
 <br />
 아래는 수정된 got() 함수이다.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">got</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">name</span><span class="p">)</span>
@@ -2069,6 +2091,44 @@
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#dev" class="page__taxonomy-item" rel="tag">dev</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#pwntools" class="page__taxonomy-item" rel="tag">pwntools</a>
+    
+    </span>
+  </p>
 
 
         
@@ -2082,18 +2142,18 @@
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Pwntoolscpp+4%20https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-4%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=pwntools+%EA%B0%9C%EB%B0%9C%EA%B8%B0+%284%29%20https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-4%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-4%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-4%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-4%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-4%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/pwntoolscpp-3/" class="pagination--pager" title="Pwntoolscpp 3
+      <a href="/pwntools/pwntoolscpp-3/" class="pagination--pager" title="pwntools 개발기 (3)
 ">Previous</a>
     
     
@@ -2121,7 +2181,7 @@
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-3/" rel="permalink">Pwntoolscpp 3
+        <a href="/pwntools/pwntoolscpp-3/" rel="permalink">pwntools 개발기 (3)
 </a>
       
     </h2>
@@ -2146,8 +2206,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-LAB4
+    <p class="archive__item-excerpt" itemprop="description">ELF class 추가하기
 </p>
   </article>
 </div>
@@ -2162,7 +2221,7 @@ LAB4
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-2/" rel="permalink">Pwntoolscpp 2
+        <a href="/pwntools/pwntoolscpp-2/" rel="permalink">pwntools 개발기 (2)
 </a>
       
     </h2>
@@ -2187,8 +2246,7 @@ LAB4
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-recvuntil
+    <p class="archive__item-excerpt" itemprop="description">recv_until()을 추가해보자.
 </p>
   </article>
 </div>
@@ -2203,7 +2261,7 @@ recvuntil
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-1/" rel="permalink">Pwntoolscpp 1
+        <a href="/pwntools/pwntoolscpp-1/" rel="permalink">pwntools 개발기 (1)
 </a>
       
     </h2>
@@ -2221,15 +2279,14 @@ recvuntil
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          9 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)
+    <p class="archive__item-excerpt" itemprop="description">c++로 pwntools를 만들어보자
 </p>
   </article>
 </div>
@@ -2273,6 +2330,8 @@ pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한
       
         
       
+        
+          <li><a href="https://github.com/lucid78" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
         
       
         

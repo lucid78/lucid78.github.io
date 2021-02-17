@@ -1,16 +1,23 @@
-
-## **recvuntil**
-
-recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
-<br>
-C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
-([https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html](https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html))
-
-boost::asio::read_until()의 사용법은 아래와 같다.
+---
+title:  pwntools 개발기 (2)
+excerpt: "recv_until()을 추가해보자."
+search: true
+categories: pwntools
+tags: dev
+toc: true
+---
 
 라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
 [https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
 {: .notice--info}
+
+## **recv_until**
+
+recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
+C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
+([https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html](https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html))
+
+boost::asio::read_until()의 사용법은 아래와 같다. 세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.
 
 ```cpp
 boost::asio::streambuf buf;   // pipe에서 읽은 data를 저장하는 buffer
@@ -20,14 +27,9 @@ auto size = boost::asio::read_until(output, buf, delim);
 std::cout << std::string(buffers_begin(buf.data()), buffers_begin(buf.data()) + size) << std::endl;
 buf.consume(size);
 ```
-<br>
-세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.
-<br>
 위의 코드는 구분자 delim 문자열을 파라미터로 입력받아 read_until()을 호출하여 해당 문자열이 발견되었을 때까지의 출력을 반환한다.
 
-아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다.
-<br>
-ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.
+아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다. ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.
 
 ```cpp
 #include <iostream>
@@ -180,7 +182,7 @@ int main()
 
 p32() 함수는 전달된 int 형식의 주소를 32비트 little-endian 형식의 문자열로 바꿔주는 역할을 하는 함수이다. 예를 들어 이 함수에 0x12345678을 전달하면, \x78\x56\x34\x12 형태의 문자열을 반환한다. ([https://lclang.tistory.com/90](https://lclang.tistory.com/90))
 
-boost를 이용하면 아래와 같이 쉽게 구현할 수 있다.
+이 기능은 boost를 이용해서 아래와 같이 쉽게 구현할 수 있다.
 
 ```cpp
 const std::string conv_ascii(std::string hex)
@@ -206,12 +208,9 @@ const std::string p32(const int& number)
 ## **interactive**
 
 이번에는 interactive() 함수를 구현해 보자.
-<br>
 interactive()는 마치 shell이 실행된 것 같은 인터페이스를 보여주는 함수인데, 실제로는 child process와의 read/write가 계속 반복되는 것이 기능의 전부이다. 따라서 앞에서 완성한 함수들을 약간만 수정하여 쉽게 구현할 수 있다.
 
-아래는 추가된 interactive() 함수의 모습이다.
-<br>
-child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.
+아래는 추가된 interactive() 함수의 모습이다. child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.
 
 ```cpp
 void interactive()
@@ -494,7 +493,6 @@ int main()
 ```
 
 <br>
-아래와 같이 shell이 잘 뜨는 것을 확인할 수 있다.
+아래와 같이 shell이 잘 뜨는 것을 확인할 수 있다.<br>
 ![full](/assets/images/complete.png)
-
 

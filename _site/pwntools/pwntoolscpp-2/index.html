@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Pwntoolscpp 2 - Security Warehouse</title>
-<meta name="description" content="recvuntil">
+<!-- begin _includes/seo.html --><title>pwntools 개발기 (2) - Security Warehouse</title>
+<meta name="description" content="recv_until()을 추가해보자.">
 
 
   <meta name="author" content="lucid7">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Security Warehouse">
-<meta property="og:title" content="Pwntoolscpp 2">
-<meta property="og:url" content="https://lucid78.github.io/pwntoolscpp-2/">
+<meta property="og:title" content="pwntools 개발기 (2)">
+<meta property="og:url" content="https://lucid78.github.io/pwntools/pwntoolscpp-2/">
 
 
-  <meta property="og:description" content="recvuntil">
+  <meta property="og:description" content="recv_until()을 추가해보자.">
 
 
 
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="https://lucid78.github.io/pwntoolscpp-2/">
+<link rel="canonical" href="https://lucid78.github.io/pwntools/pwntoolscpp-2/">
 
 
 
@@ -134,6 +134,8 @@
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
             </li></ul>
         
         <button class="search__toggle" type="button">
@@ -193,13 +195,19 @@
       
         
           
+            <li><a href="mailto:lucid78@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
         
+          
+            <li><a href="https://lucid78.github.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
           
         
           
         
           
         
+          
+            <li><a href="https://github.com/lucid78" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
           
@@ -208,6 +216,13 @@
 
       
 
+      
+        <li>
+          <a href="mailto:lucid78@gmail.com">
+            <meta itemprop="email" content="lucid78@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
       
 
       
@@ -271,15 +286,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Pwntoolscpp 2">
-    <meta itemprop="description" content="recvuntil">
+    <meta itemprop="headline" content="pwntools 개발기 (2)">
+    <meta itemprop="description" content="recv_until()을 추가해보자.">
     <meta itemprop="datePublished" content="2021-01-12T00:00:00+09:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Pwntoolscpp 2
+          <h1 id="page-title" class="page__title" itemprop="headline">pwntools 개발기 (2)
 </h1>
           
 
@@ -307,18 +322,24 @@
 
       <section class="page__content" itemprop="text">
         
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#recv_until">recv_until</a></li><li><a href="#p32">p32</a></li><li><a href="#interactive">interactive</a></li></ul>
+
+            </nav>
+          </aside>
         
-<h2 id="recvuntil"><strong>recvuntil</strong></h2>
+        <p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
+<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
+
+<h2 id="recv_until"><strong>recv_until</strong></h2>
 
 <p>recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
-<br />
 C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
 (<a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html</a>)</p>
 
-<p>boost::asio::read_until()의 사용법은 아래와 같다.</p>
-
-<p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
-<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
+<p>boost::asio::read_until()의 사용법은 아래와 같다. 세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>   <span class="c1">// pipe에서 읽은 data를 저장하는 buffer</span>
 <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>            <span class="c1">// buffer의 크기 설정</span>
@@ -327,14 +348,9 @@ C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자
 <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">buffers_begin</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">()),</span> <span class="n">buffers_begin</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">data</span><span class="p">())</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="n">buf</span><span class="p">.</span><span class="n">consume</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
 </code></pre></div></div>
-<p><br />
-세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.
-<br />
-위의 코드는 구분자 delim 문자열을 파라미터로 입력받아 read_until()을 호출하여 해당 문자열이 발견되었을 때까지의 출력을 반환한다.</p>
+<p>위의 코드는 구분자 delim 문자열을 파라미터로 입력받아 read_until()을 호출하여 해당 문자열이 발견되었을 때까지의 출력을 반환한다.</p>
 
-<p>아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다.
-<br />
-ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.</p>
+<p>아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다. ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
 #include &lt;boost/process.hpp&gt;
@@ -485,7 +501,7 @@ ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확�
 
 <p>p32() 함수는 전달된 int 형식의 주소를 32비트 little-endian 형식의 문자열로 바꿔주는 역할을 하는 함수이다. 예를 들어 이 함수에 0x12345678을 전달하면, \x78\x56\x34\x12 형태의 문자열을 반환한다. (<a href="https://lclang.tistory.com/90">https://lclang.tistory.com/90</a>)</p>
 
-<p>boost를 이용하면 아래와 같이 쉽게 구현할 수 있다.</p>
+<p>이 기능은 boost를 이용해서 아래와 같이 쉽게 구현할 수 있다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="nf">conv_ascii</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">hex</span><span class="p">)</span>
 <span class="p">{</span>
@@ -509,12 +525,9 @@ ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확�
 <h2 id="interactive"><strong>interactive</strong></h2>
 
 <p>이번에는 interactive() 함수를 구현해 보자.
-<br />
 interactive()는 마치 shell이 실행된 것 같은 인터페이스를 보여주는 함수인데, 실제로는 child process와의 read/write가 계속 반복되는 것이 기능의 전부이다. 따라서 앞에서 완성한 함수들을 약간만 수정하여 쉽게 구현할 수 있다.</p>
 
-<p>아래는 추가된 interactive() 함수의 모습이다.
-<br />
-child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.</p>
+<p>아래는 추가된 interactive() 함수의 모습이다. child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.</p>
 
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">interactive</span><span class="p">()</span>
 <span class="p">{</span>
@@ -795,7 +808,7 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
 </code></pre></div></div>
 
 <p><br />
-아래와 같이 shell이 잘 뜨는 것을 확인할 수 있다.
+아래와 같이 shell이 잘 뜨는 것을 확인할 수 있다.<br />
 <img src="/assets/images/complete.png" alt="full" /></p>
 
 
@@ -805,6 +818,44 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#dev" class="page__taxonomy-item" rel="tag">dev</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#pwntools" class="page__taxonomy-item" rel="tag">pwntools</a>
+    
+    </span>
+  </p>
 
 
         
@@ -818,22 +869,22 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Pwntoolscpp+2%20https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-2%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=pwntools+%EA%B0%9C%EB%B0%9C%EA%B8%B0+%282%29%20https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-2%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-2%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-2%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-2%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-2%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/pwntoolscpp-1/" class="pagination--pager" title="Pwntoolscpp 1
+      <a href="/pwntools/pwntoolscpp-1/" class="pagination--pager" title="pwntools 개발기 (1)
 ">Previous</a>
     
     
-      <a href="/pwntoolscpp-3/" class="pagination--pager" title="Pwntoolscpp 3
+      <a href="/pwntools/pwntoolscpp-3/" class="pagination--pager" title="pwntools 개발기 (3)
 ">Next</a>
     
   </nav>
@@ -858,7 +909,7 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-4/" rel="permalink">Pwntoolscpp 4
+        <a href="/pwntools/pwntoolscpp-4/" rel="permalink">pwntools 개발기 (4)
 </a>
       
     </h2>
@@ -883,7 +934,7 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">got
+    <p class="archive__item-excerpt" itemprop="description">got()를 추가하고 LAB4 공략
 </p>
   </article>
 </div>
@@ -898,7 +949,7 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-3/" rel="permalink">Pwntoolscpp 3
+        <a href="/pwntools/pwntoolscpp-3/" rel="permalink">pwntools 개발기 (3)
 </a>
       
     </h2>
@@ -923,8 +974,7 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-LAB4
+    <p class="archive__item-excerpt" itemprop="description">ELF class 추가하기
 </p>
   </article>
 </div>
@@ -939,7 +989,7 @@ LAB4
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-1/" rel="permalink">Pwntoolscpp 1
+        <a href="/pwntools/pwntoolscpp-1/" rel="permalink">pwntools 개발기 (1)
 </a>
       
     </h2>
@@ -957,15 +1007,14 @@ LAB4
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          9 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)
+    <p class="archive__item-excerpt" itemprop="description">c++로 pwntools를 만들어보자
 </p>
   </article>
 </div>
@@ -1009,6 +1058,8 @@ pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한
       
         
       
+        
+          <li><a href="https://github.com/lucid78" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
         
       
         

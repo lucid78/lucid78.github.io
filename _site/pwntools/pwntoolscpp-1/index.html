@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Pwntoolscpp 1 - Security Warehouse</title>
-<meta name="description" content="pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)">
+<!-- begin _includes/seo.html --><title>pwntools 개발기 (1) - Security Warehouse</title>
+<meta name="description" content="c++로 pwntools를 만들어보자">
 
 
   <meta name="author" content="lucid7">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Security Warehouse">
-<meta property="og:title" content="Pwntoolscpp 1">
-<meta property="og:url" content="https://lucid78.github.io/pwntoolscpp-1/">
+<meta property="og:title" content="pwntools 개발기 (1)">
+<meta property="og:url" content="https://lucid78.github.io/pwntools/pwntoolscpp-1/">
 
 
-  <meta property="og:description" content="pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)">
+  <meta property="og:description" content="c++로 pwntools를 만들어보자">
 
 
 
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="https://lucid78.github.io/pwntoolscpp-1/">
+<link rel="canonical" href="https://lucid78.github.io/pwntools/pwntoolscpp-1/">
 
 
 
@@ -134,6 +134,8 @@
         </a>
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">Quick-Start Guide</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Category</a>
             </li></ul>
         
         <button class="search__toggle" type="button">
@@ -193,13 +195,19 @@
       
         
           
+            <li><a href="mailto:lucid78@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
         
+          
+            <li><a href="https://lucid78.github.io" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-link" aria-hidden="true"></i><span class="label">Website</span></a></li>
           
         
           
         
           
         
+          
+            <li><a href="https://github.com/lucid78" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
           
@@ -208,6 +216,13 @@
 
       
 
+      
+        <li>
+          <a href="mailto:lucid78@gmail.com">
+            <meta itemprop="email" content="lucid78@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
       
 
       
@@ -271,15 +286,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Pwntoolscpp 1">
-    <meta itemprop="description" content="pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)">
+    <meta itemprop="headline" content="pwntools 개발기 (1)">
+    <meta itemprop="description" content="c++로 pwntools를 만들어보자">
     <meta itemprop="datePublished" content="2021-01-10T00:00:00+09:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Pwntoolscpp 1
+          <h1 id="page-title" class="page__title" itemprop="headline">pwntools 개발기 (1)
 </h1>
           
 
@@ -295,7 +310,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          8 minute read
+          9 minute read
         
       </span>
     
@@ -307,7 +322,19 @@
 
       <section class="page__content" itemprop="text">
         
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#pwntools">pwntools?</a></li><li><a href="#환경-구축">환경 구축</a></li><li><a href="#문제-확인">문제 확인</a></li><li><a href="#process-클래스">PROCESS 클래스</a></li></ul>
+
+            </nav>
+          </aside>
         
+        <p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
+<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
+
+<h2 id="pwntools"><strong>pwntools?</strong></h2>
+
 <p>pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (<a href="https://github.com/Gallopsled/pwntools">https://github.com/Gallopsled/pwntools</a>)</p>
 
 <p>python으로 제작된 이 도구는 ctf에서 pwnable을 빠르게 진행할 수 있도록 각종 편의 기능을 보유하고 있어 매우 편리하다.
@@ -319,15 +346,13 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 <p>가급적 노가다를 줄이기 위해 boost(<a href="https://www.boost.org/">https://www.boost.org/</a>)를 이용해 개발하기로 하였다.(사실 왜 boost로 시작했는지 잘 기억은 안나는데, 매뉴얼 및 사용층이 부족한 boost를 선택한 것이 과연 노가다를 줄이기는 한 건지 좀 의심되기는 한다;;;).
 그리고 프로그램의 테스트는 Hitcon-Trainning(<a href="https://github.com/scwuaptx/HITCON-Training">https://github.com/scwuaptx/HITCON-Training</a>) 문제를 사용하기로 했다.</p>
 
-<p class="notice--info">라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br />
-<a href="https://github.com/lucid78/pwntoolscpp" target="_blank">https://github.com/lucid78/pwntoolscpp</a></p>
-
 <h2 id="환경-구축"><strong>환경 구축</strong></h2>
 
 <p>pwntoolcpp의 최종 형태는 라이브러리가 될  예정이지만 쉽고 빠르고 간단한 테스트를 위해 일단 하나의 프로그램에서 동작하도록 작성하기로 한다.
 ~/workspaces 아래에 ptcpp라는 디렉토리를 생성하여 docker 실행 시 연결되도록 하고, 소스 에디팅은 Host에서, compile만 docker에서 하도록 하였다.</p>
 
-<p>아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.</p>
+<p>아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.
+(python2용 pip를 설치하기 위한 get-pip.py는 실행이 실패한다면, )</p>
 
 <div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:latest</span>
 
@@ -351,7 +376,7 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 </span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--upgrade</span> pip <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python3 <span class="nt">-m</span> pip <span class="nb">install </span>setuptools <span class="se">\
-</span>  <span class="o">&amp;&amp;</span> curl https://bootstrap.pypa.io/get-pip.py <span class="nt">--output</span> get-pip.py <span class="se">\
+</span>  <span class="o">&amp;&amp;</span> curl https://bootstrap.pypa.io/2.7/get-pip.py <span class="nt">--output</span> get-pip.py <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python2 get-pip.py <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> python2 <span class="nt">-m</span> pip <span class="nb">install </span>pwntools <span class="se">\
 </span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"%sudo ALL=(ALL:ALL) ALL"</span> | <span class="nb">cat</span> <span class="o">&gt;&gt;</span> /etc/sudoers <span class="se">\
@@ -411,21 +436,22 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 
 <span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 </code></pre></div></div>
-
-<p>위의 python 코드를 보면 “:” 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.</p>
+<p><br />
+위의 python 코드를 보면 “:” 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.</p>
 
 <p>위의 exploit code에서 ret2sc 패스만 수정하여 실행해보면 아래와 같이 정상적으로 shell을 획득하는 것을 볼 수 있다.
 <img src="/assets/images/ret2sc.png" alt="full" /></p>
 
 <p>지금까지 cpp를 이용한 pwntools를 제작하기 위한 개발환경 구축 및 pwntools를 이용한 exploit 코드의 기본적인 동작을 분석하였다.
 다음으로 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
-우리가 만들어야 할 기본 기능은 process라는 클래스와 recvuntil(), sendline(), p32(), interactive() 멤버 함수이다.</p>
+우리가 만들어야 할 기본 기능은 PROCESS 클래스와 recv_until(), send_line(), p32(), interactive() 멤버 함수이다.</p>
 
 <h2 id="process-클래스"><strong>PROCESS 클래스</strong></h2>
 
-<p>먼저 process 클래스를 만들어보자. process 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.</p>
+<p>먼저 PROCESS 클래스를 만들어보자. PROCESS 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.</p>
 
-<p>일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스(<a href="https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html">https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html</a>)로 쉽고 편하게 사용할 수 있다.</p>
+<p>일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스로 쉽고 편하게 사용할 수 있다.
+(<a href="https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html">https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html</a>)</p>
 
 <p>boost::process::child는 실행할 프로그램의 path를 전달하여 간단히 사용할 수도 있으며, 입출력을 redirect 하려면 아래와 같이 pipe 생성 후 매개변수로 전달하기만 하면 된다.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>    <span class="c1">// 실행할 파일의 경로</span>
@@ -441,7 +467,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
                               <span class="n">io</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p><br /><br />
+<p><br />
 만약 실행해야 할 프로그램이 입력 값을 받는다면 아래와 같이 입력 값을 string vector로 전달하기만 하면 된다.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_path</span><span class="p">;</span>    <span class="c1">// 실행할 파일의 경로</span>
 <span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">io_context</span> <span class="n">io</span><span class="p">;</span>
@@ -457,10 +483,8 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
                               <span class="n">boost</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">std_err</span> <span class="o">&gt;</span> <span class="n">error</span><span class="p">,</span>
                               <span class="n">io</span><span class="p">);</span>
 </code></pre></div></div>
-
-<p><br /><br /></p>
-
-<p>제대로 동작하는지 ret2sc 바이너리를 대상으로 아래와 같이 테스트 코드를 작성하고 실행해보자.</p>
+<p><br /><br />
+제대로 동작하는지 ret2sc 바이너리를 대상으로 아래와 같이 테스트 코드를 작성하고 실행해보자.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
 #include &lt;boost/process.hpp&gt;
 #include &lt;boost/asio.hpp&gt;
@@ -561,29 +585,29 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">(</span><span class="n">TARGET</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p><br /><br />
+<p><br />
 아래와 같이 ptcpp 디렉토리 밑에 위의 소스를 생성한 후 make 명령어로 컴파일을 한다.
 <img src="/assets/images/make.png" alt="full" /></p>
 
-<p><br /><br />
+<p><br />
 컴파일에 성공하면 아래와 같이 pwntools_test 파일이 생성된다.
 <img src="/assets/images/test.png" alt="full" /></p>
 
-<p><br /><br />
+<p><br />
 아래는 생성된 pwntools_test 파일을 실행한 결과이며, ret2sc 바이너리가 child process로 생성되었다가 정상적으로 종료되었다.
 <img src="/assets/images/test.png" alt="full" /></p>
 
-<p>다음으로 추가할 기능은 프로세스를 처음 실행했을 때 출력되는 문자열을 읽어서 화면에 출력하는 기능이다. “/tmp/hitcon/LAB/lab3/ret2sc”를 실행시키면 아래와 같이 “Name:” 문자열이 출력한 후 사용자로부터의 입력을 기다리는 상태가 된다.</p>
+<p><br />
+다음으로 추가할 기능은 프로세스를 처음 실행했을 때 출력되는 문자열을 읽어서 화면에 출력하는 기능이다. “/tmp/hitcon/LAB/lab3/ret2sc”를 실행시키면 아래와 같이 “Name:” 문자열이 출력한 후 사용자로부터의 입력을 기다리는 상태가 된다.</p>
 
 <p><img src="/assets/images/cons.png" alt="full" /></p>
 
 <p><br /><br />
-우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.</p>
-
-<p>boost에서 pipe를 읽는 여러 방법들 중 boost::asio::read()를 사용하면 가장 간단하게 구현할 수 있다.
+우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.<br />
+boost에서 pipe를 읽는 여러 방법들 중 boost::asio::read()를 사용하면 가장 간단하게 구현할 수 있다.
 (<a href="https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html">https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html</a>)</p>
 
-<p><br /><br />
+<p><br />
 아래는 boost::asio::read()를 사용하는 예제이다.</p>
 <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">boost</span><span class="o">::</span><span class="n">asio</span><span class="o">::</span><span class="n">streambuf</span> <span class="n">buf</span><span class="p">;</span>    <span class="c1">// pipe에서 읽은 data를 저장하는 buffer</span>
 <span class="n">buf</span><span class="p">.</span><span class="n">prepare</span><span class="p">(</span><span class="mi">4096</span><span class="p">);</span>             <span class="c1">// buffer의 크기 설정</span>
@@ -603,13 +627,13 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 <p>또한 read() 함수는 전통적인 c에서의 read() 함수와 달리 리턴되기 전에 스트림에서 일정한 양의 데이터를 읽어서 buffer에 저장하는 역할을 한다. 따라서 원래 읽기를 원했던 전체 길이 중 일부분이 먼저 buffer에 저장된 채로 반환될 수 있기 때문에, stream buffer의 consume()을 반드시 호출해야만 순차적으로 data를 저장할 수 있다.
 <br />앞에서 이야기한 일정한 양은 read() 함수에 전달되는 세번째 변수에 의해 정해지는데, 위의 예제에서는 boost::asio::transfer_at_least(1) 값이 전달되어, 최소 1개 이상의 data를 읽으면 반환하도록 되어 있다.</p>
 
-<p><br /><br />여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
+<p><br />여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
 <br />위의 코드에서 read() 함수가 반환되었을 때 buffer에 저장된 data의 정확한 크기는 알 수 없다. 이는 boost 매뉴얼에도 정의되어 있지 않은데, stream buffer의 크기가 클수록 한번에 읽어들이는 크기가 크다는 것은 실험을 통해서 알 수 있었다. <br />따라서 boost::process::child로 실행시킬 프로그램이 출력하는 data가 많을수록 stream buffer의 크기 또는 boost::asio::transfer_at_least()의 값을 크게 설정해야만 전체 data를 한번에 읽을 수 있다.</p>
 
 <p>위의 코드에서는 대상 프로그램이 출력하는 데이터의 크기를 알 수 없기 때문에(만약 10으로 설정했는데, 출력되는 값이 10 미만이라면 read()가 반환되지 않아 프로그램이 멈출 것이다), boost::asio::transfer_at_least()의 값을 1로 설정하여, 1개 이상의 data를 읽으면 반환하도록 하였다. 그리고 stream buffer의 크기를 크게 잡음으로써, 만약 큰 크기의 출력값이 발생하더라도 한번에 읽을 수 있도록, 최대한 안정적으로 동작하게끔 하였다.
 <br />만약 정확히 1개의 data만을 읽고 싶다면, boost::asio::transfer_exactly(1)을 전달해야 한다. 만약 모든 데이터를 읽은 후 반환되게 하고 싶다면(sync처럼 동작하게끔 하고 싶다면), 세번째 변수에 boost::asio::transfer_all()을 전달해야만 한다.</p>
 
-<p><br /><br />
+<p><br />
 한가지 더 고려해야 하는 사항은 바로 read() 호출이 반환이 되지 않는 상황이다. 예를 들어 10개의 data가 들어올 것으로 예상해서 read()를 호출하였는데, 실제 8개의 data만을 읽을 수 있었다면, read()는 이후의 data가 들어올 때까지 계속 대기상태에 머무른다. 또한 대상 프로그램에서 읽어야 할 data가 있는지 없는지 모르는 상황에서의 read() 호출은 예상치 못한 대기상태를 야기하게 되므로, 적당한 시간 이후에 read() 호출을 강제로 끝내야만 프로그램이 안정적으로 동작할 것이다. 따라서 read() 호출은 비동기 함수 또는 스레드로 이루어져야 한다.</p>
 
 <p>아래는 스레드 내에서 read()를 호출하도록 구현한 코드 예제이다.</p>
@@ -629,7 +653,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 
 <p>thread 내에서 1개 이상의 data를 읽어오면 반환되도록 read()를 호출하며, out_buffer에 저장된 data를 출력한다. 읽어온 data의 수만큼 consume()을 호출하여 index를 조절한다. 이 스레드는 만약 read() 함수가 응답이 없을 경우 200ms 후에 종료된다.</p>
 
-<p><br /><br />
+<p><br />
 마지막으로 고려해야 하는 상황은 바로 error이다.
 <br />특정 프로그램을 실행했을 때 어떠한 이유로 인해 error가 발생할 수도 있다. unix 기반 프로그램에서 error는 일반적으로 stderr로 전달되므로, 우리는 child process에서 발생하는 error 메세지 확인을 위해 stderr을 redirect한 후 이를 읽어보아야 한다.</p>
 
@@ -791,6 +815,44 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#dev" class="page__taxonomy-item" rel="tag">dev</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#pwntools" class="page__taxonomy-item" rel="tag">pwntools</a>
+    
+    </span>
+  </p>
 
 
         
@@ -804,11 +866,11 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Pwntoolscpp+1%20https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=pwntools+%EA%B0%9C%EB%B0%9C%EA%B8%B0+%281%29%20https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntoolscpp-1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Flucid78.github.io%2Fpwntools%2Fpwntoolscpp-1%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
@@ -818,7 +880,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
       <a href="#" class="pagination--pager disabled">Previous</a>
     
     
-      <a href="/pwntoolscpp-2/" class="pagination--pager" title="Pwntoolscpp 2
+      <a href="/pwntools/pwntoolscpp-2/" class="pagination--pager" title="pwntools 개발기 (2)
 ">Next</a>
     
   </nav>
@@ -843,7 +905,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-4/" rel="permalink">Pwntoolscpp 4
+        <a href="/pwntools/pwntoolscpp-4/" rel="permalink">pwntools 개발기 (4)
 </a>
       
     </h2>
@@ -868,7 +930,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">got
+    <p class="archive__item-excerpt" itemprop="description">got()를 추가하고 LAB4 공략
 </p>
   </article>
 </div>
@@ -883,7 +945,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-3/" rel="permalink">Pwntoolscpp 3
+        <a href="/pwntools/pwntoolscpp-3/" rel="permalink">pwntools 개발기 (3)
 </a>
       
     </h2>
@@ -908,8 +970,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-LAB4
+    <p class="archive__item-excerpt" itemprop="description">ELF class 추가하기
 </p>
   </article>
 </div>
@@ -924,7 +985,7 @@ LAB4
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/pwntoolscpp-2/" rel="permalink">Pwntoolscpp 2
+        <a href="/pwntools/pwntoolscpp-2/" rel="permalink">pwntools 개발기 (2)
 </a>
       
     </h2>
@@ -942,15 +1003,14 @@ LAB4
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">
-recvuntil
+    <p class="archive__item-excerpt" itemprop="description">recv_until()을 추가해보자.
 </p>
   </article>
 </div>
@@ -994,6 +1054,8 @@ recvuntil
       
         
       
+        
+          <li><a href="https://github.com/lucid78" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
         
       
         

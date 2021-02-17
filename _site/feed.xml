@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://lucid78.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lucid78.github.io/" rel="alternate" type="text/html" /><updated>2021-02-17T19:41:54+09:00</updated><id>https://lucid78.github.io/feed.xml</id><title type="html">Security Warehouse</title><subtitle>security researcher.</subtitle><author><name>lucid7</name></author><entry><title type="html">Pwntoolscpp 4</title><link href="https://lucid78.github.io/pwntoolscpp-4/" rel="alternate" type="text/html" title="Pwntoolscpp 4" /><published>2021-02-16T00:00:00+09:00</published><updated>2021-02-16T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-4</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-4/">&lt;h2 id=&quot;got&quot;&gt;&lt;strong&gt;got&lt;/strong&gt;&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://lucid78.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lucid78.github.io/" rel="alternate" type="text/html" /><updated>2021-02-17T22:16:18+09:00</updated><id>https://lucid78.github.io/feed.xml</id><title type="html">Security Warehouse</title><subtitle>security researcher.</subtitle><author><name>lucid7</name><email>lucid78@gmail.com</email></author><entry><title type="html">pwntools 개발기 (4)</title><link href="https://lucid78.github.io/pwntools/pwntoolscpp-4/" rel="alternate" type="text/html" title="pwntools 개발기 (4)" /><published>2021-02-16T00:00:00+09:00</published><updated>2021-02-16T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntools/pwntoolscpp-4</id><content type="html" xml:base="https://lucid78.github.io/pwntools/pwntoolscpp-4/">&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;got&quot;&gt;&lt;strong&gt;got&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;마지막으로 ELF 클래스에 got() 함수를 추가하는 작업만이 남았다. PLT와 GOT에 대한 추가 설명은 아래 링크로 대신한다.&lt;br /&gt;
 &lt;a href=&quot;https://bpsecblog.wordpress.com/2016/03/07/about_got_plt_1/&quot;&gt;PLT와 GOT 자세히 알기 1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;
 앞서 binary에 설정된 stack canary check를 위해 해당 파일의 모든 symbol 정보를 가져오는 get_symbol() 함수를 작성했었다. ELF 클래스의 가장 마지막에 아래와 같이 수집한 symbol의 정보를 출력하는 print_symbols() 함수를 추가하고 실행해보자.&lt;/p&gt;
@@ -28,9 +28,8 @@
 
 &lt;p&gt;위 화면을 잘 살펴보면 몇몇 symbol은 address가 제대로 출력되지 않은 것을 확인할 수 있는데, 주로 printf()나 strcpy() 같이 라이브러리에서 호출되는 symbol들인 것을 알 수 있다. 이들은 모두 프로그램 로딩 시에 재배치(relocation) 과정을 거치기 때문인데, 이들의 올바른 address를 수집하기 위해서는 재배치된 후의 address를 수집해야 한다. 따라서 우리는 이런 재배치 정보를 같이 읽어올 수 있도록 get_symbol() 함수를 업데이트 해야한다.&lt;/p&gt;
 
-&lt;p&gt;재배치 정보는 SHT_RELA과 SHT_REL 타입의 섹션을 읽음으로써 수집이 가능하다. 아쉽게도 ELFIO는 재배치된 symbol의 정보를 완벽하게 수집하는 함수가 없다. 따라서 기존 함수를 수정하여 재배치된 symbol 정보를 수집해야 한다.&lt;/p&gt;
-
-&lt;p&gt;먼저 relocation 정보를 저장할 구조체를 아래와 같이 선언하자.&lt;/p&gt;
+&lt;p&gt;재배치 정보는 SHT_RELA과 SHT_REL 타입의 섹션을 읽음으로써 수집이 가능하다. 아쉽게도 ELFIO는 재배치된 symbol의 정보를 완벽하게 수집하는 함수가 없다. 따라서 기존 함수를 수정하여 재배치된 symbol 정보를 수집해야 한다.&lt;br /&gt;
+먼저 relocation 정보를 저장할 구조체를 아래와 같이 선언하자.&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unordered_map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ELFIO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Elf64_Addr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;relocations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -670,7 +669,7 @@
 &lt;p&gt;&lt;img src=&quot;/assets/images/pwntools_symbols.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;
-실수한 부분이 있는데 pwntools의 ELF.got() 함수는 address를 int형으로 반환한다. 따라서 우리도 got() 함수가 int형을 반환하도록 수정해야 한다.
+위에서 실수한 부분이 있는데 pwntools의 got() 함수는 address를 int형으로 반환한다. 따라서 우리도 got() 함수가 int형을 반환하도록 수정해야 한다.
 &lt;br /&gt;
 아래는 수정된 got() 함수이다.&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;got&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -1751,14 +1750,14 @@
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/last_complete.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">got</summary></entry><entry><title type="html">Pwntoolscpp 3</title><link href="https://lucid78.github.io/pwntoolscpp-3/" rel="alternate" type="text/html" title="Pwntoolscpp 3" /><published>2021-01-21T00:00:00+09:00</published><updated>2021-01-21T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-3</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-3/">&lt;h2 id=&quot;lab4&quot;&gt;&lt;strong&gt;LAB4&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/last_complete.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name><email>lucid78@gmail.com</email></author><category term="pwntools" /><category term="dev" /><summary type="html">got()를 추가하고 LAB4 공략</summary></entry><entry><title type="html">pwntools 개발기 (3)</title><link href="https://lucid78.github.io/pwntools/pwntoolscpp-3/" rel="alternate" type="text/html" title="pwntools 개발기 (3)" /><published>2021-01-21T00:00:00+09:00</published><updated>2021-01-21T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntools/pwntoolscpp-3</id><content type="html" xml:base="https://lucid78.github.io/pwntools/pwntoolscpp-3/">&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;lab4&quot;&gt;&lt;strong&gt;LAB4&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;이제 가장 기본적인 기능은 어느정도 완성되었고, lab3에서도 동작하는 것을 확인했으니 이번에는 lab4를 공략해보자.
 &lt;br /&gt;
 아래는 &lt;a href=&quot;https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library&quot;&gt;https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library&lt;/a&gt; 에서 발췌한 lab4를 공략하는 exploit이다.&lt;/p&gt;
-
-&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
  
@@ -1833,7 +1832,7 @@ hex()와 str() 함수는 아래와 같이 구현할 수 있다. str()의 경우 
 
 &lt;p&gt;ELFIO는 header-only 프로그램이며 어떤 의존성도 없기 때문에, ELFIO 하나로 모든 기능을 다 수행할 수 있다는 장점이 있다. 또한 example들 중의 하나인 elfio_dump.hpp에 필요로 하는 대부분의 기능이 구현되어 있기 때문에 최소한의 작업으로 원하는 결과를 이끌어 낼 수 있다.&lt;/p&gt;
 
-&lt;p&gt;ELFIO를 ptcpp 디렉토리 내에 clone한 후 elfio 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 elfio 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.&lt;/p&gt;
+&lt;p&gt;ELFIO를 ptcpp 디렉토리 내에 clone한 후 ELFIO 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 ELFIO 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &quot;elfio/elfio.hpp&quot;
 #include &amp;lt;elfio/elf_types.hpp&amp;gt;
@@ -1848,8 +1847,7 @@ pwntools의 ELF 클래스는 PROCESS 클래스처럼 실행할 프로그램 경�
 
 &lt;h2 id=&quot;arch&quot;&gt;&lt;strong&gt;ARCH&lt;/strong&gt;&lt;/h2&gt;
 
-&lt;p&gt;먼저 Arch를 출력하는 기능을 만들어보자.
-&lt;br /&gt;
+&lt;p&gt;먼저 Arch를 출력하는 기능을 만들어보자.&lt;br /&gt;
 위의 화면에서 Arch는 machine type, architecture, endian의 3가지 정보를 출력한다. 이 정보를 ELF Format에서 알아내기 위해 실행파일을 로드해야 하는데 ELFIO를 아래와 같이 사용할 수 있다.&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;ELFIO&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elfio&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -2706,17 +2704,16 @@ Dynamic Section을 탐색하는 것은 이전 Relro에서 사용한 방법과 �
 &lt;p&gt;&lt;br /&gt;
 아래는 지금까지 구현된 모든 코드들을 실행한 결과이다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/pie.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">LAB4</summary></entry><entry><title type="html">Pwntoolscpp 2</title><link href="https://lucid78.github.io/pwntoolscpp-2/" rel="alternate" type="text/html" title="Pwntoolscpp 2" /><published>2021-01-12T00:00:00+09:00</published><updated>2021-01-12T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-2</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-2/">&lt;h2 id=&quot;recvuntil&quot;&gt;&lt;strong&gt;recvuntil&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/pie.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name><email>lucid78@gmail.com</email></author><category term="pwntools" /><category term="dev" /><summary type="html">ELF class 추가하기</summary></entry><entry><title type="html">pwntools 개발기 (2)</title><link href="https://lucid78.github.io/pwntools/pwntoolscpp-2/" rel="alternate" type="text/html" title="pwntools 개발기 (2)" /><published>2021-01-12T00:00:00+09:00</published><updated>2021-01-12T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntools/pwntoolscpp-2</id><content type="html" xml:base="https://lucid78.github.io/pwntools/pwntoolscpp-2/">&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;recv_until&quot;&gt;&lt;strong&gt;recv_until&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;recvuntil() 함수는 이 함수에 전달된 파라미터 문자가 대상의 출력에서 발견될 때까지 읽어들이는 함수이다.
-&lt;br /&gt;
 C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자인지 확인을 하는 꽤 귀찮은 작업을 거쳐야 하지만, boost에서는 boost::asio::read_until이라는 함수가 이 기능을 지원한다.
 (&lt;a href=&quot;https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html&quot;&gt;https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/reference/read_until.html&lt;/a&gt;)&lt;/p&gt;
 
-&lt;p&gt;boost::asio::read_until()의 사용법은 아래와 같다.&lt;/p&gt;
-
-&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;boost::asio::read_until()의 사용법은 아래와 같다. 세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streambuf&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// pipe에서 읽은 data를 저장하는 buffer&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prepare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4096&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// buffer의 크기 설정&lt;/span&gt;
@@ -2725,14 +2722,9 @@ C에서라면 read() 함수로 문자를 1바이트씩 읽으면서 delim 문자
 &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buffers_begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buffers_begin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;consume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;br /&gt;
-세번째 파라미터가 delim으로 변경된 것 외에는 이전에 살펴보았던 boost::asio::read()와 사용법이 동일하다.
-&lt;br /&gt;
-위의 코드는 구분자 delim 문자열을 파라미터로 입력받아 read_until()을 호출하여 해당 문자열이 발견되었을 때까지의 출력을 반환한다.&lt;/p&gt;
+&lt;p&gt;위의 코드는 구분자 delim 문자열을 파라미터로 입력받아 read_until()을 호출하여 해당 문자열이 발견되었을 때까지의 출력을 반환한다.&lt;/p&gt;
 
-&lt;p&gt;아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다.
-&lt;br /&gt;
-ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.&lt;/p&gt;
+&lt;p&gt;아래는 위의 코드를 바탕으로 추가한 recv_until() 함수가 추가된 전체 코드와 그 실행 결과이다. ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확인하기 위해 init() 함수에서 read_at_once()를 주석 처리하였다.&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
 #include &amp;lt;boost/process.hpp&amp;gt;
@@ -2883,7 +2875,7 @@ ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확�
 
 &lt;p&gt;p32() 함수는 전달된 int 형식의 주소를 32비트 little-endian 형식의 문자열로 바꿔주는 역할을 하는 함수이다. 예를 들어 이 함수에 0x12345678을 전달하면, \x78\x56\x34\x12 형태의 문자열을 반환한다. (&lt;a href=&quot;https://lclang.tistory.com/90&quot;&gt;https://lclang.tistory.com/90&lt;/a&gt;)&lt;/p&gt;
 
-&lt;p&gt;boost를 이용하면 아래와 같이 쉽게 구현할 수 있다.&lt;/p&gt;
+&lt;p&gt;이 기능은 boost를 이용해서 아래와 같이 쉽게 구현할 수 있다.&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;conv_ascii&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -2907,12 +2899,9 @@ ret2sc 실행 시 출력되는 Name을 recv_until()가 제대로 읽는지 확�
 &lt;h2 id=&quot;interactive&quot;&gt;&lt;strong&gt;interactive&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;이번에는 interactive() 함수를 구현해 보자.
-&lt;br /&gt;
 interactive()는 마치 shell이 실행된 것 같은 인터페이스를 보여주는 함수인데, 실제로는 child process와의 read/write가 계속 반복되는 것이 기능의 전부이다. 따라서 앞에서 완성한 함수들을 약간만 수정하여 쉽게 구현할 수 있다.&lt;/p&gt;
 
-&lt;p&gt;아래는 추가된 interactive() 함수의 모습이다.
-&lt;br /&gt;
-child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.&lt;/p&gt;
+&lt;p&gt;아래는 추가된 interactive() 함수의 모습이다. child process와의 통신 시 안정적인 data 전송을 위해 약간의 delay를 넣었다. 그리고 마치 /bin/sh이 동작하는 것처럼 화면 표시를 해주고, 전달받은 문자열을 write하고 read하여 화면에 출력한다.&lt;/p&gt;
 
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -3193,8 +3182,13 @@ child process와의 통신 시 안정적인 data 전송을 위해 약간의 dela
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;br /&gt;
-아래와 같이 shell이 잘 뜨는 것을 확인할 수 있다.
-&lt;img src=&quot;/assets/images/complete.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">recvuntil</summary></entry><entry><title type="html">Pwntoolscpp 1</title><link href="https://lucid78.github.io/pwntoolscpp-1/" rel="alternate" type="text/html" title="Pwntoolscpp 1" /><published>2021-01-10T00:00:00+09:00</published><updated>2021-01-10T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntoolscpp-1</id><content type="html" xml:base="https://lucid78.github.io/pwntoolscpp-1/">&lt;p&gt;pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (&lt;a href=&quot;https://github.com/Gallopsled/pwntools&quot;&gt;https://github.com/Gallopsled/pwntools&lt;/a&gt;)&lt;/p&gt;
+아래와 같이 shell이 잘 뜨는 것을 확인할 수 있다.&lt;br /&gt;
+&lt;img src=&quot;/assets/images/complete.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;</content><author><name>lucid7</name><email>lucid78@gmail.com</email></author><category term="pwntools" /><category term="dev" /><summary type="html">recv_until()을 추가해보자.</summary></entry><entry><title type="html">pwntools 개발기 (1)</title><link href="https://lucid78.github.io/pwntools/pwntoolscpp-1/" rel="alternate" type="text/html" title="pwntools 개발기 (1)" /><published>2021-01-10T00:00:00+09:00</published><updated>2021-01-10T00:00:00+09:00</updated><id>https://lucid78.github.io/pwntools/pwntoolscpp-1</id><content type="html" xml:base="https://lucid78.github.io/pwntools/pwntoolscpp-1/">&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
+&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;pwntools&quot;&gt;&lt;strong&gt;pwntools?&lt;/strong&gt;&lt;/h2&gt;
+
+&lt;p&gt;pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (&lt;a href=&quot;https://github.com/Gallopsled/pwntools&quot;&gt;https://github.com/Gallopsled/pwntools&lt;/a&gt;)&lt;/p&gt;
 
 &lt;p&gt;python으로 제작된 이 도구는 ctf에서 pwnable을 빠르게 진행할 수 있도록 각종 편의 기능을 보유하고 있어 매우 편리하다.
 만약 비교적 최근에 pwnable을 시작한 newbie라면 hexray(IDA)와 pwntools 없이는 pwnable이 불가능할 수도 있을만큼 필수적인 도구로 자리매김하고 있다.&lt;/p&gt;
@@ -3205,15 +3199,13 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 &lt;p&gt;가급적 노가다를 줄이기 위해 boost(&lt;a href=&quot;https://www.boost.org/&quot;&gt;https://www.boost.org/&lt;/a&gt;)를 이용해 개발하기로 하였다.(사실 왜 boost로 시작했는지 잘 기억은 안나는데, 매뉴얼 및 사용층이 부족한 boost를 선택한 것이 과연 노가다를 줄이기는 한 건지 좀 의심되기는 한다;;;).
 그리고 프로그램의 테스트는 Hitcon-Trainning(&lt;a href=&quot;https://github.com/scwuaptx/HITCON-Training&quot;&gt;https://github.com/scwuaptx/HITCON-Training&lt;/a&gt;) 문제를 사용하기로 했다.&lt;/p&gt;
 
-&lt;p class=&quot;notice--info&quot;&gt;라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.&lt;br /&gt;
-&lt;a href=&quot;https://github.com/lucid78/pwntoolscpp&quot; target=&quot;_blank&quot;&gt;https://github.com/lucid78/pwntoolscpp&lt;/a&gt;&lt;/p&gt;
-
 &lt;h2 id=&quot;환경-구축&quot;&gt;&lt;strong&gt;환경 구축&lt;/strong&gt;&lt;/h2&gt;
 
 &lt;p&gt;pwntoolcpp의 최종 형태는 라이브러리가 될  예정이지만 쉽고 빠르고 간단한 테스트를 위해 일단 하나의 프로그램에서 동작하도록 작성하기로 한다.
 ~/workspaces 아래에 ptcpp라는 디렉토리를 생성하여 docker 실행 시 연결되도록 하고, 소스 에디팅은 Host에서, compile만 docker에서 하도록 하였다.&lt;/p&gt;
 
-&lt;p&gt;아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.&lt;/p&gt;
+&lt;p&gt;아래 dockerfile과 run.sh를 이용해 테스트 환경을 구축하자.
+(python2용 pip를 설치하기 위한 get-pip.py는 실행이 실패한다면, )&lt;/p&gt;
 
 &lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; ubuntu:latest&lt;/span&gt;
 
@@ -3237,7 +3229,7 @@ github에 몇 개의 비슷한 프로그램이 있기는 했지만 딱히 마음
 &lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--upgrade&lt;/span&gt; pip &lt;span class=&quot;se&quot;&gt;\
 &lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;pwntools &lt;span class=&quot;se&quot;&gt;\
 &lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;setuptools &lt;span class=&quot;se&quot;&gt;\
-&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl https://bootstrap.pypa.io/get-pip.py &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; get-pip.py &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl https://bootstrap.pypa.io/2.7/get-pip.py &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; get-pip.py &lt;span class=&quot;se&quot;&gt;\
 &lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python2 get-pip.py &lt;span class=&quot;se&quot;&gt;\
 &lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python2 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;pwntools &lt;span class=&quot;se&quot;&gt;\
 &lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;%sudo ALL=(ALL:ALL) ALL&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/sudoers &lt;span class=&quot;se&quot;&gt;\
@@ -3297,21 +3289,22 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 
 &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;위의 python 코드를 보면 “:” 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;
+위의 python 코드를 보면 “:” 문자열이 나올때까지 출력을 읽어(recvuntil) 특정 값을 쓰는(sendline) 동작을 2번 반복한 다음 마지막으로 interactive() 함수를 호출한다.&lt;/p&gt;
 
 &lt;p&gt;위의 exploit code에서 ret2sc 패스만 수정하여 실행해보면 아래와 같이 정상적으로 shell을 획득하는 것을 볼 수 있다.
 &lt;img src=&quot;/assets/images/ret2sc.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;지금까지 cpp를 이용한 pwntools를 제작하기 위한 개발환경 구축 및 pwntools를 이용한 exploit 코드의 기본적인 동작을 분석하였다.
 다음으로 위의 코드를 기반으로 pwntoolcpp를 제작해 볼 것이다.
-우리가 만들어야 할 기본 기능은 process라는 클래스와 recvuntil(), sendline(), p32(), interactive() 멤버 함수이다.&lt;/p&gt;
+우리가 만들어야 할 기본 기능은 PROCESS 클래스와 recv_until(), send_line(), p32(), interactive() 멤버 함수이다.&lt;/p&gt;
 
 &lt;h2 id=&quot;process-클래스&quot;&gt;&lt;strong&gt;PROCESS 클래스&lt;/strong&gt;&lt;/h2&gt;
 
-&lt;p&gt;먼저 process 클래스를 만들어보자. process 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.&lt;/p&gt;
+&lt;p&gt;먼저 PROCESS 클래스를 만들어보자. PROCESS 클래스는 매개변수로 전달받은 실행파일을 실행하고, console과 해당 프로세스 사이에서의 입출력을 전달한다.&lt;/p&gt;
 
-&lt;p&gt;일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스(&lt;a href=&quot;https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html&quot;&gt;https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html&lt;/a&gt;)로 쉽고 편하게 사용할 수 있다.&lt;/p&gt;
+&lt;p&gt;일반적으로 C 프로그램에서 이 기능을 하기 위해서는 fork를 해서 child process의 pipe를 조정해서 입출력을 전달해야 한다.(매우 귀찮은 작업이다). 하지만 C++에서는 boost 라이브러리의 boost::process::child 클래스로 쉽고 편하게 사용할 수 있다.
+(&lt;a href=&quot;https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html&quot;&gt;https://www.boost.org/doc/libs/1_75_0/doc/html/boost/process/child.html&lt;/a&gt;)&lt;/p&gt;
 
 &lt;p&gt;boost::process::child는 실행할 프로그램의 path를 전달하여 간단히 사용할 수도 있으며, 입출력을 redirect 하려면 아래와 같이 pipe 생성 후 매개변수로 전달하기만 하면 된다.&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// 실행할 파일의 경로&lt;/span&gt;
@@ -3327,7 +3320,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
                               &lt;span class=&quot;n&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 만약 실행해야 할 프로그램이 입력 값을 받는다면 아래와 같이 입력 값을 string vector로 전달하기만 하면 된다.&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// 실행할 파일의 경로&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;io_context&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -3343,10 +3336,8 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
                               &lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std_err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
                               &lt;span class=&quot;n&quot;&gt;io&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;제대로 동작하는지 ret2sc 바이너리를 대상으로 아래와 같이 테스트 코드를 작성하고 실행해보자.&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+제대로 동작하는지 ret2sc 바이너리를 대상으로 아래와 같이 테스트 코드를 작성하고 실행해보자.&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
 #include &amp;lt;boost/process.hpp&amp;gt;
 #include &amp;lt;boost/asio.hpp&amp;gt;
@@ -3447,29 +3438,29 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 	&lt;span class=&quot;n&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TARGET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 아래와 같이 ptcpp 디렉토리 밑에 위의 소스를 생성한 후 make 명령어로 컴파일을 한다.
 &lt;img src=&quot;/assets/images/make.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 컴파일에 성공하면 아래와 같이 pwntools_test 파일이 생성된다.
 &lt;img src=&quot;/assets/images/test.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 아래는 생성된 pwntools_test 파일을 실행한 결과이며, ret2sc 바이너리가 child process로 생성되었다가 정상적으로 종료되었다.
 &lt;img src=&quot;/assets/images/test.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;다음으로 추가할 기능은 프로세스를 처음 실행했을 때 출력되는 문자열을 읽어서 화면에 출력하는 기능이다. “/tmp/hitcon/LAB/lab3/ret2sc”를 실행시키면 아래와 같이 “Name:” 문자열이 출력한 후 사용자로부터의 입력을 기다리는 상태가 된다.&lt;/p&gt;
+&lt;p&gt;&lt;br /&gt;
+다음으로 추가할 기능은 프로세스를 처음 실행했을 때 출력되는 문자열을 읽어서 화면에 출력하는 기능이다. “/tmp/hitcon/LAB/lab3/ret2sc”를 실행시키면 아래와 같이 “Name:” 문자열이 출력한 후 사용자로부터의 입력을 기다리는 상태가 된다.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/cons.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;br /&gt;
-우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.&lt;/p&gt;
-
-&lt;p&gt;boost에서 pipe를 읽는 여러 방법들 중 boost::asio::read()를 사용하면 가장 간단하게 구현할 수 있다.
+우리는 위에서 boost::process::child로 대상 프로그램을 child process로 생성할 때, 해당 프로그램의 stdout을 output pipe로 redirect 하였으므로, output pipe을 읽어서 화면에 출력하면 될 것이다.&lt;br /&gt;
+boost에서 pipe를 읽는 여러 방법들 중 boost::asio::read()를 사용하면 가장 간단하게 구현할 수 있다.
 (&lt;a href=&quot;https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html&quot;&gt;https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/reference/read.html&lt;/a&gt;)&lt;/p&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 아래는 boost::asio::read()를 사용하는 예제이다.&lt;/p&gt;
 &lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;boost&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;asio&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streambuf&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// pipe에서 읽은 data를 저장하는 buffer&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prepare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4096&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;             &lt;span class=&quot;c1&quot;&gt;// buffer의 크기 설정&lt;/span&gt;
@@ -3489,13 +3480,13 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 &lt;p&gt;또한 read() 함수는 전통적인 c에서의 read() 함수와 달리 리턴되기 전에 스트림에서 일정한 양의 데이터를 읽어서 buffer에 저장하는 역할을 한다. 따라서 원래 읽기를 원했던 전체 길이 중 일부분이 먼저 buffer에 저장된 채로 반환될 수 있기 때문에, stream buffer의 consume()을 반드시 호출해야만 순차적으로 data를 저장할 수 있다.
 &lt;br /&gt;앞에서 이야기한 일정한 양은 read() 함수에 전달되는 세번째 변수에 의해 정해지는데, 위의 예제에서는 boost::asio::transfer_at_least(1) 값이 전달되어, 최소 1개 이상의 data를 읽으면 반환하도록 되어 있다.&lt;/p&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
+&lt;p&gt;&lt;br /&gt;여기서 또 혼돈을 일으킬만한 것이 boost::asio::transfer_at_least(1)을 전달했을 경우 buffer에 저장된 data의 길이가 1이 아닐 수도 있다는 것이다.
 &lt;br /&gt;위의 코드에서 read() 함수가 반환되었을 때 buffer에 저장된 data의 정확한 크기는 알 수 없다. 이는 boost 매뉴얼에도 정의되어 있지 않은데, stream buffer의 크기가 클수록 한번에 읽어들이는 크기가 크다는 것은 실험을 통해서 알 수 있었다. &lt;br /&gt;따라서 boost::process::child로 실행시킬 프로그램이 출력하는 data가 많을수록 stream buffer의 크기 또는 boost::asio::transfer_at_least()의 값을 크게 설정해야만 전체 data를 한번에 읽을 수 있다.&lt;/p&gt;
 
 &lt;p&gt;위의 코드에서는 대상 프로그램이 출력하는 데이터의 크기를 알 수 없기 때문에(만약 10으로 설정했는데, 출력되는 값이 10 미만이라면 read()가 반환되지 않아 프로그램이 멈출 것이다), boost::asio::transfer_at_least()의 값을 1로 설정하여, 1개 이상의 data를 읽으면 반환하도록 하였다. 그리고 stream buffer의 크기를 크게 잡음으로써, 만약 큰 크기의 출력값이 발생하더라도 한번에 읽을 수 있도록, 최대한 안정적으로 동작하게끔 하였다.
 &lt;br /&gt;만약 정확히 1개의 data만을 읽고 싶다면, boost::asio::transfer_exactly(1)을 전달해야 한다. 만약 모든 데이터를 읽은 후 반환되게 하고 싶다면(sync처럼 동작하게끔 하고 싶다면), 세번째 변수에 boost::asio::transfer_all()을 전달해야만 한다.&lt;/p&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 한가지 더 고려해야 하는 사항은 바로 read() 호출이 반환이 되지 않는 상황이다. 예를 들어 10개의 data가 들어올 것으로 예상해서 read()를 호출하였는데, 실제 8개의 data만을 읽을 수 있었다면, read()는 이후의 data가 들어올 때까지 계속 대기상태에 머무른다. 또한 대상 프로그램에서 읽어야 할 data가 있는지 없는지 모르는 상황에서의 read() 호출은 예상치 못한 대기상태를 야기하게 되므로, 적당한 시간 이후에 read() 호출을 강제로 끝내야만 프로그램이 안정적으로 동작할 것이다. 따라서 read() 호출은 비동기 함수 또는 스레드로 이루어져야 한다.&lt;/p&gt;
 
 &lt;p&gt;아래는 스레드 내에서 read()를 호출하도록 구현한 코드 예제이다.&lt;/p&gt;
@@ -3515,7 +3506,7 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 
 &lt;p&gt;thread 내에서 1개 이상의 data를 읽어오면 반환되도록 read()를 호출하며, out_buffer에 저장된 data를 출력한다. 읽어온 data의 수만큼 consume()을 호출하여 index를 조절한다. 이 스레드는 만약 read() 함수가 응답이 없을 경우 200ms 후에 종료된다.&lt;/p&gt;
 
-&lt;p&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;&lt;br /&gt;
 마지막으로 고려해야 하는 상황은 바로 error이다.
 &lt;br /&gt;특정 프로그램을 실행했을 때 어떠한 이유로 인해 error가 발생할 수도 있다. unix 기반 프로그램에서 error는 일반적으로 stderr로 전달되므로, 우리는 child process에서 발생하는 error 메세지 확인을 위해 stderr을 redirect한 후 이를 읽어보아야 한다.&lt;/p&gt;
 
@@ -3669,4 +3660,4 @@ ret2sc.c 소스를 보면 아래와 같이 가장 기초적인 문제임을 알 
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/process.png&quot; alt=&quot;full&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;여기까지 Process 클래스의 가장 기본적인 기능이 구현되었다. 나머지 기능은 다음 포스트에서 구현해 보도록 한다.&lt;/p&gt;</content><author><name>lucid7</name></author><summary type="html">pwntools는 CTF에 관심있는 사람이라면 한번쯤은 들어봤을 법한 pwnable을 위한 전용 도구이다. (https://github.com/Gallopsled/pwntools)</summary></entry></feed>
+&lt;p&gt;여기까지 Process 클래스의 가장 기본적인 기능이 구현되었다. 나머지 기능은 다음 포스트에서 구현해 보도록 한다.&lt;/p&gt;</content><author><name>lucid7</name><email>lucid78@gmail.com</email></author><category term="pwntools" /><category term="dev" /><summary type="html">c++로 pwntools를 만들어보자</summary></entry></feed>

@@ -1,3 +1,15 @@
+---
+title:  pwntools 개발기 (3)
+excerpt: "ELF class 추가하기"
+search: true
+categories: pwntools
+tags: dev
+toc: true
+---
+
+라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
+[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
+{: .notice--info}
 
 ## **LAB4**
 
@@ -5,11 +17,6 @@
 <br>
 아래는 [https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library](https://bachs.tistory.com/entry/HITCON-Training-lab4-return-to-library) 에서 발췌한 lab4를 공략하는 exploit이다.
 
-
-
-라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다.<br>
-[https://github.com/lucid78/pwntoolscpp](https://github.com/lucid78/pwntoolscpp){: target="_blank"}
-{: .notice--info}
 
 
 ```cpp
@@ -89,7 +96,7 @@ ELF는 got()라는 함수를 호출하고 있는데, elf 포맷에서 got에 위
 
 ELFIO는 header-only 프로그램이며 어떤 의존성도 없기 때문에, ELFIO 하나로 모든 기능을 다 수행할 수 있다는 장점이 있다. 또한 example들 중의 하나인 elfio_dump.hpp에 필요로 하는 대부분의 기능이 구현되어 있기 때문에 최소한의 작업으로 원하는 결과를 이끌어 낼 수 있다.
 
-ELFIO를 ptcpp 디렉토리 내에 clone한 후 elfio 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 elfio 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.
+ELFIO를 ptcpp 디렉토리 내에 clone한 후 ELFIO 디렉토리 내의 elfio 디렉토리만 상위 디렉토리로 옮기고 ELFIO 디렉토리는 삭제한다. 그리고 ELF 클래스를 추가하고 main.cpp에 아래 두 개의 헤더를 추가한다.
 
 ```cpp
 #include "elfio/elfio.hpp"
@@ -106,8 +113,7 @@ pwntools의 ELF 클래스는 PROCESS 클래스처럼 실행할 프로그램 경�
 
 ## **ARCH**
 
-먼저 Arch를 출력하는 기능을 만들어보자.
-<br>
+먼저 Arch를 출력하는 기능을 만들어보자.<br>
 위의 화면에서 Arch는 machine type, architecture, endian의 3가지 정보를 출력한다. 이 정보를 ELF Format에서 알아내기 위해 실행파일을 로드해야 하는데 ELFIO를 아래와 같이 사용할 수 있다.
 
 ```cpp
