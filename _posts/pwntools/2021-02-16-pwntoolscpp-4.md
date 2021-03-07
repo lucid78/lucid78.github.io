@@ -1238,7 +1238,7 @@ int main()
 아래는 대상 프로그램을 실행시킨 화면이다. 원래 의도대로라면 recv_until("\n")이 0xf7dad209까지만 읽어야 하지만, 실제 buffer에는 "Leave some message for me :"까지 읽은 상태에서 0xf7dad209까지의 문자열만 반환한 상태이기 때문에, 이 다음의 recv_until(":")에서 무한대기에 걸리는 것이다.
 ![full](/assets/images/cause.png)
 
-이는 boost::asio가 기본적으로 async로 동작하기 때문이다. 따라서 우리는 recv_until() 함수에 사용하는 buffer를 PROCESS 클래스의 멤버 변수로 변경하여 사용해야 한다.
+이는 boost::asio가 기본적으로 async로 동작하기 때문이며, 또한 buffer를 로컬 변수로 사용함으로써 이전에 읽어들인 정보가 남아있지 않기 때문이다. 따라서 우리는 recv_until() 함수에서 로컬 변수로 사용한 buffer를 PROCESS 클래스의 멤버 변수로 변경하여 사용해야 한다.
 
 아래는 수정된 최종 버전의 코드와 그 실행 결과이다.
 

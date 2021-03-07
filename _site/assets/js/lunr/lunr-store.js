@@ -22,4 +22,10 @@ var store = [{
         "tags": ["dev"],
         "url": "https://lucid78.github.io/pwntools/pwntoolscpp-4/",
         "teaser": null
+      },{
+        "title": "pwntools 개발기 (5)",
+        "excerpt":"라이브러리로 작성된 완전한 코드는 아래에서 확인 가능하다. https://github.com/lucid78/pwntoolscpp got 두 개의 소스를 관리하기가 힘들어서 지금부터는 라이브러리로 작성된 코드를 수정하며 이어가도록 한다. 지난 개발기에서 마지막으로 got() 함수를 추가했다. 사실 이 함수는 타겟 바이너리로부터 수집한 모든 symbol들의 정보를 조회하는 방식이라 got에 포함된 symbol들만을 가지고 있지는 않다. 실제 got의 정보는 .rel.plt section에 포함되어...","categories": ["pwntools"],
+        "tags": ["dev"],
+        "url": "https://lucid78.github.io/pwntools/pwntoolscpp-5/",
+        "teaser": null
       }]
