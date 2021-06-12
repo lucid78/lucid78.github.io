@@ -28,4 +28,10 @@ var store = [{
         "tags": ["dev"],
         "url": "https://lucid78.github.io/pwntools/pwntoolscpp-5/",
         "teaser": null
+      },{
+        "title": "linux kernel exploit 분석 - cve-2017-7308",
+        "excerpt":"Intro 이 글은 google project zero에서 2007년에 발표한 cve-2017-7308에 관해 분석한 글이다. 이 취약점에 대한 자세한 내용은 해당 취약점의 원문인 Exploiting the Linux kernel via packet sockets 에 잘 설명이 되어 있으므로 반드시 읽어보기를 권한다. 만약 영어에 어려움이 있다면 해당 원문의 많은 부분을 번역해 놓은 CVE-2017-7308 분석 블로그 번역을 보면...","categories": ["linux-kernel-exploits,","CVE-2017-7308"],
+        "tags": ["dev"],
+        "url": "https://lucid78.github.io/linux-kernel-exploits,/cve-2017-7308/cve-2017-7308/",
+        "teaser": null
       }]
