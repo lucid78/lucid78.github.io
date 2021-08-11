@@ -34,4 +34,10 @@ var store = [{
         "tags": ["dev"],
         "url": "https://lucid78.github.io/linux-kernel-exploits,/cve-2017-7308/cve-2017-7308/",
         "teaser": null
+      },{
+        "title": "Linux Kernel Exploit with CVE-2019-18683",
+        "excerpt":"Intro Alexander Popov가 발표한 CVE-2019-18683에 대해 분석해보자. Environment Setting 이번에는 qemu + virt-manager를 이용해서 조금 더 간단히 테스트 환경을 먼저 구축하도록 한다. 이 방법은 참고할 수 있는 문서들이 많으므로 간단하게 정리해본다. 먼저 아래의 명령을 이용하여 필요한 패키지를 설치한다. sudo apt install virt-manager qemu-kvm libvirt-daemon-system 그리고 qemu를 이용해서 ubuntu 18.04.3 server...","categories": ["linux-kernel-exploits,","CVE-2019-18683,","vivid"],
+        "tags": ["dev"],
+        "url": "https://lucid78.github.io/linux-kernel-exploits,/cve-2019-18683,/vivid/cve-2019-18683/",
+        "teaser": null
       }]
